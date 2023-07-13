@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Root from './Root';
 import Clients from './Clients';
-import NewClient from './NewClient';
+import { NewClient, saveNewClient } from './NewClient';
 import Welcome from './Welcome';
 import {
   createBrowserRouter,
@@ -22,7 +22,11 @@ const router = createBrowserRouter(
     <Route path="/" element={<Root />}>
       <Route index exact element={<Welcome />} />
       <Route path="clients" element={<Clients />} />
-      <Route path="new-client" element={<NewClient />} />
+      <Route
+        path="new-client"
+        element={<NewClient />}
+        action={(request) => saveNewClient(request)}
+      />
     </Route>
   )
 );
