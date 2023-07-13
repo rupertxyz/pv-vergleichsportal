@@ -1,12 +1,28 @@
-import React from 'react';
-import solisLogo from './assets/solis_logo.png';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useClerk } from '@clerk/clerk-react';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
-const Header = () => {
+const Header = ({ userObject }) => {
+  const [logo, setLogo] = useState('');
+  const { signOut } = useClerk();
+
+  useEffect(() => {
+    if (userObject.isLoaded && userObject.isSignedIn) {
+      setLogo(userObject?.user?.publicMetadata?.logo);
+    }
+  }, [userObject]);
+
   return (
-    <NavLink to="/" className="flex justify-center p-4">
-      <img src={solisLogo} />
-    </NavLink>
+    <div>
+      <div className="flex justify-end gap-1">
+        <button onClick={() => signOut()}>Sign out</button>
+        <ArrowTopRightOnSquareIcon className="w-4" />
+      </div>
+      <NavLink to="/" className="flex justify-center p-4">
+        <img src={logo} />
+      </NavLink>
+    </div>
   );
 };
 
