@@ -7,10 +7,12 @@
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@tailwindcss/forms": "^0.5.3",
+    "dayjs": "^1.11.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "react-tailwindcss-datepicker": "^1.6.3"
   },
   "scripts": {
     "dev": "BROWSER=brave react-scripts start",
