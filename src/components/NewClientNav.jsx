@@ -26,12 +26,6 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
   const [showScrollRight, setShowScrollRight] = useState(true);
   const timeoutRef = useRef(null); // Reference to store our timeout
 
-  // const checkScroll = () => {
-  //   const { scrollLeft, scrollWidth, clientWidth } = scrollContainer.current;
-  //   setShowScrollLeft(scrollLeft > 0);
-  //   setShowScrollRight(scrollLeft < scrollWidth - clientWidth - 30);
-  // };
-
   const checkScroll = () => {
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainer.current;
     const atLeftEdge = scrollLeft <= 0;
@@ -75,11 +69,9 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
             e.preventDefault();
             scroll(-300);
           }}
-          className={`transition-all duration-500 border shadow-2xl ease-in-out ${
-            showScrollLeft ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
+          className="border-t border-r shadow-2xl"
         >
-          <ChevronLeftIcon className="h-6 w-6" />
+          <ChevronLeftIcon className="h-4 w-10" />
         </button>
       )}
       <div
@@ -90,7 +82,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
         {steps.map((step, index) => (
           <div
             key={step}
-            className={`flex-auto text-center text-sm p-4 border cursor-pointer ${
+            className={`flex-auto text-center text-sm p-4 border-t cursor-pointer ${
               index === currentStep
                 ? 'bg-red-500 text-white'
                 : 'bg-gray-50 text-black'
@@ -107,33 +99,12 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
             e.preventDefault();
             scroll(300);
           }}
-          className={`transition-all duration-500 border shadow-2xl ease-in-out ${
-            showScrollRight ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
+          className="border-t border-l shadow-xl"
         >
-          <ChevronRightIcon className="h-6 w-6" />
+          <ChevronRightIcon className="h-4 w-10" />
         </button>
       )}
     </div>
-
-    //OLD
-    // <div className="sticky bottom-0 z-50 safe-bottom bg-gray-50">
-    //   <div className="flex w-full justify-between overflow-x-auto hide-scrollbar">
-    //     {steps.map((step, index) => (
-    //       <div
-    //         key={step}
-    //         className={`flex-auto text-center text-sm p-4 border cursor-pointer ${
-    //           index === currentStep
-    //             ? 'bg-red-500 text-white'
-    //             : 'bg-gray-50 text-black'
-    //         }`}
-    //         onClick={() => setCurrentStep(index)}
-    //       >
-    //         {step}
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
   );
 };
 
