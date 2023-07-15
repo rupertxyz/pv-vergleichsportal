@@ -62,27 +62,27 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
   };
 
   return (
-    <div className="sticky flex bottom-0 z-50 safe-bottom bg-gray-50">
+    <div className="sticky flex bottom-0 z-50 border-t safe-bottom bg-gray-50">
       {showScrollLeft && (
         <button
           onClick={(e) => {
             e.preventDefault();
             scroll(-300);
           }}
-          className="border-t border-r shadow-2xl"
+          className="border-b"
         >
-          <ChevronLeftIcon className="h-4 w-10" />
+          <ChevronLeftIcon className="h-5 w-10" />
         </button>
       )}
       <div
         ref={scrollContainer}
-        className="flex w-full justify-between overflow-x-auto hide-scrollbar"
+        className="flex w-full justify-between border-r border-l border-b overflow-x-auto hide-scrollbar"
         style={{ scrollBehavior: 'smooth' }}
       >
         {steps.map((step, index) => (
           <div
             key={step}
-            className={`flex-auto text-center text-sm p-4 border-t cursor-pointer ${
+            className={`flex-auto text-center text-sm p-4 cursor-pointer ${
               index === currentStep
                 ? 'bg-red-500 text-white'
                 : 'bg-gray-50 text-black'
@@ -99,9 +99,9 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
             e.preventDefault();
             scroll(300);
           }}
-          className="border-t border-l shadow-xl"
+          className="border-b"
         >
-          <ChevronRightIcon className="h-4 w-10" />
+          <ChevronRightIcon className="h-5 w-10" />
         </button>
       )}
     </div>
