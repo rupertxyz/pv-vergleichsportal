@@ -40,18 +40,18 @@ const NewClient = () => {
 
   return (
     <Form method="post" className="w-full min-h-screen">
-      <NewClientNav
-        steps={steps}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-      />
-      <div className="p-6">
+      <div className="p-6 min-h-screen">
         <StepContent
           currentStep={currentStep}
           formContent={formContent}
           setFormContent={setFormContent}
         />
       </div>
+      <NewClientNav
+        steps={steps}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
     </Form>
   );
 };
