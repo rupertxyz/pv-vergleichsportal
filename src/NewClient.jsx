@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form } from 'react-router-dom';
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
-import Input from './components/FormComponents/Input';
-import Select from './components/FormComponents/Select';
 
 async function saveNewClient(request) {
   console.log(request);
@@ -22,6 +20,11 @@ const NewClient = () => {
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    // jump to top of page when currentStep changes
+    window.scrollTo(0, 0);
+  }, [currentStep]);
 
   const [formContent, setFormContent] = useState({
     leadSource: '',

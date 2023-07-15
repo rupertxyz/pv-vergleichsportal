@@ -23,7 +23,7 @@ const WelcomeItem = ({ link, content }) => {
   return (
     <NavLink
       to={link}
-      className="flex-1 p-6 text-center border-2 border-gray-300 rounded-md hover:border-gray-400"
+      className="flex flex-1 p-6 text-center items-center justify-center border-2 border-gray-300 rounded-md hover:border-gray-400"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={styles}

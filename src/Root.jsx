@@ -9,8 +9,8 @@ const Root = () => {
   return (
     <>
       <SignedIn>
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
-          <div className="relative w-full max-w-3xl mx-auto bg-white rounded-md shadow-md">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
+          <div className="relative w-full max-w-3xl mx-auto bg-white rounded-md shadow-2xl">
             <Header {...{ userObject }} />
             <div className="flex flex-col sm:flex-row gap-4">
               <Outlet context={{ userObject }} />
