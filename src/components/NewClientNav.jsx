@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none; 
+        scrollbar-width: none;  
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   return (
     <div className="sticky bottom-0 z-50 safe-bottom bg-gray-50">
-      <div className="flex w-full justify-between overflow-x-auto">
+      <div className="flex w-full justify-between overflow-x-auto hide-scrollbar">
         {steps.map((step, index) => (
           <div
             key={step}
@@ -12,7 +30,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
                 ? 'bg-red-500 text-white'
                 : 'bg-gray-50 text-black'
             }`}
-            onClick={() => setCurrentStep(index)} // Set the click handler to our new function
+            onClick={() => setCurrentStep(index)}
           >
             {step}
           </div>
