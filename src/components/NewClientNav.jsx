@@ -3,7 +3,7 @@ import React from 'react';
 const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
   return (
     <div className="sticky bottom-0 z-50 bg-white">
-      <div className="flex w-full justify-between mb-4 overflow-x-auto">
+      <div className="flex w-full justify-between overflow-x-auto">
         {steps.map((step, index) => (
           <div
             key={step}
