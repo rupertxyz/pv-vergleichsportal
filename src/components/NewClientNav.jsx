@@ -23,7 +23,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
 
   const scrollContainer = useRef(null);
   const [showScrollLeft, setShowScrollLeft] = useState(false);
-  const [showScrollRight, setShowScrollRight] = useState(true);
+  const [showScrollRight, setShowScrollRight] = useState(false);
   const timeoutRef = useRef(null); // Reference to store our timeout
 
   const checkScroll = () => {
@@ -40,12 +40,15 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
     timeoutRef.current = setTimeout(() => {
       setShowScrollLeft(!atLeftEdge);
       setShowScrollRight(!atRightEdge);
-    }, 500); // Delay in milliseconds
+    }, 200); // Delay in milliseconds
   };
 
   useEffect(() => {
     const scrollEl = scrollContainer.current;
     scrollEl.addEventListener('scroll', checkScroll);
+
+    // Call checkScroll once to initialize arrow visibility
+    checkScroll();
 
     // Clean up event listener on unmount
     return () => {
