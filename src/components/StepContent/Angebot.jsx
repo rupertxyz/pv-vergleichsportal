@@ -5,6 +5,9 @@ import DatePicker from '../FormComponents/DatePicker';
 import Number from '../FormComponents/Number';
 import Currency from '../FormComponents/Currency';
 import Checkbox from '../FormComponents/Checkbox';
+import Phone from '../FormComponents/Phone';
+import Map from '../FormComponents/Address';
+import Email from '../FormComponents/Email';
 
 const Angebot = ({ formContent, setFormContent }) => {
   return (
@@ -52,42 +55,22 @@ const Angebot = ({ formContent, setFormContent }) => {
           setFormContent={setFormContent}
           identifier="nachname"
         />
-        <Input
-          label="Strasse"
-          placeholder="Bitte Straße angeben"
+        <Map
+          label="Adresse"
+          placeholder="Bitte die Adresse angeben"
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="strasse"
         />
-        <Input
-          label="Hausnummer"
-          placeholder="Bitte Hausnummer angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="hausnummer"
-        />
-        <Input
-          label="PLZ"
-          placeholder="Bitte PLZ angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="plz"
-        />
-        <Input
-          label="Ort"
-          placeholder="Bitte Ort angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="ort"
-        />
-        <Input
+
+        <Phone
           label="Telefon"
-          placeholder="Bitte Telefonnummer angeben"
+          placeholder="Bitte Telefonnummer mit +49 angeben"
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="telefon"
         />
-        <Input
+        <Email
           label="E-Mail"
           placeholder="Bitte E-Mail angeben"
           formContent={formContent}

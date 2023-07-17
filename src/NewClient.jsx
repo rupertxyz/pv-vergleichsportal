@@ -32,14 +32,13 @@ const NewClient = () => {
     anrede: '',
     vorname: '',
     nachname: '',
-    strasse: '',
-    hausnummer: '',
-    plz: '',
-    ort: '',
+    adresse: {},
     telefon: '',
     email: '',
     firmenbezeichnung: '',
   });
+
+  console.log(formContent);
 
   return (
     <Form method="post" className="w-full min-h-screen">

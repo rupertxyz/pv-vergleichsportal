@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 export default function Input({
   label,
   placeholder,
@@ -6,6 +8,21 @@ export default function Input({
   identifier,
 }) {
   const value = formContent[identifier] || '';
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    function validateEmail(email) {
+      // display error if email is not empty and does not contain @
+      if (value !== '' && !value.includes('@')) {
+        setError('Bitte gültige E-Mail-Adresse eingeben');
+        return;
+      }
+      setError('');
+      return;
+    }
+
+    validateEmail(value);
+  }, [value]);
   return (
     <div className="w-full sm:w-1/2 p-2">
       <label className="block text-sm font-medium leading-6 text-gray-900 truncate">
@@ -13,7 +30,7 @@ export default function Input({
       </label>
       <div className="relative mt-1 rounded-md shadow-sm">
         <input
-          type="text"
+          type="email"
           name={identifier}
           value={value}
           onChange={(e) =>
@@ -23,6 +40,7 @@ export default function Input({
           placeholder={placeholder}
         />
       </div>
+      {error && <div className="text-red-500 shadow-none">{error}</div>}
     </div>
   );
 }

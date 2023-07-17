@@ -4,7 +4,7 @@ const Counter = ({ label, placeholder, step }) => {
   return (
     <div className="w-full sm:w-1/2 p-2 truncate">
       <label>{label}</label>
-      <div className="relative mt-2 rounded-md shadow-sm">
+      <div className="relative mt-1 rounded-md shadow-sm">
         <input
           type="number"
           name="price"

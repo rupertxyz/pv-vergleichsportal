@@ -41,7 +41,7 @@ const DatePicker = ({ label, formContent, setFormContent, identifier }) => {
       >
         {label}
       </label>
-      <div className="relative mt-2 rounded-md shadow-sm">
+      <div className="relative mt-1 rounded-md shadow-sm">
         <Datepicker
           value={value}
           onChange={handleValueChange}

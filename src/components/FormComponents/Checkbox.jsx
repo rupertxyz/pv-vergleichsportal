@@ -6,7 +6,7 @@ const Checkbox = ({ label, name }) => {
       <label className="block text-sm font-medium leading-6 text-gray-900 truncate">
         {label}
       </label>
-      <div className="relative mt-2 rounded-md">
+      <div className="relative mt-1 rounded-md">
         <input
           type="checkbox"
           name={name}
