@@ -11,26 +11,38 @@ const DatePicker = ({ label, formContent, setFormContent, identifier }) => {
     setValue(newValue);
     setFormContent({
       ...formContent,
-      [identifier]: newValue.startDate,
+      [identifier]: newValue.startDate || '',
     });
   };
 
+  // useEffect(() => {
+  //   let startDate;
+  //   let endDate;
+
+  //   if (formContent[identifier]) {
+  //     startDate = new Date(formContent[identifier]);
+  //     endDate = new Date(formContent[identifier]);
+  //   } else {
+  //     startDate = new Date();
+  //     endDate = new Date();
+  //   }
+
+  //   setValue({
+  //     startDate,
+  //     endDate,
+  //   });
+  // }, [formContent[identifier]]);
+
   useEffect(() => {
-    let startDate;
-    let endDate;
-
     if (formContent[identifier]) {
-      startDate = new Date(formContent[identifier]);
-      endDate = new Date(formContent[identifier]);
-    } else {
-      startDate = new Date();
-      endDate = new Date();
-    }
+      let startDate = new Date(formContent[identifier]);
+      let endDate = new Date(formContent[identifier]);
 
-    setValue({
-      startDate,
-      endDate,
-    });
+      setValue({
+        startDate,
+        endDate,
+      });
+    }
   }, [formContent[identifier]]);
 
   return (
