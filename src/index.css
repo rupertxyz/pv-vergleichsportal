@@ -16,3 +16,8 @@
     padding-right: env(safe-area-inset-right);
   }
 }
+
+.pac-container {
+  box-shadow: none; /* This will remove the shadow */
+  border: 1px solid gray;
+}
