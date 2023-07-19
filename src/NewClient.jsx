@@ -36,6 +36,7 @@ const NewClient = () => {
     telefon: '',
     email: '',
     firmenbezeichnung: '',
+    firma: '',
   });
 
   console.log(formContent);

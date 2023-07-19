@@ -62,6 +62,13 @@ const Angebot = ({ formContent, setFormContent }) => {
           setFormContent={setFormContent}
           identifier="nachname"
         />
+        <Input
+          label="Firma"
+          placeholder="Bitte Firma angeben"
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="firma"
+        />
         <Map
           label="Adresse"
           placeholder="Bitte die Adresse angeben"

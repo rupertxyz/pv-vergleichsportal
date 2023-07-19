@@ -1,0 +1,26 @@
+/* For modern browsers */
+.input::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* For Internet Explorer */
+.input:-ms-input-placeholder {
+  color: #9ca3af;
+}
+
+/* For Edge */
+.input::-ms-input-placeholder {
+  color: #9ca3af;
+}
+
+/* For Firefox */
+.input::-moz-placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* For Chrome, Safari, and Opera */
+.input::-webkit-input-placeholder {
+  color: #9ca3af;
+}
