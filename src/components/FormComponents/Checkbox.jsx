@@ -4,7 +4,7 @@ const Checkbox = ({ label, name, formContent, setFormContent, identifier }) => {
   const value = formContent[identifier] || '';
 
   return (
-    <div className="w-full sm:w-1/4 p-2">
+    <div className="w-1/2 sm:w-1/4 p-2">
       <label className="block text-sm font-medium leading-6 text-gray-900 truncate">
         {label}
       </label>
