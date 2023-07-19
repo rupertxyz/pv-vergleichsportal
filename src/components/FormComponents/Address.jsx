@@ -1,4 +1,5 @@
 import Autocomplete from 'react-google-autocomplete';
+import { useState } from 'react';
 
 export default function Input({
   label,
@@ -7,6 +8,22 @@ export default function Input({
   setFormContent,
   identifier,
 }) {
+  const [isFocused, setIsFocused] = useState(false);
+
+  // const styles = {
+  //   display: 'block',
+  //   width: '100%',
+  //   borderRadius: '.25rem',
+  //   border: 'none',
+  //   color: '#1a202c',
+  //   boxShadow: isFocused
+  //     ? '0 0 0 2px #4b5563 inset' // focus:ring-2 focus:ring-inset focus:ring-gray-600
+  //     : '0 0 0 1px #d1d5db inset', // ring-1 ring-inset ring-gray-300
+  //   fontSize: '.875rem',
+  //   lineHeight: '1.5',
+  //   paddingLeft: '12px',
+  // };
+
   const value = formContent[identifier] || '';
   console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
   return (
@@ -25,9 +42,17 @@ export default function Input({
             componentRestrictions: { country: 'de' },
           }}
           language="de"
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
-          style={{ paddingLeft: '12px', outline: 'none' }}
+          className="block w-full rounded-md border-0 p-1.5 text-gray-900 placeholder:text-gray-400"
+          style={{
+            paddingLeft: '12px',
+            outline: 'none',
+            boxShadow: isFocused
+              ? '0 0 0 2px #4b5563 inset'
+              : '0 0 0 1px #d1d5db inset',
+          }}
           placeholder={placeholder}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
       </div>
     </div>
