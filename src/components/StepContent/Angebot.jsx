@@ -4,6 +4,7 @@ import Input from '../FormComponents/Input';
 import DatePicker from '../FormComponents/DatePicker';
 import Number from '../FormComponents/Number';
 import Currency from '../FormComponents/Currency';
+import CurrencyNumber from '../FormComponents/CurrencyNumber';
 import Checkbox from '../FormComponents/Checkbox';
 import Phone from '../FormComponents/Phone';
 import Address from '../FormComponents/Address';
@@ -120,16 +121,18 @@ const Angebot = ({ formContent, setFormContent }) => {
           setFormContent={setFormContent}
           identifier="eAutoVerbrauch"
         />
-        <Currency
+        <CurrencyNumber
           label="Arbeitspreis ct/kWh"
           defaultValue={0.4}
+          step={0.05}
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="arbeitspreis"
         />
-        <Currency
+        <CurrencyNumber
           label="Grundgebühr pro Jahr"
           defaultValue={120}
+          step={5}
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="grundgebuehr"
