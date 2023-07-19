@@ -9,8 +9,6 @@ const Header = ({ userObject }) => {
   const { signOut } = useClerk();
   const location = useLocation();
 
-  console.log(userObject);
-
   useEffect(() => {
     if (userObject.isLoaded && userObject.isSignedIn) {
       setLogo(userObject?.user?.publicMetadata?.logo);
