@@ -3,7 +3,6 @@ import Select from '../FormComponents/Select';
 import Input from '../FormComponents/Input';
 import DatePicker from '../FormComponents/DatePicker';
 import Number from '../FormComponents/Number';
-import Currency from '../FormComponents/Currency';
 import CurrencyNumber from '../FormComponents/CurrencyNumber';
 import Checkbox from '../FormComponents/Checkbox';
 import Phone from '../FormComponents/Phone';
