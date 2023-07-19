@@ -35,8 +35,15 @@ const Angebot = ({ formContent, setFormContent }) => {
       </h1>
       <div className="flex flex-wrap -m-2">
         <Select
+          label="Titel"
+          options={['Dr.', 'Prof.', 'Prof. Dr.', 'Prof Dr. Dr.']}
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="anrede"
+        />
+        <Select
           label="Anrede"
-          options={['Frau', 'Herr']}
+          options={['Frau', 'Herr', 'Familie', 'Eheleute']}
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="anrede"
