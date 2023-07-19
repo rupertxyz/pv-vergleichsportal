@@ -35,18 +35,18 @@ const Angebot = ({ formContent, setFormContent }) => {
       </h1>
       <div className="flex flex-wrap -m-2">
         <Select
-          label="Titel"
-          options={['Dr.', 'Prof.', 'Prof. Dr.', 'Prof Dr. Dr.']}
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="anrede"
-        />
-        <Select
           label="Anrede"
           options={['Frau', 'Herr', 'Familie', 'Eheleute']}
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="anrede"
+        />
+        <Select
+          label="Titel"
+          options={['Dr.', 'Prof.', 'Prof. Dr.', 'Prof Dr. Dr.']}
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="titel"
         />
         <Input
           label="Vorname"
@@ -91,13 +91,6 @@ const Angebot = ({ formContent, setFormContent }) => {
           setFormContent={setFormContent}
           identifier="email"
         />
-        <Input
-          label="Firmenbezeichnung"
-          placeholder="Bitte Firmenbezeichnung angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="firmenbezeichnung"
-        />
       </div>
       <h1 className="text-xl font-semibold text-gray-800 mt-8 mb-4">
         Angaben Energieverbrauch
@@ -105,25 +98,56 @@ const Angebot = ({ formContent, setFormContent }) => {
       <div className="flex flex-wrap -m-2">
         <Number
           label="Hausstromverbrauch in kWh"
-          placeholder="5000"
+          defaultValue={5000}
           step="500"
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="hausstromverbrauch"
         />
         <Number
           label="Nutzstromverbrauch in kWh (Wärmepumpe, Wallbox etc.)"
-          placeholder="2500"
+          defaultValue={2500}
           step="250"
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="nutzstromverbrauch"
         />
         <Number
           label="Stromverbrauch E-Auto (in kWh pro Jahr)"
-          placeholder="0"
+          defaultValue={2500}
           step="250"
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="eAutoVerbrauch"
         />
         <Currency
           label="Arbeitspreis ct/kWh"
-          placeholder="Bitte Strompreis angeben"
+          defaultValue={0.4}
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="arbeitspreis"
         />
-        <Currency label="Grundgebühr pro Jahr" placeholder="0" />
-        <Checkbox label="Wärmepumpe in Planung" name="waermepumpe" />
+        <Currency
+          label="Grundgebühr pro Jahr"
+          defaultValue={120}
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="grundgebuehr"
+        />
+        <Checkbox
+          label="Wärmepumpe in Planung"
+          name="waermepumpe"
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="waermepumpe"
+        />
+        <Checkbox
+          label="E-Auto in Planung"
+          name="eAutoPLanung"
+          formContent={formContent}
+          setFormContent={setFormContent}
+          identifier="eAutoPlanung"
+        />
       </div>
     </>
   );

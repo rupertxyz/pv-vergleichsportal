@@ -8,27 +8,33 @@ export default function Phone({
   identifier,
 }) {
   const value = formContent[identifier] || '';
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
+
+  // useEffect(() => {
+  //   function validatePhoneNumber(phoneNumber) {
+  //     // Only display an error if the input doesn't start with "+49"
+  //     // or if something other than a space is typed after "+49 " and it's not a number greater than zero.
+  //     if (value !== '' && !value.startsWith('+49') && value.length > 3) {
+  //       setError('Bitte Nummer mit +49 eingeben');
+  //       return;
+  //     }
+  //     // If the input starts with "+49" and is followed by a 0 or a space and a 0, give error
+  //     if (value.startsWith('+49 0') || value.startsWith('+490')) {
+  //       setError('Bitte Nummer mit +49 eingeben');
+  //       return;
+  //     }
+  //     setError('');
+  //     return;
+  //   }
+
+  //   validatePhoneNumber(value);
+  // }, [value]);
 
   useEffect(() => {
-    function validatePhoneNumber(phoneNumber) {
-      // Only display an error if the input doesn't start with "+49"
-      // or if something other than a space is typed after "+49 " and it's not a number greater than zero.
-      if (value !== '' && !value.startsWith('+49') && value.length > 3) {
-        setError('Bitte Nummer mit +49 eingeben');
-        return;
-      }
-      // If the input starts with "+49" and is followed by a 0 or a space and a 0, give error
-      if (value.startsWith('+49 0') || value.startsWith('+490')) {
-        setError('Bitte Nummer mit +49 eingeben');
-        return;
-      }
-      setError('');
-      return;
+    if (value === '') {
+      setFormContent({ ...formContent, [identifier]: '+49 ' });
     }
-
-    validatePhoneNumber(value);
-  }, [value]);
+  }, []);
 
   const handleChange = (e) => {
     setFormContent({ ...formContent, [identifier]: e.target.value });
@@ -49,7 +55,7 @@ export default function Phone({
           placeholder={placeholder}
         />
       </div>
-      {error && <div className="text-red-500 shadow-none">{error}</div>}
+      {/* {error && <div className="text-red-500 shadow-none">{error}</div>} */}
     </div>
   );
 }

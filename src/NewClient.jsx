@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   Form,
-  unstable_Blocker as Blocker,
   unstable_useBlocker as useBlocker,
-  unstable_BlockerFunction as BlockerFunction,
+  useNavigate,
+  useBeforeUnload,
+  // unstable_usePrompt as usePrompt,
 } from 'react-router-dom';
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
@@ -13,6 +14,29 @@ async function saveNewClient(request) {
   const data = Object.fromEntries(await request.formData());
   console.log(data);
   return null;
+}
+
+function usePrompt(message, { beforeUnload = false } = {}) {
+  const blocker = useBlocker(
+    useCallback(
+      () => (typeof message === 'string' ? !window.confirm(message) : false),
+      [message]
+    ),
+    []
+  );
+
+  useBeforeUnload(
+    useCallback(
+      (event) => {
+        if (beforeUnload && typeof message === 'string') {
+          event.preventDefault();
+          event.returnValue = message;
+        }
+      },
+      [message, beforeUnload]
+    ),
+    { capture: true }
+  );
 }
 
 const NewClient = () => {
@@ -33,35 +57,24 @@ const NewClient = () => {
 
   const [formContent, setFormContent] = useState({});
 
+  console.log(formContent);
+
   // check if formContent is an empty object or if all of the values are empty strings
   const isFormFilled =
     Object.keys(formContent).length > 0 &&
-    Object.values(formContent).every((value) => value !== '');
+    Object.values(formContent).some(
+      (value) => value !== '' && value !== '+49 ' && value !== '+49'
+    );
 
-  let shouldBlock = useCallback(
-    function ({ currentLocation, nextLocation }) {
-      return isFormFilled && currentLocation.pathname !== nextLocation.pathname;
-    },
-    [isFormFilled]
+  usePrompt(
+    'Das Formular ist noch nicht gespeichert. Zum Verlassen bitte bestätigen. Alle bisher eingegebenen Daten werden gelöscht.',
+    {
+      beforeUnload: isFormFilled,
+    }
   );
 
-  const blocker = useBlocker(shouldBlock);
-
-  // Reset the blocker if the user cleans the form
-  useEffect(() => {
-    if (blocker.state === 'blocked' && !isFormFilled) {
-      blocker.reset();
-    }
-  }, [blocker, isFormFilled]);
-
-  useEffect(() => {
-    if (blocker.state === 'blocked') {
-      window.alert('Bitte das Formular zuerst ausfüllen und speichern.');
-    }
-  }, [blocker]);
-
   return (
-    <Form method="post" className="w-full min-h-screen">
+    <Form method="post" className="w-full min-h-screen" autoComplete="off">
       <div className="p-6 min-h-screen">
         <StepContent
           currentStep={currentStep}
