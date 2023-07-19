@@ -31,25 +31,25 @@ export default function Address({
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (googleMapsLoaded) {
-  //     const autocomplete = new window.google.maps.places.Autocomplete(
-  //       autocompleteInputRef.current,
-  //       {
-  //         componentRestrictions: { country: 'de' },
-  //         language: 'de',
-  //       }
-  //     );
+  useEffect(() => {
+    if (googleMapsLoaded) {
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        autocompleteInputRef.current,
+        {
+          componentRestrictions: { country: 'de' },
+          language: 'de',
+        }
+      );
 
-  //     autocomplete.addListener('place_changed', () => {
-  //       const place = autocomplete.getPlace();
-  //       setFormContent({
-  //         ...formContent,
-  //         [identifier]: place.formatted_address,
-  //       });
-  //     });
-  //   }
-  // }, [googleMapsLoaded, formContent, identifier]); // Add googleMapsLoaded dependency
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        setFormContent((currentFormContent) => ({
+          ...currentFormContent,
+          [identifier]: place.formatted_address,
+        }));
+      });
+    }
+  }, [googleMapsLoaded, formContent, identifier]); // Add googleMapsLoaded dependency
 
   return (
     <div className="w-full sm:w-1/2 p-2">
