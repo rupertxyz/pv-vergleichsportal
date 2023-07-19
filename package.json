@@ -13,7 +13,7 @@
     "react": "^18.2.0",
     "react-currency-input-field": "^3.6.11",
     "react-dom": "^18.2.0",
-    "react-number-input": "^15.5.1",
+    "react-numeric-input": "^2.2.3",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
     "react-tailwindcss-datepicker": "^1.6.3"

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import NumericInput from 'react-numeric-input';
 
 const Number = ({
   label,
@@ -18,18 +19,45 @@ const Number = ({
     }
   }, []);
 
+  function formatNumber(num) {
+    const number = new Intl.NumberFormat('de-DE').format(num);
+    return number;
+  }
+
+  function parseNumber(num) {
+    const number = parseInt(num.replace(/\./g, ''));
+    return number;
+  }
+
   return (
     <div className="w-full sm:w-1/2 p-2 truncate">
       <label>{label}</label>
       <div className="relative mt-1 rounded-md shadow-sm">
-        <input
-          type="number"
+        <NumericInput
           value={value}
-          onChange={(e) =>
-            setFormContent({ ...formContent, [identifier]: e.target.value })
-          }
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+          onChange={(num) => {
+            setFormContent({ ...formContent, [identifier]: num });
+          }}
           step={step}
+          format={formatNumber}
+          parse={parseNumber}
+          style={{
+            wrap: {
+              display: 'block',
+            },
+            input: {
+              display: 'block',
+              width: '100%',
+              fontSize: '14px',
+              lineHeight: '1.5rem',
+              borderRadius: '0.5rem',
+            },
+            'input:focus': {
+              outline: '2px auto #4b5563',
+              outlineOffset: '0px',
+              borderRadius: '0.25rem',
+            },
+          }}
         />
       </div>
     </div>
