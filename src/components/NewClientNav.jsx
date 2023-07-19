@@ -21,6 +21,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
     };
   }, []);
 
+  const SCROLL_DISTANCE = 100;
   const scrollContainer = useRef(null);
   const [showScrollLeft, setShowScrollLeft] = useState(false);
   const [showScrollRight, setShowScrollRight] = useState(false);
@@ -70,7 +71,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            scroll(-300);
+            scroll(-SCROLL_DISTANCE);
           }}
           className="border-b"
         >
@@ -100,7 +101,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            scroll(300);
+            scroll(SCROLL_DISTANCE);
           }}
           className="border-b"
         >
