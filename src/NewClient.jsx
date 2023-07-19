@@ -32,7 +32,7 @@ const NewClient = () => {
     anrede: '',
     vorname: '',
     nachname: '',
-    adresse: {},
+    adresse: '',
     telefon: '',
     email: '',
     firmenbezeichnung: '',

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './Address.css';
 
-export default function Input({
+export default function Address({
   label,
   placeholder,
   formContent,
@@ -16,7 +16,7 @@ export default function Input({
     // Only load the script if it's not already loaded
     if (!window.google) {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&language=de&callback=initMap`;
       script.async = true;
       script.defer = true;
       window.initMap = () => setGoogleMapsLoaded(true);
@@ -34,14 +34,19 @@ export default function Input({
   useEffect(() => {
     if (googleMapsLoaded) {
       const autocomplete = new window.google.maps.places.Autocomplete(
-        autocompleteInputRef.current
+        autocompleteInputRef.current,
+        {
+          componentRestrictions: { country: 'de' },
+          language: 'de',
+        }
       );
 
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
-        console.log(place);
-        console.log(place.formatted_address);
-        // setFormContent({ ...formContent, [identifier]: place.formatted_address });
+        setFormContent({
+          ...formContent,
+          [identifier]: place.formatted_address,
+        });
       });
     }
   }, [googleMapsLoaded]); // Add googleMapsLoaded dependency

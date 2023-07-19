@@ -6,7 +6,7 @@ import Number from '../FormComponents/Number';
 import Currency from '../FormComponents/Currency';
 import Checkbox from '../FormComponents/Checkbox';
 import Phone from '../FormComponents/Phone';
-import Map from '../FormComponents/Address';
+import Address from '../FormComponents/Address';
 import Email from '../FormComponents/Email';
 
 const Angebot = ({ formContent, setFormContent }) => {
@@ -69,12 +69,12 @@ const Angebot = ({ formContent, setFormContent }) => {
           setFormContent={setFormContent}
           identifier="firma"
         />
-        <Map
+        <Address
           label="Adresse"
-          placeholder="Bitte die Adresse angeben"
+          placeholder="Bitte Adresse angeben"
           formContent={formContent}
           setFormContent={setFormContent}
-          identifier="strasse"
+          identifier="adresse"
         />
 
         <Phone
