@@ -106,7 +106,7 @@ const Angebot = ({ formContent, setFormContent }) => {
         />
         <Number
           label="Nutzstromverbrauch in kWh"
-          defaultValue={2500}
+          placeholder="2.500"
           step={250}
           formContent={formContent}
           setFormContent={setFormContent}
