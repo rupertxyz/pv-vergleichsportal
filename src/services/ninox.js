@@ -45,6 +45,8 @@ export async function saveToNinox(data) {
             Arbeitspreis: data.arbeitspreis,
             'Grundgebühr pro Jahr': data.grundgebuehr,
             Kunde: customerResponseData[0].id,
+            Wärmepumpe: data.waermepumpe ? true : false,
+            'E-Auto in Planung': data.eAutoPlanung ? true : false,
           },
         },
       ]),
