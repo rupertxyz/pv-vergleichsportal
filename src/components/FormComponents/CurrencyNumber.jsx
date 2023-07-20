@@ -20,11 +20,13 @@ const CurrencyNumber = ({
   }, []);
 
   function formatNumber(num) {
-    return num + '€';
+    // format number with Intl.NumberFormat in € and german locale
+    return String(num).replace('.', ',') + ' €';
   }
 
   function parseNumber(stringValue) {
-    return stringValue.replace(/^\$/, '');
+    // remove '€' and replace ',' with '.'
+    return parseFloat(stringValue.replace('€', '').replace(',', '.'));
   }
 
   return (

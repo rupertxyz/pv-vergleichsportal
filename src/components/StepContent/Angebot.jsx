@@ -105,7 +105,7 @@ const Angebot = ({ formContent, setFormContent }) => {
           identifier="hausstromverbrauch"
         />
         <Number
-          label="Nutzstromverbrauch in kWh (Wärmepumpe, Wallbox etc.)"
+          label="Nutzstromverbrauch in kWh"
           defaultValue={2500}
           step={250}
           formContent={formContent}
@@ -113,8 +113,8 @@ const Angebot = ({ formContent, setFormContent }) => {
           identifier="nutzstromverbrauch"
         />
         <Number
-          label="Stromverbrauch E-Auto (in kWh pro Jahr)"
-          defaultValue={2500}
+          label="Stromverbrauch E-Auto in kWh"
+          placeholder="2.500"
           step={250}
           formContent={formContent}
           setFormContent={setFormContent}

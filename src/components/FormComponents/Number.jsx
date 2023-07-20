@@ -3,16 +3,17 @@ import NumericInput from 'react-numeric-input';
 
 const Number = ({
   label,
-  defaultValue,
+  defaultValue = null,
   step,
   formContent,
   setFormContent,
   identifier,
+  placeholder = '',
 }) => {
   const value = formContent[identifier] || '';
 
   useEffect(() => {
-    if (value === '') {
+    if (value === '' && defaultValue) {
       setFormContent((prevFormContent) => {
         return { ...prevFormContent, [identifier]: defaultValue };
       });
@@ -39,8 +40,10 @@ const Number = ({
             setFormContent({ ...formContent, [identifier]: num });
           }}
           step={step}
+          placeholder={placeholder}
           format={formatNumber}
           parse={parseNumber}
+          inputMode="decimal"
           style={{
             wrap: {
               display: 'block',
@@ -50,7 +53,7 @@ const Number = ({
               width: '100%',
               fontSize: '14px',
               lineHeight: '1.5rem',
-              borderRadius: '0.5rem',
+              borderRadius: '1rem',
             },
             'input:focus': {
               outline: '2px auto #4b5563',
