@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NumericInput from 'react-numeric-input';
+import { useActionData } from 'react-router-dom';
+import FormErrorMsg from '../FormErrorMsg';
 
 const Number = ({
   label,
@@ -11,6 +13,8 @@ const Number = ({
   placeholder = '',
 }) => {
   const value = formContent[identifier] || '';
+  const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
     if (value === '' && defaultValue) {
@@ -19,6 +23,18 @@ const Number = ({
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (value) {
+      setErrorMessage('');
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (data) {
+      setErrorMessage(data.messages[identifier] || '');
+    }
+  }, [data]);
 
   function formatNumber(num) {
     const number = new Intl.NumberFormat('de-DE').format(num);
@@ -36,6 +52,7 @@ const Number = ({
       <div className="relative mt-1 rounded-md shadow-sm">
         <NumericInput
           value={value}
+          name={identifier}
           onChange={(num) => {
             setFormContent({ ...formContent, [identifier]: num });
           }}
@@ -63,6 +80,7 @@ const Number = ({
           }}
         />
       </div>
+      {errorMessage && <FormErrorMsg />}
     </div>
   );
 };

@@ -1,3 +1,7 @@
+import { useState, useEffect } from 'react';
+import { useActionData } from 'react-router-dom';
+import FormErrorMsg from '../FormErrorMsg';
+
 export default function Input({
   label,
   placeholder,
@@ -6,6 +10,21 @@ export default function Input({
   identifier,
 }) {
   const value = formContent[identifier] || '';
+  const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState();
+
+  useEffect(() => {
+    if (value) {
+      setErrorMessage('');
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (data) {
+      setErrorMessage(data.messages[identifier] || '');
+    }
+  }, [data]);
+
   return (
     <div className="w-full sm:w-1/2 p-2">
       <label className="block text-sm font-medium leading-6 text-gray-900 truncate">
@@ -23,6 +42,7 @@ export default function Input({
           placeholder={placeholder}
         />
       </div>
+      {errorMessage && <FormErrorMsg />}
     </div>
   );
 }

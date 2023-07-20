@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const Checkbox = ({ label, name, formContent, setFormContent, identifier }) => {
-  const value = formContent[identifier] || '';
+const Checkbox = ({ label, formContent, setFormContent, identifier }) => {
+  const value = formContent[identifier] || false;
+
+  useEffect(() => {
+    if (!value) {
+      setFormContent((prevFormContent) => {
+        return { ...prevFormContent, [identifier]: false };
+      });
+    }
+  }, []);
 
   return (
     <div className="w-1/2 sm:w-1/4 p-2">
@@ -12,9 +20,10 @@ const Checkbox = ({ label, name, formContent, setFormContent, identifier }) => {
         <input
           type="checkbox"
           checked={value}
-          onChange={(e) =>
-            setFormContent({ ...formContent, [identifier]: e.target.checked })
-          }
+          name={identifier}
+          onChange={(e) => {
+            setFormContent({ ...formContent, [identifier]: e.target.checked });
+          }}
           className="block rounded-md p-4 text-gray-900 border-gray-600 focus:ring-0 focus:ring-offset-0 focus:ring-gray-600 sm:text-sm sm:leading-6"
         />
       </div>

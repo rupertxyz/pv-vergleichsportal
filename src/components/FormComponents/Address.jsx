@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './Address.css';
+import { useActionData } from 'react-router-dom';
 
 export default function Address({
   label,
@@ -12,6 +13,20 @@ export default function Address({
   const value = formContent[identifier] || '';
   const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false);
   const [autocomplete, setAutocomplete] = useState(null);
+  const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (value) {
+      setErrorMessage('');
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (data) {
+      setErrorMessage(data.messages[identifier] || '');
+    }
+  }, [data]);
 
   useEffect(() => {
     // Only load the script if it's not already loaded
@@ -33,7 +48,12 @@ export default function Address({
   }, []);
 
   useEffect(() => {
-    if (googleMapsLoaded && !autocomplete) {
+    if (
+      googleMapsLoaded &&
+      !autocomplete &&
+      window.google.maps &&
+      window.google.maps.places
+    ) {
       const newAutocomplete = new window.google.maps.places.Autocomplete(
         autocompleteInputRef.current,
         {
@@ -72,6 +92,9 @@ export default function Address({
           placeholder={placeholder}
         />
       </div>
+      {errorMessage && (
+        <p className="text-red-500 pt-2">Bitte Wert eintragen</p>
+      )}
     </div>
   );
 }

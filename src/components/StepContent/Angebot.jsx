@@ -138,14 +138,12 @@ const Angebot = ({ formContent, setFormContent }) => {
         />
         <Checkbox
           label="Wärmepumpe in Planung"
-          name="waermepumpe"
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="waermepumpe"
         />
         <Checkbox
           label="E-Auto in Planung"
-          name="eAutoPLanung"
           formContent={formContent}
           setFormContent={setFormContent}
           identifier="eAutoPlanung"

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useActionData } from 'react-router-dom';
+import FormErrorMsg from '../FormErrorMsg';
 
 export default function Input({
   label,
@@ -8,6 +10,8 @@ export default function Input({
   identifier,
 }) {
   const value = formContent[identifier] || '';
+  const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState();
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -22,7 +26,18 @@ export default function Input({
     }
 
     validateEmail(value);
+
+    if (value) {
+      setErrorMessage('');
+    }
   }, [value]);
+
+  useEffect(() => {
+    if (data) {
+      setErrorMessage(data.messages[identifier] || '');
+    }
+  }, [data]);
+
   return (
     <div className="w-full sm:w-1/2 p-2">
       <label className="block text-sm font-medium leading-6 text-gray-900 truncate">
@@ -41,6 +56,7 @@ export default function Input({
         />
       </div>
       {error && <div className="text-red-500 shadow-none">{error}</div>}
+      {errorMessage && <FormErrorMsg />}
     </div>
   );
 }

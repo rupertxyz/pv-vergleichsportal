@@ -1,3 +1,7 @@
+import React, { useState, useEffect } from 'react';
+import { useActionData } from 'react-router-dom';
+import FormErrorMsg from '../FormErrorMsg';
+
 export default function Select({
   label,
   options,
@@ -5,6 +9,21 @@ export default function Select({
   setFormContent,
   identifier,
 }) {
+  const value = formContent[identifier] || '';
+  const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState();
+  useEffect(() => {
+    if (value) {
+      setErrorMessage('');
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (data) {
+      setErrorMessage(data.messages[identifier] || '');
+    }
+  }, [data]);
+
   return (
     <div className="w-full sm:w-1/2 p-2">
       <label
@@ -16,9 +35,9 @@ export default function Select({
       <div className="relative mt-1 rounded-md shadow-sm">
         <select
           type="text"
-          name="price"
+          name={identifier}
           id="price"
-          value={formContent[identifier] || ''}
+          value={value}
           onChange={(e) =>
             setFormContent({ ...formContent, [identifier]: e.target.value })
           }
@@ -33,6 +52,7 @@ export default function Select({
             ))}
         </select>
       </div>
+      {errorMessage && <FormErrorMsg />}
     </div>
   );
 }

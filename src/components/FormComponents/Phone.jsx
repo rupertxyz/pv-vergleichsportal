@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useActionData } from 'react-router-dom';
+import FormErrorMsg from '../FormErrorMsg';
 
 export default function Phone({
   label,
@@ -8,6 +10,8 @@ export default function Phone({
   identifier,
 }) {
   const value = formContent[identifier] || '';
+  const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState();
   // const [error, setError] = useState('');
 
   // useEffect(() => {
@@ -29,6 +33,18 @@ export default function Phone({
 
   //   validatePhoneNumber(value);
   // }, [value]);
+
+  useEffect(() => {
+    if (value) {
+      setErrorMessage('');
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (data) {
+      setErrorMessage(data.messages[identifier] || '');
+    }
+  }, [data]);
 
   useEffect(() => {
     if (value === '') {
@@ -56,6 +72,7 @@ export default function Phone({
         />
       </div>
       {/* {error && <div className="text-red-500 shadow-none">{error}</div>} */}
+      {errorMessage && <FormErrorMsg />}
     </div>
   );
 }

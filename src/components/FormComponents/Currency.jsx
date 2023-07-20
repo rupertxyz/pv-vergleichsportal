@@ -31,7 +31,6 @@ const Currency = ({
           decimalScale={2}
           value={value}
           onValueChange={(value, name) => {
-            console.log(value);
             setFormContent({ ...formContent, [identifier]: value });
           }}
           intlConfig={{ locale: 'de-DE', currency: 'EUR' }}

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Datepicker from 'react-tailwindcss-datepicker';
+import { useActionData } from 'react-router-dom';
+import FormErrorMsg from '../FormErrorMsg';
 
 const DatePicker = ({ label, formContent, setFormContent, identifier }) => {
   const [value, setValue] = useState({
     startDate: null,
     endDate: null,
   });
+
+  const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleValueChange = (newValue) => {
     setValue(newValue);
@@ -45,6 +50,18 @@ const DatePicker = ({ label, formContent, setFormContent, identifier }) => {
     }
   }, [formContent[identifier]]);
 
+  useEffect(() => {
+    if (value) {
+      setErrorMessage('');
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (data) {
+      setErrorMessage(data.messages[identifier] || '');
+    }
+  }, [data]);
+
   return (
     <div className="w-full sm:w-1/2 p-2">
       <label
@@ -64,8 +81,10 @@ const DatePicker = ({ label, formContent, setFormContent, identifier }) => {
           readOnly={true}
           i18n="de"
           displayFormat="DD.MM.YYYY"
+          inputName={identifier}
         />
       </div>
+      {errorMessage && <FormErrorMsg />}
     </div>
   );
 };
