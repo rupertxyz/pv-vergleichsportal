@@ -16,7 +16,9 @@ async function saveNewClient({ request }) {
   // check if any of the values are empty strings and if so, add them as a key value pair with the value being: Form field "[INSERT NAME]" is empty.
   Object.entries(data).forEach(([key, value]) => {
     if (value === '' || value === '+49 ') {
-      errorMsg[key] = `Feld ${key} ist leer.`;
+      if (key !== 'titel') {
+        errorMsg[key] = `Feld ${key} ist leer.`;
+      }
     }
   });
 
