@@ -11,6 +11,7 @@ export default function Address({
   const autocompleteInputRef = useRef(null);
   const value = formContent[identifier] || '';
   const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false);
+  const [autocomplete, setAutocomplete] = useState(null);
 
   useEffect(() => {
     // Only load the script if it's not already loaded
@@ -32,8 +33,8 @@ export default function Address({
   }, []);
 
   useEffect(() => {
-    if (googleMapsLoaded) {
-      const autocomplete = new window.google.maps.places.Autocomplete(
+    if (googleMapsLoaded && !autocomplete) {
+      const newAutocomplete = new window.google.maps.places.Autocomplete(
         autocompleteInputRef.current,
         {
           componentRestrictions: { country: 'de' },
@@ -41,13 +42,15 @@ export default function Address({
         }
       );
 
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace();
+      newAutocomplete.addListener('place_changed', () => {
+        const place = newAutocomplete.getPlace();
         setFormContent((currentFormContent) => ({
           ...currentFormContent,
           [identifier]: place.formatted_address,
         }));
       });
+
+      setAutocomplete(newAutocomplete);
     }
   }, [googleMapsLoaded, formContent, identifier]); // Add googleMapsLoaded dependency
 
