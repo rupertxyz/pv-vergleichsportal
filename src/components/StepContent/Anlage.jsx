@@ -9,14 +9,22 @@ export default function Anlage() {
         Anlagenplanung
       </h1>
       <div className="flex flex-wrap -m-2">
-        <Checkbox label="Wärmepumpe in Planung" identifier="waermepumpe" />
-        <Checkbox label="E-Auto in Planung" identifier="eAutoPlanung" />
+        <Checkbox
+          label="Wärmepumpe in Planung"
+          identifier="waermepumpe"
+          smWidth={2}
+        />
+        <Checkbox
+          label="E-Auto in Planung"
+          identifier="eAutoPlanung"
+          smWidth={2}
+        />
         <Number
           label="Anzahl Module"
           placeholder="1"
           step={1}
           identifier="anzahlModule"
-          smWidth="1/4"
+          smWidth="1/2"
         />
         <Checkbox label="Sonderbelegung" identifier="sonderbelegung" />
         <Number
@@ -24,6 +32,7 @@ export default function Anlage() {
           placeholder="1"
           step={1}
           identifier="anzahlOptimierer"
+          smWidth="1/2"
         />
         <Number
           label="Benötigte kWp (ergibt sich aus Anzahl Module)"

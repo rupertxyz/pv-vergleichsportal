@@ -66,10 +66,26 @@ export default function Dach() {
           identifier="trapezblechStaerke"
           unitName="mm"
         />
-        <Checkbox label="Sandwichblech" identifier="sandwichblech" />
-        <Checkbox label="Ziegel geklammert" identifier="ziegelgeklammert" />
-        <Checkbox label="Ziegel gemörtelt" identifier="ziegelgemoertelt" />
-        <Checkbox label="Ziegelsanierung" identifier="ziegelsanierung" />
+        <Checkbox
+          label="Sandwichblech"
+          identifier="sandwichblech"
+          smWidth={2}
+        />
+        <Checkbox
+          label="Ziegel geklammert"
+          identifier="ziegelgeklammert"
+          smWidth={2}
+        />
+        <Checkbox
+          label="Ziegel gemörtelt"
+          identifier="ziegelgemoertelt"
+          smWidth={2}
+        />
+        <Checkbox
+          label="Ziegelsanierung"
+          identifier="ziegelsanierung"
+          smWidth={2}
+        />
       </div>
     </>
   );
