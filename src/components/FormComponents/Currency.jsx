@@ -1,13 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import CurrencyInput from 'react-currency-input-field';
+import { FormContext } from '../../NewClient';
 
-const Currency = ({
-  label,
-  defaultValue,
-  formContent,
-  setFormContent,
-  identifier,
-}) => {
+const Currency = ({ label, defaultValue, identifier }) => {
+  const { formContent, setFormContent } = useContext(FormContext);
+
   const value = formContent[identifier] || '';
 
   useEffect(() => {

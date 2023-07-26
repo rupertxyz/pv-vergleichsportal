@@ -1,14 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import './Address.css';
 import { useActionData } from 'react-router-dom';
+import { FormContext } from '../../NewClient';
 
-export default function Address({
-  label,
-  placeholder,
-  formContent,
-  setFormContent,
-  identifier,
-}) {
+export default function Address({ label, placeholder, identifier }) {
+  const { formContent, setFormContent } = useContext(FormContext);
   const autocompleteInputRef = useRef(null);
   const value = formContent[identifier] || '';
   const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false);

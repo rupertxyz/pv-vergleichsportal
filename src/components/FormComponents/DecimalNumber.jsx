@@ -4,7 +4,7 @@ import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
 import { FormContext } from '../../NewClient';
 
-const Number = ({
+export default function DecimalNumber({
   label,
   defaultValue = null,
   step,
@@ -12,7 +12,7 @@ const Number = ({
   placeholder = '',
   smWidth = '1/2',
   unitName = '',
-}) => {
+}) {
   const { formContent, setFormContent } = useContext(FormContext);
   const value =
     formContent[identifier] !== undefined &&
@@ -43,29 +43,13 @@ const Number = ({
     }
   }, [data]);
 
-  useEffect(() => {
-    const newBenoetigteKwp = formContent.anzahlModule * 430;
-    if (
-      formContent.anzahlModule != null &&
-      formContent.benoetigteKwp !== newBenoetigteKwp
-    ) {
-      setFormContent((prevFormContent) => {
-        return {
-          ...prevFormContent,
-          benoetigteKwp: newBenoetigteKwp,
-        };
-      });
-    }
-  }, [formContent]);
-
   function formatNumber(num) {
     const number = new Intl.NumberFormat('de-DE').format(num);
     return number + ' ' + unitName;
   }
 
   function parseNumber(num) {
-    const number = parseInt(num.replace(unitName, '').replace(/\./g, ''));
-    return number;
+    return num.replace(unitName, '').replace(',', '.');
   }
 
   return (
@@ -82,6 +66,7 @@ const Number = ({
           placeholder={placeholder}
           format={formatNumber}
           parse={parseNumber}
+          precision={2}
           inputMode="decimal"
           style={{
             wrap: {
@@ -105,6 +90,4 @@ const Number = ({
       {errorMessage && <FormErrorMsg />}
     </div>
   );
-};
-
-export default Number;
+}

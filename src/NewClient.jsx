@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, createContext } from 'react';
 import {
   Form,
   unstable_useBlocker as useBlocker,
@@ -8,6 +8,8 @@ import {
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
 import { saveToNinox } from './services/ninox';
+
+export const FormContext = createContext();
 
 async function saveNewClient({ request }) {
   const data = Object.fromEntries(await request.formData());
@@ -60,6 +62,7 @@ const NewClient = () => {
   const steps = [
     'Angebot',
     'Anlage',
+    'Dach',
     'Elektro',
     'Wirtschaftlichkeit',
     'Kostenvoranschlag',
@@ -73,6 +76,8 @@ const NewClient = () => {
   }, [currentStep]);
 
   const [formContent, setFormContent] = useState({});
+
+  console.log('form content', formContent);
 
   // check if formContent is an empty object or if all of the values are empty strings
   const isFormFilled =
@@ -92,26 +97,26 @@ const NewClient = () => {
   );
 
   return (
-    <Form
-      method="post"
-      action="/new-client"
-      className="w-full min-h-screen"
-      autoComplete="off"
-    >
-      <div className="p-6 min-h-screen">
-        <StepContent
+    <FormContext.Provider value={{ formContent, setFormContent }}>
+      <Form
+        method="post"
+        action="/new-client"
+        className="w-full min-h-screen"
+        autoComplete="off"
+      >
+        <div className="p-6 min-h-screen">
+          <StepContent
+            currentStep={currentStep}
+            setShouldPrompt={setShouldPrompt}
+          />
+        </div>
+        <NewClientNav
+          steps={steps}
           currentStep={currentStep}
-          formContent={formContent}
-          setFormContent={setFormContent}
-          setShouldPrompt={setShouldPrompt}
+          setCurrentStep={setCurrentStep}
         />
-      </div>
-      <NewClientNav
-        steps={steps}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-      />
-    </Form>
+      </Form>
+    </FormContext.Provider>
   );
 };
 

@@ -1,14 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
+import { FormContext } from '../../NewClient';
 
-export default function Input({
-  label,
-  placeholder,
-  formContent,
-  setFormContent,
-  identifier,
-}) {
+export default function Input({ label, placeholder, identifier }) {
+  const { formContent, setFormContent } = useContext(FormContext);
+
   const value = formContent[identifier] || '';
   const data = useActionData();
   const [errorMessage, setErrorMessage] = useState();

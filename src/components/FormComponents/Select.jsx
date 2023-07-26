@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
+import { FormContext } from '../../NewClient';
 
-export default function Select({
-  label,
-  options,
-  formContent,
-  setFormContent,
-  identifier,
-}) {
+export default function Select({ label, options, identifier }) {
+  const { formContent, setFormContent } = useContext(FormContext);
   const value = formContent[identifier] || '';
   const data = useActionData();
   const [errorMessage, setErrorMessage] = useState();

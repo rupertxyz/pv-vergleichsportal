@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { FormContext } from '../../NewClient';
 
-const Checkbox = ({ label, formContent, setFormContent, identifier }) => {
+const Checkbox = ({ label, identifier, smWidth = 4 }) => {
+  const { formContent, setFormContent } = useContext(FormContext);
   const value = formContent[identifier] || false;
 
   useEffect(() => {
@@ -12,7 +14,7 @@ const Checkbox = ({ label, formContent, setFormContent, identifier }) => {
   }, []);
 
   return (
-    <div className="w-1/2 sm:w-1/4 p-2">
+    <div className={`w-1/${smWidth} p-2`}>
       <label className="block text-sm font-medium leading-6 text-gray-900 truncate">
         {label}
       </label>

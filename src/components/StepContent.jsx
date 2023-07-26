@@ -2,33 +2,30 @@ import React from 'react';
 import Angebot from './StepContent/Angebot';
 import Anlage from './StepContent/Anlage';
 import Kostenvoranschlag from './StepContent/Kostenvoranschlag';
+import Dach from './StepContent/Dach';
+import Elektro from './StepContent/Elektro';
+import Wirtschaftlichkeit from './StepContent/Wirtschaftlichkeit';
 
-const StepContent = ({
-  currentStep,
-  formContent,
-  setFormContent,
-  setShouldPrompt,
-}) => {
+const StepContent = ({ currentStep, setShouldPrompt }) => {
   return (
     <div>
       <div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
-        <Angebot formContent={formContent} setFormContent={setFormContent} />
+        <Angebot />
       </div>
       <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
-        <Anlage formContent={formContent} setFormContent={setFormContent} />
+        <Anlage />
       </div>
       <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
-        Elektro content goes here
+        <Dach />
       </div>
       <div style={{ display: currentStep === 3 ? 'block' : 'none' }}>
-        Wirtschaftlichkeit content goes here
+        <Elektro />
       </div>
       <div style={{ display: currentStep === 4 ? 'block' : 'none' }}>
-        <Kostenvoranschlag
-          formContent={formContent}
-          setFormContent={setFormContent}
-          setShouldPrompt={setShouldPrompt}
-        />
+        <Wirtschaftlichkeit />
+      </div>
+      <div style={{ display: currentStep === 5 ? 'block' : 'none' }}>
+        <Kostenvoranschlag setShouldPrompt={setShouldPrompt} />
       </div>
     </div>
   );

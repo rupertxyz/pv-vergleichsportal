@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Datepicker from 'react-tailwindcss-datepicker';
 import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
+import { FormContext } from '../../NewClient';
 
-const DatePicker = ({ label, formContent, setFormContent, identifier }) => {
+const DatePicker = ({ label, identifier }) => {
+  const { formContent, setFormContent } = useContext(FormContext);
   const [value, setValue] = useState({
     startDate: null,
     endDate: null,

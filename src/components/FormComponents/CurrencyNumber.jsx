@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import NumericInput from 'react-numeric-input';
 import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
+import { FormContext } from '../../NewClient';
 
-const CurrencyNumber = ({
-  label,
-  defaultValue,
-  step,
-  formContent,
-  setFormContent,
-  identifier,
-}) => {
+const CurrencyNumber = ({ label, defaultValue, step, identifier }) => {
+  const { formContent, setFormContent } = useContext(FormContext);
   const value = formContent[identifier] || '';
   const data = useActionData();
 

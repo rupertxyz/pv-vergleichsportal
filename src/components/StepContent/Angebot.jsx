@@ -4,12 +4,11 @@ import Input from '../FormComponents/Input';
 import DatePicker from '../FormComponents/DatePicker';
 import Number from '../FormComponents/Number';
 import CurrencyNumber from '../FormComponents/CurrencyNumber';
-import Checkbox from '../FormComponents/Checkbox';
 import Phone from '../FormComponents/Phone';
 import Address from '../FormComponents/Address';
 import Email from '../FormComponents/Email';
 
-const Angebot = ({ formContent, setFormContent }) => {
+export default function Angebot() {
   return (
     <>
       <h1 className="text-xl font-semibold text-gray-800 mb-4">
@@ -19,16 +18,9 @@ const Angebot = ({ formContent, setFormContent }) => {
         <Input
           label="Lead-Quelle"
           placeholder="Bitte Lead-Quelle angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="leadSource"
         />
-        <DatePicker
-          label="Besuchstermin"
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="besuchstermin"
-        />
+        <DatePicker label="Besuchstermin" identifier="besuchstermin" />
       </div>
       <h1 className="text-xl font-semibold text-gray-800 mt-8 mb-4">
         Kundendaten erfassen
@@ -37,58 +29,42 @@ const Angebot = ({ formContent, setFormContent }) => {
         <Select
           label="Anrede"
           options={['Frau', 'Herr', 'Familie', 'Eheleute']}
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="anrede"
         />
         <Select
           label="Titel"
           options={['Dr.', 'Prof.', 'Prof. Dr.', 'Prof Dr. Dr.']}
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="titel"
         />
         <Input
           label="Vorname"
           placeholder="Bitte Vorname angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="vorname"
         />
         <Input
           label="Nachname"
           placeholder="Bitte Nachname angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="nachname"
         />
         <Input
           label="Firma"
           placeholder="Bitte Firma angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="firma"
         />
         <Address
           label="Adresse"
           placeholder="Bitte Adresse angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="adresse"
         />
 
         <Phone
           label="Telefon"
           placeholder="Bitte Telefonnummer mit +49 angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="telefon"
         />
         <Email
           label="E-Mail"
           placeholder="Bitte E-Mail angeben"
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="email"
         />
       </div>
@@ -97,60 +73,39 @@ const Angebot = ({ formContent, setFormContent }) => {
       </h1>
       <div className="flex flex-wrap -m-2">
         <Number
-          label="Hausstromverbrauch in kWh"
+          label="Hausstromverbrauch"
           defaultValue={5000}
           step={500}
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="hausstromverbrauch"
+          unitName="kWh"
         />
         <Number
-          label="Nutzstromverbrauch in kWh"
-          placeholder="2.500"
+          label="Nutzstromverbrauch"
+          placeholder="2.500 kWh"
           step={250}
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="nutzstromverbrauch"
+          unitName="kWh"
         />
         <Number
-          label="Stromverbrauch E-Auto in kWh"
-          placeholder="2.500"
+          label="Stromverbrauch E-Auto"
+          placeholder="2.500 kWh"
           step={250}
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="eAutoVerbrauch"
+          unitName="kWh"
         />
         <CurrencyNumber
           label="Arbeitspreis ct/kWh"
           defaultValue={0.4}
           step={0.05}
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="arbeitspreis"
         />
         <CurrencyNumber
           label="Grundgebühr pro Jahr"
           defaultValue={120}
           step={5}
-          formContent={formContent}
-          setFormContent={setFormContent}
           identifier="grundgebuehr"
-        />
-        <Checkbox
-          label="Wärmepumpe in Planung"
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="waermepumpe"
-        />
-        <Checkbox
-          label="E-Auto in Planung"
-          formContent={formContent}
-          setFormContent={setFormContent}
-          identifier="eAutoPlanung"
         />
       </div>
     </>
   );
-};
-
-export default Angebot;
+}
