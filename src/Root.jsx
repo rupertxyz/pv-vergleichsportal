@@ -5,6 +5,7 @@ import { SignedIn, SignedOut, SignIn, useUser } from '@clerk/clerk-react';
 
 const Root = () => {
   const userObject = useUser();
+  const userColor = userObject.user.publicMetadata.color;
 
   return (
     <>
@@ -13,7 +14,7 @@ const Root = () => {
           <div className="relative w-full max-w-3xl mx-auto bg-white rounded-md shadow-2xl">
             <Header {...{ userObject }} />
             <div className="flex flex-col sm:flex-row gap-4">
-              <Outlet context={{ userObject }} />
+              <Outlet context={{ userObject, userColor }} />
             </div>
           </div>
         </div>

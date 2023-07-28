@@ -26,7 +26,7 @@ const Checkbox = ({ label, identifier, smWidth = 4 }) => {
           onChange={(e) => {
             setFormContent({ ...formContent, [identifier]: e.target.checked });
           }}
-          className="block rounded-md p-4 text-gray-900 border-gray-600 focus:ring-0 focus:ring-offset-0 focus:ring-gray-600 sm:text-sm sm:leading-6"
+          className="block rounded-md p-4 text-gray-900 border-gray-600 focus:ring-0 focus:ring-offset-0 focus:ring-gray-600 sm:text-sm sm:leading-6 cursor-pointer"
         />
       </div>
     </div>
