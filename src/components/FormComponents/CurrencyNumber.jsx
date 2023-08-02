@@ -4,7 +4,13 @@ import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
 import { FormContext } from '../../NewClient';
 
-const CurrencyNumber = ({ label, defaultValue, step, identifier }) => {
+const CurrencyNumber = ({
+  label,
+  defaultValue,
+  step,
+  identifier,
+  smWidth = 'full',
+}) => {
   const { formContent, setFormContent } = useContext(FormContext);
   const value = formContent[identifier] || '';
   const data = useActionData();
@@ -42,7 +48,7 @@ const CurrencyNumber = ({ label, defaultValue, step, identifier }) => {
   }
 
   return (
-    <div className="w-full sm:w-1/2 p-2 truncate">
+    <div className={`w-${smWidth} sm:w-1/2 p-2 truncate`}>
       <label>{label}</label>
       <div className="relative mt-1 rounded-md shadow-sm">
         <NumericInput

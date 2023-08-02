@@ -99,12 +99,14 @@ export default function Kunde() {
           defaultValue={0.4}
           step={0.05}
           identifier="arbeitspreis"
+          smWidth="1/2"
         />
         <CurrencyNumber
           label="Grundgebühr pro Jahr"
           defaultValue={120}
           step={5}
           identifier="grundgebuehr"
+          smWidth="1/2"
         />
         <TextArea
           label="Notizen"
