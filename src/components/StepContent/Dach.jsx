@@ -13,14 +13,14 @@ export default function Dach() {
         <DecimalNumber
           label="Ziegeldeckmaß Länge"
           defaultValue={0.42}
-          step={0.5}
+          step={0.01}
           identifier="ziegeldeckmassLaenge"
           unitName="Meter"
         />
         <DecimalNumber
           label="Ziegeldeckmaß Breite"
           defaultValue={0.3}
-          step={0.5}
+          step={0.1}
           identifier="ziegeldeckmassBreite"
           unitName="Meter"
         />
@@ -31,38 +31,38 @@ export default function Dach() {
           identifier="dachneigung"
           unitName="Grad"
         />
-        <Number
+        <DecimalNumber
           label="Sparrenmaße Abstand"
           defaultValue={0.6}
-          step={5}
+          step={0.1}
           identifier="sparrenmassAbstand"
           unitName="cm"
         />
-        <Number
+        <DecimalNumber
           label="Sparrenmaße Breite"
           defaultValue={0.1}
-          step={5}
+          step={0.01}
           identifier="sparrenmassBreite"
           unitName="cm"
         />
-        <Number
+        <DecimalNumber
           label="Sparrenmaße Höhe"
           defaultValue={0.12}
-          step={5}
+          step={0.01}
           identifier="sparrenmassHoehe"
           unitName="cm"
         />
-        <Number
+        <DecimalNumber
           label="Aufsparrendämmung Stärke"
           defaultValue={0}
-          step={5}
+          step={0.01}
           identifier="aufsparrendaemmungStaerke"
           unitName="mm"
         />
         <Number
           label="Trapezblech Stärke"
           placeholder="20 mm"
-          step={5}
+          step={1}
           identifier="trapezblechStaerke"
           unitName="mm"
         />
