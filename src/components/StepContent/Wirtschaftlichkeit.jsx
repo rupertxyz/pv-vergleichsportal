@@ -71,24 +71,22 @@ const Wirtschaftlichkeit = () => {
 
   const [pvLeistung, setPvLeistung] = useState(0);
   const [verbrauch, setVerbrauch] = useState(0);
+  console.log('verbrauch', verbrauch);
   const [speicher, setSpeicher] = useState(0);
   const [kWp, setkWp] = useState(0);
 
   // Autarkie
   const [autarkie, setAutarkie] = useState(0);
+  console.log(autarkie);
 
   // Eigenverbrauch
   const [eigenverbrauch, setEigenverbrauch] = useState(0);
 
   // Cashflow
   const [pvSolar, setPvSolar] = useState(0);
-  console.log('pv solar', pvSolar);
   const [eegS, setEegS] = useState(0);
-  console.log('eeg s', eegS);
   const [eegCash, setEegCash] = useState(0);
-  console.log('eegCash', eegCash);
   const [einsparung, setEinsparung] = useState(0);
-  console.log('einsparung', einsparung);
   const [cashflow, setCashflow] = useState(0);
 
   // Kapitalrendite
@@ -101,11 +99,14 @@ const Wirtschaftlichkeit = () => {
       setPvLeistung(0);
     }
     if (formContent.hausstromverbrauch) {
-      setVerbrauch(
-        formContent.hausstromverbrauch +
-          formContent.nutzstromverbrauch +
-          formContent.eAutoVerbrauch
-      );
+      setVerbrauch(() => {
+        return (
+          formContent.hausstromverbrauch ||
+          0 +
+            (formContent.nutzstromverbrauch || 0) +
+            (formContent.eAutoVerbrauch || 0)
+        );
+      });
     } else {
       setVerbrauch(0);
     }
