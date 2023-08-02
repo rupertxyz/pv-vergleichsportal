@@ -100,7 +100,7 @@ const NewClient = () => {
         method="post"
         action="/new-client"
         className="flex flex-col"
-        style={{ minHeight: 'calc(100vh - 7rem)' }}
+        style={{ minHeight: 'calc(100vh - 7rem)', width: '100%' }}
         autoComplete="off"
       >
         <div className="p-6 flex-grow">
