@@ -25,7 +25,7 @@ const Header = ({ userObject }) => {
   return (
     <div>
       {location.pathname === '/' && (
-        <div className="absolute top-2 right-2 flex justify-end gap-1">
+        <div className="absolute top-1 right-1 flex justify-end gap-1">
           <button onClick={() => signOut()}>Sign out</button>
           <ArrowTopRightOnSquareIcon className="w-4" />
         </div>

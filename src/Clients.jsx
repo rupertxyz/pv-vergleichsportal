@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom';
 
 async function dataLoader() {
-  const data = await loadNinoxData();
-  return defer({ customers: data });
+  const data = loadNinoxData();
+  return defer({ customers: await data });
 }
 
 const Clients = () => {
