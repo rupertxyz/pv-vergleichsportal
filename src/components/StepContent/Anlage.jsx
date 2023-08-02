@@ -39,6 +39,7 @@ export default function Anlage() {
           placeholder="2.500"
           step={250}
           identifier="benoetigteKwp"
+          readOnly={true}
         />
         <Number
           label="Speichergröße"

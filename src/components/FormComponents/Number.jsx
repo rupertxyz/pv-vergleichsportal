@@ -12,6 +12,7 @@ const Number = ({
   placeholder = '',
   smWidth = '1/2',
   unitName = '',
+  readOnly = false,
 }) => {
   const { formContent, setFormContent } = useContext(FormContext);
   const value =
@@ -83,6 +84,7 @@ const Number = ({
           format={formatNumber}
           parse={parseNumber}
           inputMode="decimal"
+          readOnly={readOnly}
           style={{
             wrap: {
               display: 'block',
@@ -91,8 +93,6 @@ const Number = ({
               display: 'block',
               width: '100%',
               fontSize: '14px',
-              lineHeight: '1.5rem',
-              borderRadius: '1rem',
             },
             'input:focus': {
               outline: '2px auto #4b5563',
