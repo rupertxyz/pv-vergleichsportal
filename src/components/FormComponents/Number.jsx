@@ -60,7 +60,7 @@ const Number = ({
 
   function formatNumber(num) {
     const number = new Intl.NumberFormat('de-DE').format(num);
-    return number + ' ' + unitName;
+    return unitName ? number + ' ' + unitName : number;
   }
 
   function parseNumber(num) {

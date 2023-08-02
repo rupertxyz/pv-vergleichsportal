@@ -5,7 +5,6 @@ import { SignedIn, SignedOut, SignIn, useUser } from '@clerk/clerk-react';
 
 const Root = () => {
   const userObject = useUser();
-  console.log(userObject);
   const userColor = userObject?.user?.publicMetadata.color;
 
   return (
