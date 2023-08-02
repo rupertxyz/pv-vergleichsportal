@@ -12,6 +12,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 import { ClerkProvider } from '@clerk/clerk-react';
+import { deDe } from '@clerk/localizations';
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw 'Missing Publishable Key';
@@ -30,9 +31,9 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ClerkProvider publishableKey={clerkPubKey}>
+  <ClerkProvider publishableKey={clerkPubKey} localization={deDe}>
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <RouterProvider router={router} fallbackElement={<p>Loading</p>} />
     </React.StrictMode>
   </ClerkProvider>
 );

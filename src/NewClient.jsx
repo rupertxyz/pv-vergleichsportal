@@ -60,7 +60,7 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
 
 const NewClient = () => {
   const steps = [
-    'Angebot',
+    'Kunde',
     'Anlage',
     'Dach',
     'Elektro',
@@ -76,8 +76,6 @@ const NewClient = () => {
   }, [currentStep]);
 
   const [formContent, setFormContent] = useState({});
-
-  console.log('form content', formContent);
 
   // check if formContent is an empty object or if all of the values are empty strings
   const isFormFilled =
@@ -101,20 +99,24 @@ const NewClient = () => {
       <Form
         method="post"
         action="/new-client"
-        className="w-full min-h-screen"
+        className="flex flex-col"
+        style={{ minHeight: 'calc(100vh - 7rem)' }}
         autoComplete="off"
       >
-        <div className="p-6 min-h-screen">
+        <div className="p-6 flex-grow">
           <StepContent
+            key={currentStep}
             currentStep={currentStep}
             setShouldPrompt={setShouldPrompt}
           />
         </div>
-        <NewClientNav
-          steps={steps}
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
-        />
+        <div className="sticky bottom-0">
+          <NewClientNav
+            steps={steps}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+          />
+        </div>
       </Form>
     </FormContext.Provider>
   );

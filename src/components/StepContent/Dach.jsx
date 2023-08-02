@@ -12,14 +12,14 @@ export default function Dach() {
       <div className="flex flex-wrap -m-2">
         <DecimalNumber
           label="Ziegeldeckmaß Länge"
-          placeholder="1 Meter"
+          defaultValue={0.42}
           step={0.5}
           identifier="ziegeldeckmassLaenge"
           unitName="Meter"
         />
         <DecimalNumber
           label="Ziegeldeckmaß Breite"
-          placeholder="1 Meter"
+          defaultValue={0.3}
           step={0.5}
           identifier="ziegeldeckmassBreite"
           unitName="Meter"
@@ -33,28 +33,28 @@ export default function Dach() {
         />
         <Number
           label="Sparrenmaße Abstand"
-          placeholder="50 cm"
+          defaultValue={0.6}
           step={5}
           identifier="sparrenmassAbstand"
           unitName="cm"
         />
         <Number
           label="Sparrenmaße Breite"
-          placeholder="50 cm"
+          defaultValue={0.1}
           step={5}
           identifier="sparrenmassBreite"
           unitName="cm"
         />
         <Number
           label="Sparrenmaße Höhe"
-          placeholder="50 cm"
+          defaultValue={0.12}
           step={5}
           identifier="sparrenmassHoehe"
           unitName="cm"
         />
         <Number
           label="Aufsparrendämmung Stärke"
-          placeholder="20 mm"
+          defaultValue={0}
           step={5}
           identifier="aufsparrendaemmungStaerke"
           unitName="mm"
@@ -69,22 +69,22 @@ export default function Dach() {
         <Checkbox
           label="Sandwichblech"
           identifier="sandwichblech"
-          smWidth={2}
+          smWidth="w-1/2"
         />
         <Checkbox
           label="Ziegel geklammert"
           identifier="ziegelgeklammert"
-          smWidth={2}
+          smWidth="w-1/2"
         />
         <Checkbox
           label="Ziegel gemörtelt"
           identifier="ziegelgemoertelt"
-          smWidth={2}
+          smWidth="w-1/2"
         />
         <Checkbox
-          label="Ziegelsanierung"
+          label="Ziegelsanierung anbieten"
           identifier="ziegelsanierung"
-          smWidth={2}
+          smWidth="w-1/2"
         />
       </div>
     </>

@@ -2,6 +2,7 @@ import React from 'react';
 import Checkbox from '../FormComponents/Checkbox';
 import Number from '../FormComponents/Number';
 import Select from '../FormComponents/Select';
+import DecimalNumber from '../FormComponents/DecimalNumber';
 
 export default function Elektro() {
   return (
@@ -10,34 +11,35 @@ export default function Elektro() {
         Anlagenplanung
       </h1>
       <div className="flex flex-wrap -m-2">
-        {' '}
-        <Checkbox label="POT Schiene" identifier="potSchiene" smWidth={2} />
-        <Checkbox label="Staberder" identifier="stabErder" smWidth={2} />
-        <Checkbox label="Kaskade" identifier="kaskade" smWidth={2} />
+        <Checkbox label="POT Schiene" identifier="potSchiene" smWidth="w-1/2" />
+        <Checkbox label="Staberder" identifier="stabErder" smWidth="w-1/2" />
+        <Checkbox label="Kaskade" identifier="kaskade" smWidth="w-1/2" />
         <Checkbox
           label="Zählerzusammenlegung"
           identifier="zaehlerzusammenlegung"
-          smWidth={2}
+          smWidth="w-1/2"
         />
         <Checkbox
           label="Priv. Unterzähler"
           identifier="privUnterzaehler"
-          smWidth={2}
+          smWidth="w-1/2"
         />
         <Checkbox
           label="Unterverteiler"
           identifier="unterverteiler"
-          smWidth={2}
+          smWidth="w-1/2"
         />
         <Checkbox
           label="Zählerschrank tauschen"
           identifier="zaehlerschrankTauschen"
-          smWidth={2}
+          smWidth="w-1/2"
         />
-        <Checkbox
+        <Number
           label="Anzahl Zählerfelder"
+          placeholder="1"
+          step={1}
           identifier="anzahlZaehlerFelder"
-          smWidth={2}
+          smWidth="1/2"
         />
         <Select
           label="Standort Zählerschrank"
@@ -51,12 +53,29 @@ export default function Elektro() {
         />
         <Number
           label="Länge Kabelweg von HAK zu ZS"
-          placeholder="10 Meter"
+          defaultValue={5}
           step={1}
           identifier="laengeKabelwegHakZs"
           unitName="Meter"
         />
-        <Checkbox label="Nostrom planen" identifier="nostromPlanen" />
+        <DecimalNumber
+          label="OTP-Wert"
+          defaultValue={0.25}
+          step={0.25}
+          identifier="otpWert"
+          max={1.5}
+          min={0.25}
+        />
+        <Checkbox
+          label="Nostrom planen"
+          identifier="nostromPlanen"
+          smWidth="w-1/2"
+        />
+        <Checkbox
+          label="Internetanschluss (LAN) am Wechselrichterplatz vorhanden"
+          identifier="internetanschlussVorhanden"
+          smWidth="w-1/2"
+        />
       </div>
     </>
   );

@@ -7,8 +7,9 @@ import CurrencyNumber from '../FormComponents/CurrencyNumber';
 import Phone from '../FormComponents/Phone';
 import Address from '../FormComponents/Address';
 import Email from '../FormComponents/Email';
+import TextArea from '../FormComponents/TextArea';
 
-export default function Angebot() {
+export default function Kunde() {
   return (
     <>
       <h1 className="text-xl font-semibold text-gray-800 mb-4">
@@ -105,6 +106,12 @@ export default function Angebot() {
           step={5}
           identifier="grundgebuehr"
         />
+        <TextArea
+          label="Notizen"
+          placeholder="Bitte Notizen angeben"
+          identifier="bemerkungen"
+          smWidth="w-full"
+        ></TextArea>
       </div>
     </>
   );

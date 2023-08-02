@@ -4,6 +4,8 @@ import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
 import { FormContext } from '../../NewClient';
 
+const WATT_PRO_MODULE = 425;
+
 export default function DecimalNumber({
   label,
   defaultValue = null,
@@ -12,6 +14,9 @@ export default function DecimalNumber({
   placeholder = '',
   smWidth = '1/2',
   unitName = '',
+  readOnly = false,
+  max = 100000000000,
+  min = 0,
 }) {
   const { formContent, setFormContent } = useContext(FormContext);
   const value =
@@ -43,9 +48,25 @@ export default function DecimalNumber({
     }
   }, [data]);
 
+  useEffect(() => {
+    const newBenoetigteKwp =
+      formContent.anzahlModule * (WATT_PRO_MODULE / 1000);
+    if (
+      formContent.anzahlModule != null &&
+      formContent.benoetigteKwp !== newBenoetigteKwp
+    ) {
+      setFormContent((prevFormContent) => {
+        return {
+          ...prevFormContent,
+          benoetigteKwp: newBenoetigteKwp,
+        };
+      });
+    }
+  }, [formContent]);
+
   function formatNumber(num) {
     const number = new Intl.NumberFormat('de-DE').format(num);
-    return number + ' ' + unitName;
+    return unitName ? number + ' ' + unitName : number;
   }
 
   function parseNumber(num) {
@@ -68,6 +89,9 @@ export default function DecimalNumber({
           parse={parseNumber}
           precision={2}
           inputMode="decimal"
+          readOnly={readOnly}
+          max={max}
+          min={min}
           style={{
             wrap: {
               display: 'block',

@@ -66,7 +66,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
   };
 
   return (
-    <div className="sticky flex bottom-0 z-50 border-t safe-bottom bg-gray-50">
+    <div className="flex border-t safe-bottom bg-gray-50">
       {showScrollLeft && (
         <button
           onClick={(e) => {

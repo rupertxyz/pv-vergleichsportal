@@ -44,21 +44,6 @@ const Number = ({
     }
   }, [data]);
 
-  useEffect(() => {
-    const newBenoetigteKwp = formContent.anzahlModule * 430;
-    if (
-      formContent.anzahlModule != null &&
-      formContent.benoetigteKwp !== newBenoetigteKwp
-    ) {
-      setFormContent((prevFormContent) => {
-        return {
-          ...prevFormContent,
-          benoetigteKwp: newBenoetigteKwp,
-        };
-      });
-    }
-  }, [formContent]);
-
   function formatNumber(num) {
     const number = new Intl.NumberFormat('de-DE').format(num);
     return unitName ? number + ' ' + unitName : number;

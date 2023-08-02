@@ -1,6 +1,8 @@
 import React from 'react';
 import Checkbox from '../FormComponents/Checkbox';
 import Number from '../FormComponents/Number';
+import DecimalNumber from '../FormComponents/DecimalNumber';
+import Select from '../FormComponents/Select';
 
 export default function Anlage() {
   return (
@@ -12,76 +14,76 @@ export default function Anlage() {
         <Checkbox
           label="Wärmepumpe in Planung"
           identifier="waermepumpe"
-          smWidth={2}
+          smWidth="w-1/3"
         />
         <Checkbox
           label="E-Auto in Planung"
           identifier="eAutoPlanung"
-          smWidth={2}
+          smWidth="w-1/3"
+        />
+        <Checkbox
+          label="Sonderbelegung"
+          identifier="sonderbelegung"
+          smWidth="w-1/3"
         />
         <Number
           label="Anzahl Module"
-          placeholder="1"
+          defaultValue={24}
           step={1}
           identifier="anzahlModule"
           smWidth="1/2"
         />
-        <Checkbox label="Sonderbelegung" identifier="sonderbelegung" />
         <Number
           label="Anzahl Optimierer"
           placeholder="1"
           step={1}
           identifier="anzahlOptimierer"
           smWidth="1/2"
+          defaultValue={0}
         />
-        <Number
+        <DecimalNumber
           label="Benötigte kWp (ergibt sich aus Anzahl Module)"
           placeholder="2.500"
           step={250}
           identifier="benoetigteKwp"
           readOnly={true}
+          unitName="kWp"
         />
         <Number
           label="Speichergröße"
-          placeholder="2.500 kWh"
-          step={250}
+          placeholder="10 kWh"
+          step={5000}
           identifier="speicherGroesse"
           unitName="kWh"
         />
         <Number
           label="Anzahl Stockwerke"
-          placeholder="1 Stock"
+          defaultValue={2}
           step={1}
           identifier="anzahlStockwerke"
-          unitName="Stock"
+          unitName="Stockwerk(e)"
         />
         <Number
           label="Anzahl Dachseiten"
-          placeholder="1 Seite(n)"
+          defaultValue={2}
           step={1}
           identifier="anzahlDachseiten"
           unitName="Seite(n)"
         />
-        <Number
+        <Checkbox
           label="Glas-Glas-Module"
-          placeholder="1 Modul"
-          step={1}
           identifier="glasGlasModule"
-          unitName="Module"
+          smWidth="w-1/2"
         />
-        <Number
+        <Checkbox
           label="Full-Black-Module"
-          placeholder="1 Modul"
-          step={1}
           identifier="fullBlackModule"
-          unitName="Module"
+          smWidth="w-1/2"
         />
-        <Number
+        <Select
           label="Kabelweg"
-          placeholder="1 Meter"
-          step={1}
+          options={['Stillgelegter Kamin', 'Leerrohr', 'Leerrohr außen']}
           identifier="kabelweg"
-          unitName="Meter"
         />
       </div>
     </>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Angebot from './StepContent/Angebot';
+import Kunde from './StepContent/Kunde';
 import Anlage from './StepContent/Anlage';
 import Kostenvoranschlag from './StepContent/Kostenvoranschlag';
 import Dach from './StepContent/Dach';
@@ -10,7 +10,7 @@ const StepContent = ({ currentStep, setShouldPrompt }) => {
   return (
     <div>
       <div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
-        <Angebot />
+        <Kunde />
       </div>
       <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
         <Anlage />

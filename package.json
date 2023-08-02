@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@clerk/clerk-react": "^4.22.0",
+    "@clerk/localizations": "^1.24.1",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@react-google-maps/api": "^2.19.0",
@@ -16,7 +17,8 @@
     "react-numeric-input": "^2.2.3",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
-    "react-tailwindcss-datepicker": "^1.6.3"
+    "react-tailwindcss-datepicker": "^1.6.3",
+    "recharts": "^2.7.2"
   },
   "scripts": {
     "dev": "BROWSER=brave react-scripts start",
