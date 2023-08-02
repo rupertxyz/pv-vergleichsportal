@@ -43,7 +43,7 @@ const Header = ({ userObject }) => {
           }
         >
           <ArrowLeftIcon className="w-4" />
-          <span>Back</span>
+          <span>Zurück</span>
         </NavLink>
       )}
       <NavLink to="/" className="flex justify-center pt-4">
