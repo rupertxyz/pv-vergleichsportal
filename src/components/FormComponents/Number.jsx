@@ -13,6 +13,8 @@ const Number = ({
   smWidth = '1/2',
   unitName = '',
   readOnly = false,
+  max = 100000000000,
+  min = 0,
 }) => {
   const { formContent, setFormContent } = useContext(FormContext);
   const value =
@@ -70,6 +72,8 @@ const Number = ({
           parse={parseNumber}
           inputMode="decimal"
           readOnly={readOnly}
+          max={max}
+          min={min}
           style={{
             wrap: {
               display: 'block',

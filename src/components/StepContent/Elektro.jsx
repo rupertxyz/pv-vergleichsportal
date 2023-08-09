@@ -40,6 +40,7 @@ export default function Elektro() {
           step={1}
           identifier="anzahlZaehlerFelder"
           smWidth="1/2"
+          max={4}
         />
         <Select
           label="Standort Zählerschrank"

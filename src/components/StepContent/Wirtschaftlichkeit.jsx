@@ -127,8 +127,8 @@ const Wirtschaftlichkeit = () => {
       );
 
       if (rawAutarkieValue && rawEigenverbrauchValue) {
-        setAutarkie(parseFloat(rawAutarkieValue * 100).toFixed(0));
-        setEigenverbrauch(parseFloat(rawEigenverbrauchValue * 100).toFixed(0));
+        setAutarkie(rawAutarkieValue);
+        setEigenverbrauch(rawEigenverbrauchValue);
       } else {
         setAutarkie(0);
         setEigenverbrauch(0);
@@ -138,7 +138,7 @@ const Wirtschaftlichkeit = () => {
 
   useEffect(() => {
     if (verbrauch && autarkie) {
-      setPvSolar((verbrauch * autarkie) / 100);
+      setPvSolar(verbrauch * autarkie);
     }
   }, [verbrauch, autarkie]);
 
@@ -184,7 +184,7 @@ const Wirtschaftlichkeit = () => {
           >
             <h2 class="font-bold mb-2">Autarkie</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
-              {autarkie ? autarkie + '%' : '/'}
+              {autarkie ? (autarkie * 100).toFixed(0) + '%' : '/'}
             </p>
           </div>
         </div>
@@ -196,7 +196,7 @@ const Wirtschaftlichkeit = () => {
           >
             <h2 class="font-bold mb-2">Anlagennutzung</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
-              {eigenverbrauch ? eigenverbrauch + '%' : '/'}
+              {eigenverbrauch ? (eigenverbrauch * 100).toFixed(0) + '%' : '/'}
             </p>
           </div>
         </div>

@@ -1,32 +1,61 @@
 const PRICES = {
-  MODULE: 122, // replace with the real price
-  UK: 130, // replace with the real price
-  OPTIMIZER: 20, // replace with the real price
-  INVERTER: 1499,
+  MODULE: 122,
+  UK: 130,
+  OPTIMIZER: 50,
+  WECHSELRICHTER: [
+    { size: 3.825, price: 919, amount: 1 },
+    { size: 5.1, price: 961, amount: 1 },
+    { size: 5.95, price: 1012, amount: 1 },
+    { size: 7.9, price: 1133, amount: 1 },
+    { size: 10.3, price: 1340, amount: 1 },
+    { size: 12, price: 1507, amount: 1 },
+    { size: 16, price: 2266, amount: 2 },
+    { size: 20.5, price: 2680, amount: 2 },
+    { size: 26, price: 3014, amount: 2 },
+    { size: 30, price: 4020, amount: 3 },
+  ],
   BATTERY: [
-    { size: 5000, price: 4799 },
-    { size: 10000, price: 7099 },
-    { size: 15000, price: 9399 },
-    { size: 20000, price: 11699 },
+    { size: 5000, price: 3163 },
+    { size: 10000, price: 5463 },
+    { size: 15000, price: 7769 },
+    { size: 20000, price: 10069 },
   ],
-  MONTAGE: [
-    { count: 16, price: 80 },
-    { count: 24, price: 75 },
-    { price: 70 }, // default price
-  ],
+  MONTAGE: [{ count: 16, price: 80 }, { price: 75 }],
   SPS: 128,
   FREIGHT_COST: 246,
-  SCAFFOLDING_COST: 750,
+  GERUEST: 750,
   ELECTRO_FLAT_RATE: 350,
-  DISTANCE_FLAT_RATE: 150,
-  ELEKTROPAUSCHALE: 3440,
-  ZAEHLERSCHRANK: 2400, // replace with the real price
-  ADDITIONAL_AC_WIRING_COST: 1500, // replace with the real price
-  REPLACEMENT_POWER_SOLUTION: 1500,
+  ENTFERNUNGSPAUSCHALE: 150,
+  ELEKTROINSTALLATION: 3440,
+  ZAEHLERSCHRANK: [
+    {
+      anzahlFelder: 1,
+      price: 2400,
+    },
+    {
+      anzahlFelder: 2,
+      price: 2660,
+    },
+    {
+      anzahlFelder: 3,
+      price: 3050,
+    },
+    {
+      anzahlFelder: 4,
+      price: 3830,
+    },
+  ],
+  VERKABELUNG: [
+    { laenge: 5, price: 0 },
+    { laenge: 10, price: 500 },
+    { laenge: 15, price: 1000 },
+    { laenge: 25, price: 1500 },
+    { laenge: 30, price: 3000 },
+    { price: 6000 },
+  ],
+  NOTSTROM: 1500,
   SALES_INNER: 1500,
   SALES_OUTER: 1500,
-  ON_TOP_PROVISION: 100, // replace with the real price
-  VARIABLE_SALES: 100, // replace with the real price
   ELECTRO_ADDITIONAL_COMPONENTS: {
     POT_SCHIENE: 100,
     STABERDER: 400,
@@ -50,7 +79,14 @@ function optimiererPreis(amount) {
 }
 
 function wechselRichterPreis(kWp) {
-  return kWp <= 3825 ? PRICES.INVERTER : 0; // assuming 0 if not less or equal to 3825
+  let price = 0;
+  for (let item of PRICES.WECHSELRICHTER) {
+    if (kWp <= item.size) {
+      price = item.price * item.amount;
+      break;
+    }
+  }
+  return price;
 }
 
 function batterieSpeicherPreis(kWh) {
@@ -69,11 +105,12 @@ function montagePreis(amountOfModules) {
   let price = 0;
   for (let item of PRICES.MONTAGE) {
     if (!item.count || amountOfModules <= item.count) {
-      price = item.price;
+      price = item.price * amountOfModules;
       break;
     }
   }
-  return amountOfModules * price;
+  if (price < 1150) return 1150;
+  return price;
 }
 
 function spsPreis() {
@@ -84,25 +121,45 @@ function frachtKosten() {
   return PRICES.FREIGHT_COST;
 }
 
-function gerüstBisMesswandler(zaehlerschrankTauschen, ersatzStromLoesung) {
+function zaehlerSchrank(zaehlerschrankTauschen, anzahlZaehlerFelder) {
+  if (!zaehlerschrankTauschen || !anzahlZaehlerFelder) return 0;
+  let price = 0;
+  for (let item of PRICES.ZAEHLERSCHRANK) {
+    if (anzahlZaehlerFelder === item.anzahlFelder) {
+      price = item.price;
+      break;
+    }
+  }
+  return price;
+}
+
+function verkabelung(laenge) {
+  let price = 0;
+  for (let item of PRICES.VERKABELUNG) {
+    if (!item.laenge || laenge <= item.laenge) {
+      price = item.price;
+      break;
+    }
+  }
+  return price;
+}
+
+function gerüstBisMesswandler(ersatzStromLoesung) {
   return (
-    PRICES.SCAFFOLDING_COST +
+    PRICES.GERUEST +
     PRICES.ELECTRO_FLAT_RATE +
-    PRICES.DISTANCE_FLAT_RATE +
-    PRICES.ELEKTROPAUSCHALE +
-    (zaehlerschrankTauschen
-      ? PRICES.ZAEHLERSCHRANK + PRICES.ADDITIONAL_AC_WIRING_COST
-      : 0) +
-    (ersatzStromLoesung ? PRICES.REPLACEMENT_POWER_SOLUTION : 0)
+    PRICES.ENTFERNUNGSPAUSCHALE +
+    PRICES.ELEKTROINSTALLATION +
+    (ersatzStromLoesung ? PRICES.NOTSTROM : 0)
   );
 }
 
-function vertrieb() {
+function vertrieb(otpWert, benoetigteKwp) {
   return (
     PRICES.SALES_INNER +
     PRICES.SALES_OUTER +
-    PRICES.ON_TOP_PROVISION +
-    PRICES.VARIABLE_SALES
+    otpWert * 1000 +
+    benoetigteKwp * 50
   );
 }
 
@@ -138,11 +195,13 @@ export default function calculateKaufpreis(formContent) {
     montagePreis(formContent.anzahlModule) +
     spsPreis() +
     frachtKosten() +
-    gerüstBisMesswandler(
+    gerüstBisMesswandler(formContent.nostromPlanen) +
+    zaehlerSchrank(
       formContent.zaehlerschrankTauschen,
-      formContent.nostromPlanen
+      formContent.anzahlZaehlerFelder
     ) +
-    vertrieb() +
+    verkabelung(formContent.laengeKabelwegHakZs) +
+    vertrieb(formContent.otpWert, formContent.benoetigteKwp) +
     elektroZusatzKomponenten(
       formContent.potSchiene,
       formContent.stabErder,
