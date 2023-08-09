@@ -24,12 +24,13 @@ async function saveNewClient({ request }) {
     }
   });
 
+  /*
   // return if there are any empty fields
   if (Object.keys(errorMsg).length > 0) return { messages: errorMsg };
 
   // save to Ninox
   await saveToNinox(data);
-
+  */
   return redirect('/clients');
 }
 
