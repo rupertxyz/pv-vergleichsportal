@@ -55,7 +55,7 @@ function calculateSavings(
   inflationPercent
 ) {
   let totalSavings = 0;
-  for (let i = 0; i < CALCULATION_YEARS; i++) {
+  for (let i = 1; i <= CALCULATION_YEARS; i++) {
     totalSavings +=
       electricityGeneratedPerYear *
       Math.pow(1 - lossPercent, i) *
@@ -224,6 +224,16 @@ const Wirtschaftlichkeit = () => {
             </p>
           </div>
         </div>
+
+        {kaufPreis ? (
+          <p className="p-2 text-red-500 font-bold">
+            Kaufpreis:{' '}
+            {new Intl.NumberFormat('de', {
+              currency: 'EUR',
+              style: 'currency',
+            }).format(kaufPreis)}
+          </p>
+        ) : null}
 
         <div className="w-full mt-8">
           <CashflowGraph
