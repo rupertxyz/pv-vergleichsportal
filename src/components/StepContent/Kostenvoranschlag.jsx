@@ -50,22 +50,22 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   }, []);
 
   const handleSubmit = async () => {
-    // setShowCalculatorAnimation(true);
-    // await asyncTimeout(ASYNC_TIMEOUT);
-    // setAnimationColorOne('gray');
-    // setAnimationOneCheck(true);
-    // await asyncTimeout(ASYNC_TIMEOUT);
-    // setAnimationColorTwo('gray');
-    // setAnimationTwoCheck(true);
-    // await asyncTimeout(ASYNC_TIMEOUT);
-    // setAnimationColorThree('gray');
-    // setAnimationThreeCheck(true);
-    // await asyncTimeout(ASYNC_TIMEOUT);
-    // setAnimationColorFour('gray');
-    // setAnimationFourCheck(true);
-    // await asyncTimeout(ASYNC_TIMEOUT);
-    // setAnimationColorFive('gray');
-    // setAnimationFiveCheck(true);
+    setShowCalculatorAnimation(true);
+    await asyncTimeout(ASYNC_TIMEOUT);
+    setAnimationColorOne('gray');
+    setAnimationOneCheck(true);
+    await asyncTimeout(ASYNC_TIMEOUT);
+    setAnimationColorTwo('gray');
+    setAnimationTwoCheck(true);
+    await asyncTimeout(ASYNC_TIMEOUT);
+    setAnimationColorThree('gray');
+    setAnimationThreeCheck(true);
+    await asyncTimeout(ASYNC_TIMEOUT);
+    setAnimationColorFour('gray');
+    setAnimationFourCheck(true);
+    await asyncTimeout(ASYNC_TIMEOUT);
+    setAnimationColorFive('gray');
+    setAnimationFiveCheck(true);
     setTimeout(() => {
       fetcher.submit(
         { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
@@ -75,7 +75,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
         }
       );
       setShowCalculatorAnimation(false);
-    }, 1000);
+    }, 500);
   };
 
   return (
