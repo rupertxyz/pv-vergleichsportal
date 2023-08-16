@@ -22,7 +22,16 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const [showModal, setShowModal] = useState(false);
   const [savedSignature, setSavedSignature] = useState(null);
   const [showCalculatorAnimation, setShowCalculatorAnimation] = useState(false);
-  const [animationText, setAnimationText] = useState('');
+  const [animationColorOne, setAnimationColorOne] = useState('black');
+  const [animationColorTwo, setAnimationColorTwo] = useState('black');
+  const [animationColorThree, setAnimationColorThree] = useState('black');
+  const [animationColorFour, setAnimationColorFour] = useState('black');
+  const [animationColorFive, setAnimationColorFive] = useState('black');
+  const [animationOneCheck, setAnimationOneCheck] = useState(false);
+  const [animationTwoCheck, setAnimationTwoCheck] = useState(false);
+  const [animationThreeCheck, setAnimationThreeCheck] = useState(false);
+  const [animationFourCheck, setAnimationFourCheck] = useState(false);
+  const [animationFiveCheck, setAnimationFiveCheck] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -39,16 +48,21 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
 
   const handleSubmit = async () => {
     setShowCalculatorAnimation(true);
-    setAnimationText('Prüfe Preis- / Leistungsverhältnis...');
     await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationText('Prüfe Produktverfügbarkeit...');
+    setAnimationColorOne('gray');
+    setAnimationOneCheck(true);
     await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationText('Prüfe Qualitätsstandards...');
+    setAnimationColorTwo('gray');
+    setAnimationTwoCheck(true);
     await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationText('Prüfe Bestpreisangebot...');
+    setAnimationColorThree('gray');
+    setAnimationThreeCheck(true);
     await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationText('Prüfe Fertigstellungszeitraum...');
+    setAnimationColorFour('gray');
+    setAnimationFourCheck(true);
     await asyncTimeout(ASYNC_TIMEOUT);
+    setAnimationColorFive('gray');
+    setAnimationFiveCheck(true);
     setTimeout(() => {
       fetcher.submit(
         {},
@@ -58,17 +72,41 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
         }
       );
       setShowCalculatorAnimation(false);
-    }, 3000);
+    }, 1000);
   };
 
   return (
     <>
       {showCalculatorAnimation && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="w-96 h-96 flex justify-center items-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 m-2 rounded">
+          <div className="w-3/4 h-1/2 md:w-1/2 md:h-1/2 flex justify-center items-center bg-gradient-to-b from-gray-50 to-gray-100 m-2 rounded">
             <div className="flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center justify-center gap-8 text-2xl p-4">
-                <AnimationStep text={animationText} />
+              <div className="flex flex-col items-start justify-center gap-8 text-xs">
+                <AnimationStep
+                  text="Prüfe Preis- / Leistungsverhältnis"
+                  color={animationColorOne}
+                  check={animationOneCheck}
+                />
+                <AnimationStep
+                  text="Prüfe Produktverfügbarkeit..."
+                  color={animationColorTwo}
+                  check={animationTwoCheck}
+                />
+                <AnimationStep
+                  text="Prüfe Qualitätsstandards..."
+                  color={animationColorThree}
+                  check={animationThreeCheck}
+                />
+                <AnimationStep
+                  text="Prüfe Bestpreisangebot..."
+                  color={animationColorFour}
+                  check={animationFourCheck}
+                />
+                <AnimationStep
+                  text="Prüfe Fertigstellungszeitraum..."
+                  color={animationColorFive}
+                  check={animationFiveCheck}
+                />
               </div>
             </div>
           </div>
