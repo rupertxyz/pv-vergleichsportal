@@ -159,6 +159,7 @@ const Wirtschaftlichkeit = () => {
       const cashFlowReformat = new Intl.NumberFormat('de', {
         style: 'currency',
         currency: 'EUR',
+        maximumFractionDigits: 0,
       }).format(cashFlowValue);
       const kapitalRendite = cashFlowValue / kaufPreis / CALCULATION_YEARS;
       const kapitalRenditeReformat = new Intl.NumberFormat('de', {
