@@ -176,49 +176,49 @@ const Wirtschaftlichkeit = () => {
       <h1 className="text-xl font-semibold text-gray-800 mb-4">
         Wirtschaftlichkeit
       </h1>
-      <div class="flex flex-wrap -m-2">
-        <div class="w-1/2 md:w-1/2 p-2">
+      <div className="flex flex-wrap -m-2">
+        <div className="w-1/2 md:w-1/2 p-2">
           <div
-            class="flex flex-col justify-between p-4 border-2 rounded h-full"
+            className="flex flex-col justify-between p-4 border-2 rounded h-full"
             style={{ borderColor: userColor }}
           >
-            <h2 class="font-bold mb-2">Autarkie</h2>
+            <h2 className="font-bold mb-2">Autarkie</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
               {autarkie ? (autarkie * 100).toFixed(0) + '%' : '/'}
             </p>
           </div>
         </div>
 
-        <div class="w-1/2 md:w-1/2 p-2">
+        <div className="w-1/2 md:w-1/2 p-2">
           <div
-            class="flex flex-col justify-between p-4 border-2 rounded h-full"
+            className="flex flex-col justify-between p-4 border-2 rounded h-full"
             style={{ borderColor: userColor }}
           >
-            <h2 class="font-bold mb-2">Anlagennutzung</h2>
+            <h2 className="font-bold mb-2">Anlagennutzung</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
               {eigenverbrauch ? (eigenverbrauch * 100).toFixed(0) + '%' : '/'}
             </p>
           </div>
         </div>
 
-        <div class="w-1/2 md:w-1/2 p-2">
+        <div className="w-1/2 md:w-1/2 p-2">
           <div
-            class="flex flex-col justify-between p-4 border-2 rounded h-full"
+            className="flex flex-col justify-between p-4 border-2 rounded h-full"
             style={{ borderColor: userColor }}
           >
-            <h2 class="font-bold mb-2">Gesamt-Cashflow</h2>
+            <h2 className="font-bold mb-2">Gesamt-Cashflow</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
               {cashflow ? cashflow : '/'}
             </p>
           </div>
         </div>
 
-        <div class="w-1/2 md:w-1/2 p-2">
+        <div className="w-1/2 md:w-1/2 p-2">
           <div
-            class="flex flex-col justify-between p-4 border-2 rounded h-full"
+            className="flex flex-col justify-between p-4 border-2 rounded h-full"
             style={{ borderColor: userColor }}
           >
-            <h2 class="font-bold mb-2">Kapitalrendite p.a.</h2>
+            <h2 className="font-bold mb-2">Kapitalrendite p.a.</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
               {kapitalrendite ? kapitalrendite : '/'}
             </p>
