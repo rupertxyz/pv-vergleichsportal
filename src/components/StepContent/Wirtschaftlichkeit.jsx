@@ -69,7 +69,7 @@ function calculateSavings(
 // calculation EEG €: EEG-S * EEG-Umlage? * Jahre EEG (20)
 
 const Wirtschaftlichkeit = () => {
-  const { formContent } = useContext(FormContext);
+  const { formContent, setFormContent } = useContext(FormContext);
   const { userColor } = useOutletContext();
 
   const [pvLeistung, setPvLeistung] = useState(0);
@@ -244,6 +244,8 @@ const Wirtschaftlichkeit = () => {
             inflation={INFLATION_PERCENT}
             lossPercent={LOSS_PERCENT}
             costPerKwh={COST_PER_KWH}
+            formContent={formContent}
+            setFormContent={setFormContent}
           />
         </div>
       </div>

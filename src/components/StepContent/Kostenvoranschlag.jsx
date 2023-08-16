@@ -4,6 +4,7 @@ import SignatureModal from '../SignatureModal';
 import DatePicker from '../FormComponents/DatePicker';
 import { FormContext } from '../../NewClient';
 import AnimationStep from '../KVA/AnimationStep';
+import { useOutletContext } from 'react-router-dom';
 
 const ASYNC_TIMEOUT = 3000;
 
@@ -15,6 +16,8 @@ export const asyncTimeout = (ms) => {
 
 const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const { formContent, setFormContent } = useContext(FormContext);
+  const { userColor, userObject } = useOutletContext();
+
   const fetcher = useFetcher();
 
   const [errorMessages, setErrorMessages] = useState({});
@@ -41,31 +44,31 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
 
   // load saved signature from formContent if it exists
   useEffect(() => {
-    if (formContent.unterschrift) {
-      setSavedSignature(formContent.unterschrift);
+    if (formContent.signature) {
+      setSavedSignature(formContent.signature);
     }
   }, []);
 
   const handleSubmit = async () => {
-    setShowCalculatorAnimation(true);
-    await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationColorOne('gray');
-    setAnimationOneCheck(true);
-    await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationColorTwo('gray');
-    setAnimationTwoCheck(true);
-    await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationColorThree('gray');
-    setAnimationThreeCheck(true);
-    await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationColorFour('gray');
-    setAnimationFourCheck(true);
-    await asyncTimeout(ASYNC_TIMEOUT);
-    setAnimationColorFive('gray');
-    setAnimationFiveCheck(true);
+    // setShowCalculatorAnimation(true);
+    // await asyncTimeout(ASYNC_TIMEOUT);
+    // setAnimationColorOne('gray');
+    // setAnimationOneCheck(true);
+    // await asyncTimeout(ASYNC_TIMEOUT);
+    // setAnimationColorTwo('gray');
+    // setAnimationTwoCheck(true);
+    // await asyncTimeout(ASYNC_TIMEOUT);
+    // setAnimationColorThree('gray');
+    // setAnimationThreeCheck(true);
+    // await asyncTimeout(ASYNC_TIMEOUT);
+    // setAnimationColorFour('gray');
+    // setAnimationFourCheck(true);
+    // await asyncTimeout(ASYNC_TIMEOUT);
+    // setAnimationColorFive('gray');
+    // setAnimationFiveCheck(true);
     setTimeout(() => {
       fetcher.submit(
-        {},
+        { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
         {
           method: 'post',
           action: '/new-client',
@@ -175,7 +178,8 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
         )}
         <div className="w-full flex justify-end mt-4 p-2">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="text-white font-bold py-2 px-4 rounded opacity-80 hover:opacity-100"
+            style={{ backgroundColor: userColor }}
             onClick={(e) => {
               e.preventDefault();
               handleSubmit();

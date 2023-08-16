@@ -16,7 +16,7 @@ const SignatureModal = ({
         : sigPad.current.toDataURL();
       setSavedSignature(savedSignature);
       setFormContent((prevFormContent) => {
-        return { ...prevFormContent, unterschrift: savedSignature };
+        return { ...prevFormContent, signature: savedSignature };
       });
       setShowModal(false);
     }

@@ -47,7 +47,7 @@ const Header = ({ userObject }) => {
         </NavLink>
       )}
       <NavLink to="/" className="flex justify-center pt-4">
-        <img src={logo} />
+        <img src={logo} className="w-60" />
       </NavLink>
       <div className="flex justify-center text-sm text-center px-8">
         {subline}

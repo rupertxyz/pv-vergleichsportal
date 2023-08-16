@@ -11,6 +11,7 @@ import {
   Cell,
   Label,
 } from 'recharts';
+import { useCurrentPng } from 'recharts-to-png';
 
 function CashflowGraph({
   purchasePrice,
@@ -19,9 +20,12 @@ function CashflowGraph({
   inflation,
   lossPercent,
   costPerKwh,
+  formContent,
+  setFormContent,
 }) {
   const { userColor } = useOutletContext();
   const [activeIndex, setActiveIndex] = useState(null);
+  const [getPng, { ref, isLoading }] = useCurrentPng();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -78,6 +82,21 @@ function CashflowGraph({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    async function getChartImage() {
+      if (ref.current) {
+        const png = await getPng();
+        if (png && formContent.chart !== png) {
+          setFormContent((currentFormContent) => ({
+            ...currentFormContent,
+            chart: png,
+          }));
+        }
+      }
+    }
+    getChartImage();
+  }, [formContent]);
+
   return (
     <ResponsiveContainer width="100%" height={isMobile ? 300 : 500}>
       <BarChart
@@ -88,6 +107,7 @@ function CashflowGraph({
           left: isMobile ? 30 : 50,
           bottom: 5, // Increase left margin if needed
         }}
+        ref={ref}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis

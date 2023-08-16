@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
+import { useOutletContext } from 'react-router-dom';
 
 const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
   useEffect(() => {
@@ -25,7 +26,8 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
   const scrollContainer = useRef(null);
   const [showScrollLeft, setShowScrollLeft] = useState(false);
   const [showScrollRight, setShowScrollRight] = useState(false);
-  const timeoutRef = useRef(null); // Reference to store our timeout
+  const timeoutRef = useRef(null);
+  const { userColor } = useOutletContext();
 
   const checkScroll = () => {
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainer.current;
@@ -87,10 +89,9 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
           <div
             key={step}
             className={`flex-auto text-center text-sm p-4 cursor-pointer ${
-              index === currentStep
-                ? 'bg-red-500 text-white'
-                : 'bg-gray-50 text-black'
+              index === currentStep ? ' text-white' : 'bg-gray-50 text-black'
             }`}
+            style={index === currentStep ? { backgroundColor: userColor } : {}}
             onClick={() => setCurrentStep(index)}
           >
             {step}
