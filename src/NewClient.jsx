@@ -10,6 +10,7 @@ import {
   unstable_useBlocker as useBlocker,
   useBeforeUnload,
   redirect,
+  NavLink,
 } from 'react-router-dom';
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
@@ -45,7 +46,7 @@ async function writePdf(data) {
       method: 'post',
       headers: {
         'content-type': 'application/json',
-        'x-api-key': '977fd1d6-e07e-4b9f-a6a8-c9b190dac0a6',
+        'x-api-key': process.env.REACT_APP_DOCSAUTOMATOR_KEY,
       },
       body: JSON.stringify({
         docId: '64dcc7e4ff21743880c86f0e',
@@ -86,31 +87,31 @@ async function saveNewClient({ request }) {
   // return if there are any empty fields
   // if (Object.keys(errorMsg).length > 0) return { messages: errorMsg };
 
-  if (data.signature) {
-    const signatureDownloadUrl = await uploadFile('signature', data);
-    console.log('signatureDownloadUrl', signatureDownloadUrl);
-    data.signature = signatureDownloadUrl;
-  }
-  if (data.chart) {
-    const chartDownloadUrl = await uploadFile('chart', data);
-    console.log('chartDownloadUrl', chartDownloadUrl);
-    data.chart = chartDownloadUrl;
-  }
+  // if (data.signature) {
+  //   const signatureDownloadUrl = await uploadFile('signature', data);
+  //   console.log('signatureDownloadUrl', signatureDownloadUrl);
+  //   data.signature = signatureDownloadUrl;
+  // }
+  // if (data.chart) {
+  //   const chartDownloadUrl = await uploadFile('chart', data);
+  //   console.log('chartDownloadUrl', chartDownloadUrl);
+  //   data.chart = chartDownloadUrl;
+  // }
 
-  console.log('data', data);
+  // console.log('data', data);
 
-  const writePdfResult = await writePdf(data);
-  console.log('writePdfResult', writePdfResult);
+  // const writePdfResult = await writePdf(data);
+  // console.log('writePdfResult', writePdfResult);
 
-  if (writePdfResult?.pdfUrl) {
-    window.open(writePdfResult.pdfUrl, '_blank');
-  }
+  // if (writePdfResult?.pdfUrl) {
+  //   window.open(writePdfResult.pdfUrl, '_blank');
+  // }
 
   // save to Ninox
   // await saveToNinox(data);
 
-  // return redirect('/clients');
-  return {};
+  return redirect('/clients');
+  // return {};
 }
 
 function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
@@ -175,6 +176,8 @@ const NewClient = () => {
     }
   );
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
   return (
     <FormContext.Provider value={{ formContent, setFormContent }}>
       <Form
@@ -184,20 +187,47 @@ const NewClient = () => {
         style={{ minHeight: 'calc(100vh - 7rem)', width: '100%' }}
         autoComplete="off"
       >
-        <div className="p-6 flex-grow">
-          <StepContent
-            key={currentStep}
-            currentStep={currentStep}
-            setShouldPrompt={setShouldPrompt}
-          />
-        </div>
-        <div className="sticky bottom-0">
-          <NewClientNav
-            steps={steps}
-            currentStep={currentStep}
-            setCurrentStep={setCurrentStep}
-          />
-        </div>
+        {showSuccess ? (
+          <div className="flex min-h-full items-center justify-center">
+            <div className="flex flex-wrap -m-2">
+              <div className="w-1/2 md:w-1/2 p-2">
+                <a
+                  href="#"
+                  className="flex flex-col justify-center items-center p-4 border-2 rounded h-full"
+                >
+                  OPEN PDF
+                </a>
+              </div>
+              <div className="w-1/2 md:w-1/2 p-2">
+                {' '}
+                <NavLink
+                  to="/clients"
+                  className="flex flex-col justify-center items-center p-4 border-2 rounded h-full"
+                >
+                  SUCCESS
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="p-6 flex-grow">
+              <StepContent
+                key={currentStep}
+                currentStep={currentStep}
+                setShouldPrompt={setShouldPrompt}
+                setShowSuccess={setShowSuccess}
+              />
+            </div>
+            <div className="sticky bottom-0">
+              <NewClientNav
+                steps={steps}
+                currentStep={currentStep}
+                setCurrentStep={setCurrentStep}
+              />
+            </div>
+          </>
+        )}
       </Form>
     </FormContext.Provider>
   );

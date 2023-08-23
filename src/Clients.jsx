@@ -25,7 +25,7 @@ const Clients = () => {
         <Await resolve={customers} errorElement={<p>Error loading clients</p>}>
           {(customers) => (
             <div className="w-full overflow-x-auto pt-6">
-              <div style={gridStyle} className="divide-y divide-gray-200">
+              <div style={gridStyle} className="divide-y">
                 <div className="bg-gray-50 px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Anrede
                 </div>

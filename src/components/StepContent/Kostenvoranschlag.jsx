@@ -6,7 +6,7 @@ import { FormContext } from '../../NewClient';
 import AnimationStep from '../KVA/AnimationStep';
 import { useOutletContext } from 'react-router-dom';
 
-const ASYNC_TIMEOUT = 3000;
+const ASYNC_TIMEOUT = 500;
 
 export const asyncTimeout = (ms) => {
   return new Promise((resolve) => {
@@ -14,7 +14,7 @@ export const asyncTimeout = (ms) => {
   });
 };
 
-const Kostenvoranschlag = ({ setShouldPrompt }) => {
+const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
   const { formContent, setFormContent } = useContext(FormContext);
   const { userColor, userObject } = useOutletContext();
 
@@ -66,16 +66,18 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
     await asyncTimeout(ASYNC_TIMEOUT);
     setAnimationColorFive('gray');
     setAnimationFiveCheck(true);
-    setTimeout(() => {
-      fetcher.submit(
-        { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
-        {
-          method: 'post',
-          action: '/new-client',
-        }
-      );
-      setShowCalculatorAnimation(false);
-    }, 500);
+    setShowCalculatorAnimation(false);
+    setShowSuccess(true);
+    // setTimeout(() => {
+    //   fetcher.submit(
+    //     { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
+    //     {
+    //       method: 'post',
+    //       action: '/new-client',
+    //     }
+    //   );
+    //   setShowCalculatorAnimation(false);
+    // }, 500);
   };
 
   return (
@@ -115,81 +117,86 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
           </div>
         </div>
       )}
-      <h1 className="text-xl font-semibold text-gray-800 mb-4">
-        Kostenvoranschlag
-      </h1>
-      <div className="flex flex-wrap -m-2">
-        <DatePicker
-          label="Abschlusstermin"
-          identifier="abschlussTermin"
-          smWidth="w-1/2"
-        />
 
-        {/* {Object.entries(errorMessages).length > 0 && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-            <ul>
-              {errorMessages &&
-                Object.values(errorMessages).map((message, index) => (
-                  <li key={index}>{message}</li>
-                ))}
-            </ul>
-          </div>
-        )} */}
-
-        <div
-          onClick={() => setShowModal(true)}
-          className="relative w-full flex items-center justify-center h-48 border border-black cursor-pointer m-2"
-        >
-          {savedSignature ? (
-            <img
-              className="h-full w-full object-contain"
-              src={savedSignature}
-              alt="Saved Signature"
-              onClick={() => setShowModal(true)}
-            />
-          ) : (
-            <div className="absolute flex items-center justify-center gap-1 w-full h-full bg-gray-200">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                />
-              </svg>
-
-              <p className="text-center text-md font-bold">Signatur einfügen</p>
-            </div>
-          )}
-        </div>
-        {showModal && (
-          <SignatureModal
-            savedSignature={savedSignature}
-            setSavedSignature={setSavedSignature}
-            setShowModal={setShowModal}
-            setFormContent={setFormContent}
+      <>
+        <h1 className="text-xl font-semibold text-gray-800 mb-4">
+          Kostenvoranschlag
+        </h1>
+        <div className="flex flex-wrap -m-2">
+          <DatePicker
+            label="Abschlusstermin"
+            identifier="abschlussTermin"
+            smWidth="w-1/2"
           />
-        )}
-        <div className="w-full flex justify-end mt-4 p-2">
-          <button
-            className="text-white font-bold py-2 px-4 rounded opacity-80 hover:opacity-100"
-            style={{ backgroundColor: userColor }}
-            onClick={(e) => {
-              e.preventDefault();
-              handleSubmit();
-              setShouldPrompt(false);
-            }}
+
+          {/* {Object.entries(errorMessages).length > 0 && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+              <ul>
+                {errorMessages &&
+                  Object.values(errorMessages).map((message, index) => (
+                    <li key={index}>{message}</li>
+                  ))}
+              </ul>
+            </div>
+          )} */}
+
+          <div
+            onClick={() => setShowModal(true)}
+            className="relative w-full flex items-center justify-center h-48 border border-black cursor-pointer m-2"
           >
-            Abschicken
-          </button>
+            {savedSignature ? (
+              <img
+                className="h-full w-full object-contain"
+                src={savedSignature}
+                alt="Saved Signature"
+                onClick={() => setShowModal(true)}
+              />
+            ) : (
+              <div className="absolute flex items-center justify-center gap-1 w-full h-full bg-gray-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                  />
+                </svg>
+
+                <p className="text-center text-md font-bold">
+                  Signatur einfügen
+                </p>
+              </div>
+            )}
+          </div>
+          {showModal && (
+            <SignatureModal
+              savedSignature={savedSignature}
+              setSavedSignature={setSavedSignature}
+              setShowModal={setShowModal}
+              setFormContent={setFormContent}
+            />
+          )}
+          <div className="w-full flex justify-end mt-4 p-2">
+            <button
+              className="text-white font-bold py-2 px-4 rounded opacity-80 hover:opacity-100"
+              style={{ backgroundColor: userColor }}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmit();
+                setShouldPrompt(false);
+              }}
+            >
+              Abschicken
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     </>
   );
 };
