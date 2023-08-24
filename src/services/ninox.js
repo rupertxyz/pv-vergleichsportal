@@ -1,4 +1,5 @@
 export async function saveToNinox(data, recordId) {
+  console.log('data', data);
   // update client record in Ninox
   const clientUpdateResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,
@@ -56,7 +57,37 @@ export async function saveToNinox(data, recordId) {
           'Glas-Glas-Module': data.glasGlasModule ? true : false,
           'Full-Black-Module': data.fullBlackModule ? true : false,
           Kabelweg: data.kabelweg,
+          'Ziegeldeckmaß Länge': data.ziegeldeckmassLaenge,
+          'Ziegeldeckmaß Breite': data.ziegeldeckmassBreite,
+          'Dachneigung in Grad': data.dachneigung,
+          'Sparrenmaße Abstand': data.sparrenmassAbstand,
+          'Sparrenmaße Höhe': data.sparrenmassHoehe,
+          'Sparrenmaße Breite': data.sparrenmassBreite,
+          'Aufsparrendämmung Stärke': data.aufsparrendaemmungStaerke,
+          'Trapezblech Stärke': data.trapezblechStaerke,
+          Sandwichblech: data.sandwichblech ? true : false,
+          'Ziegel geklammert': data.ziegelgeklammert ? true : false,
+          'Ziegel gemörtelt': data.ziegelgemoertelt ? true : false,
+          'Ziegelsanierung anbieten': data.ziegelsanierung ? true : false,
+          'POT Schiene': data.potSchiene ? true : false,
+          Staberder: data.staberder ? true : false,
+          Kaskade: data.kaskade ? true : false,
+          Zählerzusammenlegung: data.zaehlerzusammenlegung ? true : false,
+          'Priv. Unterzähler': data.privUnterzaehler ? true : false,
+          Unterverteiler: data.unterverteiler ? true : false,
+          'Zählerschrank tauschen': data.zaehlerschrankTauschen ? true : false,
+          'Anzahl Zählerfelder': data.anzahlZaehlerFelder,
+          'Standort Zählersch rank': data.standortZaehlerschrank,
+          'Standort HAK': data.standortHak,
+          'Länge Kabelweg von HAK zu ZS': data.laengeKabelwegHakZs,
+          'OTP-Wert': data.otpWert,
+          'Notstrom planen': data.notstromPlanen ? true : false,
+          'Internetanschluss (LAN) am Wechselrichterplatz vorhanden':
+            data.internetanschlussVorhanden,
           'Angebot PDF': data.pdf,
+          Abschlusstermin: data.abschlussTermin
+            ? data.abschlussTermin.split('.').reverse().join('-')
+            : '',
         },
       }),
     }
@@ -214,6 +245,34 @@ export async function getNinoxRecord(recordId) {
     glasGlasModule: data['Glas-Glas-Module'] || false,
     fullBlackModule: data['Full-Black-Module'] || false,
     kabelweg: data['Kabelweg'] || '',
+    ziegeldeckmassLaenge: data['Ziegeldeckmaß Länge'] || '',
+    ziegeldeckmassBreite: data['Ziegeldeckmaß Breite'] || '',
+    dachneigung: data['Dachneigung in Grad'] || '',
+    sparrenmassAbstand: data['Sparrenmaße Abstand'] || '',
+    sparrenmassHoehe: data['Sparrenmaße Höhe'] || '',
+    sparrenmassBreite: data['Sparrenmaße Breite'] || '',
+    aufsparrendaemmungStaerke: data['Aufsparrendämmung Stärke'] || '',
+    trapezblechStaerke: data['Trapezblech Stärke'] || '',
+    sandwichblech: data['Sandwichblech'] || false,
+    ziegelgeklammert: data['Ziegel geklammert'] || false,
+    ziegelgemoertelt: data['Ziegel gemörtelt'] || false,
+    ziegelsanierung: data['Ziegelsanierung anbieten'] || false,
+    potSchiene: data['POT Schiene'] || false,
+    staberder: data['Staberder'] || false,
+    kaskade: data['Kaskade'] || false,
+    zaehlerzusammenlegung: data['Zählerzusammenlegung'] || false,
+    privUnterzaehler: data['Priv. Unterzähler'] || false,
+    unterverteiler: data['Unterverteiler'] || false,
+    zaehlerschrankTauschen: data['Zählerschrank tauschen'] || false,
+    anzahlZaehlerfelder: data['Anzahl Zählerfelder'] || '',
+    standortZaehlerschrank: data['Standort Zählerschrank'] || '',
+    standortHak: data['Standort HAK'] || '',
+    laengeKabelwegHakZs: data['Länge Kabelweg von HAK zu ZS'] || '',
+    otpWert: data['OTP-Wert'] || '',
+    notstromPlanen: data['Notstrom planen'] || false,
+    internetanschlussVorhanden:
+      data['Internetanschluss (LAN) am Wechselrichterplatz vorhanden'] || '',
+    abschlussTermin: data['Abschlusstermin'] || '',
   };
 }
 

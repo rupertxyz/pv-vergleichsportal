@@ -12,7 +12,7 @@ export default function Elektro() {
       </h1>
       <div className="flex flex-wrap -m-2">
         <Checkbox label="POT Schiene" identifier="potSchiene" smWidth="w-1/2" />
-        <Checkbox label="Staberder" identifier="stabErder" smWidth="w-1/2" />
+        <Checkbox label="Staberder" identifier="staberder" smWidth="w-1/2" />
         <Checkbox label="Kaskade" identifier="kaskade" smWidth="w-1/2" />
         <Checkbox
           label="Zählerzusammenlegung"
@@ -68,8 +68,8 @@ export default function Elektro() {
           min={0.25}
         />
         <Checkbox
-          label="Nostrom planen"
-          identifier="nostromPlanen"
+          label="Notstrom planen"
+          identifier="notstromPlanen"
           smWidth="w-1/2"
         />
         <Checkbox

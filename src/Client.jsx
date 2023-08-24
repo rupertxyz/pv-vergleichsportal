@@ -140,6 +140,7 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
 
 const Client = () => {
   const clientData = useLoaderData();
+  console.log('client data', clientData);
   const steps = [
     'Kunde',
     'Anlage',
@@ -173,8 +174,6 @@ const Client = () => {
     leadSource: '',
     besuchstermin: '',
     abschlussTermin: '',
-    signature: '',
-    chart: '',
     waermepumpe: '',
     eAutoPlanung: '',
     sonderbelegung: '',
@@ -189,7 +188,7 @@ const Client = () => {
     kabelweg: '',
   });
 
-  console.log(formContent);
+  console.log('form content', formContent);
 
   useEffect(() => {
     if (clientData) {
@@ -205,6 +204,18 @@ const Client = () => {
     );
 
   const [shouldPrompt, setShouldPrompt] = useState(true);
+
+  // detect changes in key and values between formContent and clientData
+  // if there are changes, set shouldPrompt to true
+  useEffect(() => {
+    if (clientData) {
+      const hasChanges = !Object.keys(clientData).every(
+        (key) => clientData[key] === formContent[key]
+      );
+      console.log('has changes', hasChanges);
+      setShouldPrompt(hasChanges);
+    }
+  }, [formContent]);
 
   usePrompt(
     'Das Formular ist noch nicht gespeichert. Zum Verlassen bitte bestätigen. Alle bisher eingegebenen Daten werden gelöscht.',
@@ -225,11 +236,7 @@ const Client = () => {
         autoComplete="off"
       >
         <div className="p-6 flex-grow h-full">
-          <StepContent
-            key={currentStep}
-            currentStep={currentStep}
-            setShouldPrompt={setShouldPrompt}
-          />
+          <StepContent key={currentStep} currentStep={currentStep} />
         </div>
         <div className="sticky bottom-0">
           <NewClientNav

@@ -16,7 +16,7 @@ const Clients = () => {
         <Form method="post" className="flex justify-end flex-1">
           <button
             type="submit"
-            className="text-white font-bold py-2 px-4 rounded opacity-80 hover:opacity-100"
+            className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80"
             style={{ backgroundColor: userColor }}
           >
             <i className="fa-light fa-plus"></i>

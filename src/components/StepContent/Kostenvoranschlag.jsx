@@ -19,7 +19,7 @@ export const asyncTimeout = (ms) => {
   });
 };
 
-const Kostenvoranschlag = ({ setShouldPrompt }) => {
+const Kostenvoranschlag = () => {
   const params = useParams();
   const { formContent, setFormContent } = useContext(FormContext);
   const { userColor, userObject, customers } = useOutletContext();
@@ -268,7 +268,6 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
               onClick={(e) => {
                 e.preventDefault();
                 handleSubmit();
-                setShouldPrompt(false);
               }}
             >
               {customer?.pdf ? (
@@ -282,7 +281,6 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
               onClick={(e) => {
                 e.preventDefault();
                 handleSaveOnly();
-                setShouldPrompt(false);
               }}
             >
               Speichern
