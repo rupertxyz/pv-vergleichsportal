@@ -1,90 +1,34 @@
 import React from 'react';
-import { loadNinoxData } from './services/ninox';
-import {
-  useOutletContext,
-  Await,
-  defer,
-  useLoaderData,
-} from 'react-router-dom';
-
-async function dataLoader() {
-  const data = loadNinoxData();
-  return defer({ customers: await data });
-}
+import { useOutletContext, Form } from 'react-router-dom';
+import ClientListItem from './components/Welcome/ClientListItem';
 
 const Clients = () => {
-  const { userColor } = useOutletContext();
-  const { customers } = useLoaderData();
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(5, 1fr)',
-  };
-  if (customers.length > 0) {
-    return (
-      <React.Suspense fallback={<p>Loading clients...</p>}>
-        <Await resolve={customers} errorElement={<p>Error loading clients</p>}>
-          {(customers) => (
-            <div className="w-full overflow-x-auto pt-6">
-              <div style={gridStyle} className="divide-y">
-                <div className="bg-gray-50 px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Anrede
-                </div>
-                <div className="bg-gray-50 px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Vorname
-                </div>
-                <div className="bg-gray-50 px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Nachname
-                </div>
-                <div className="bg-gray-50 px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Adresse
-                </div>
-                <div className="bg-gray-50 px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></div>
-                {customers.map((customer, index) => (
-                  <React.Fragment key={index}>
-                    <div
-                      key={`${index}-anrede`}
-                      className="px-5 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
-                      {customer.anrede}
-                    </div>
-                    <div
-                      key={`${index}-vorname`}
-                      className="px-5 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
-                      {customer.vorname}
-                    </div>
-                    <div
-                      key={`${index}-nachname`}
-                      className="px-5 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
-                      {customer.nachname}
-                    </div>
-                    <div
-                      key={`${index}-adresse`}
-                      className="px-5 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
-                      {customer.adresse}
-                    </div>
-                    <div
-                      key={`${index}-button`}
-                      className="px-5 py-4 whitespace-nowrap text-sm text-gray-500 flex justify-center items-center"
-                    >
-                      <button
-                        style={{ borderColor: userColor, color: userColor }}
-                        className="border px-2 py-1 text-center overflow-ellipsis overflow-hidden"
-                      >
-                        Öffnen
-                      </button>
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          )}
-        </Await>
-      </React.Suspense>
-    );
-  }
+  const { userColor, customers } = useOutletContext();
+  return (
+    <div
+      style={{ minHeight: 'calc(100vh - 7rem)', width: '100%' }}
+      className="w-full flex flex-col gap-4 py-8 px-4 lg:p-8"
+    >
+      <div className="flex items-center gap-2">
+        <div className="flex flex-1">
+          <h2 className="text-xl md:text-2xl font-bold">Alle Kunden</h2>
+        </div>
+        <Form method="post" className="flex justify-end flex-1">
+          <button
+            type="submit"
+            className="text-white font-bold py-2 px-4 rounded opacity-80 hover:opacity-100"
+            style={{ backgroundColor: userColor }}
+          >
+            <i className="fa-light fa-plus"></i>
+            <span>Neuer Kunde</span>
+          </button>
+        </Form>
+      </div>
+      {customers.map((customer, i) => (
+        <ClientListItem key={i} customer={customer} userColor={userColor} />
+      ))}
+    </div>
+  );
 };
 
-export { Clients, dataLoader };
+export default Clients;

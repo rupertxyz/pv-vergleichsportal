@@ -11,12 +11,14 @@ import {
   useBeforeUnload,
   redirect,
   NavLink,
+  useLoaderData,
 } from 'react-router-dom';
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
-import { saveToNinox } from './services/ninox';
+import { saveToNinox, getNinoxRecord } from './services/ninox';
 import { storage } from './config/firebase';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { deleteClient } from './services/ninox';
 
 export const FormContext = createContext();
 
@@ -40,7 +42,6 @@ async function uploadFile(type, data) {
 }
 
 async function writePdf(data) {
-  console.log('logo', data.logo);
   try {
     const res = await fetch('https://api.docsautomator.co/api/createDocument', {
       method: 'post',
@@ -73,7 +74,6 @@ async function writePdf(data) {
 
 async function saveNewClient({ request }) {
   const data = Object.fromEntries(await request.formData());
-  console.log('data', data);
   let errorMsg = {};
   // check if any of the values are empty strings and if so, add them as a key value pair with the value being: Form field "[INSERT NAME]" is empty.
   Object.entries(data).forEach(([key, value]) => {
@@ -107,11 +107,21 @@ async function saveNewClient({ request }) {
   //   window.open(writePdfResult.pdfUrl, '_blank');
   // }
 
-  // save to Ninox
-  // await saveToNinox(data);
-
   return redirect('/clients');
   // return {};
+}
+
+async function getRecordData({ params }) {
+  return await getNinoxRecord(params.id);
+}
+
+async function clientActions({ request, params }) {
+  if (request.method === 'PUT') {
+  }
+  if (request.method === 'DELETE') {
+    await deleteClient(params.id);
+    return redirect('/');
+  }
 }
 
 function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
@@ -139,7 +149,26 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
   );
 }
 
-const NewClient = () => {
+function objectsAreEqual(obj1, obj2) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  // Ensure they have the same number of keys
+  if (keys1.length !== keys2.length) return false;
+
+  // Check if all keys and values match
+  for (let key of keys1) {
+    if (obj1[key] !== obj2[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+const Client = () => {
+  const clientData = useLoaderData();
+
   const steps = [
     'Kunde',
     'Anlage',
@@ -156,8 +185,53 @@ const NewClient = () => {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
-  const [formContent, setFormContent] = useState({});
-  console.log(formContent);
+  const [formContent, setFormContent] = useState({
+    anrede: '',
+    titel: '',
+    vorname: '',
+    nachname: '',
+    firma: '',
+    adresse: '',
+    telefon: '',
+    email: '',
+    leadSource: '',
+    besuchstermin: '',
+    abschlussTermin: '',
+    signature: '',
+    chart: '',
+    waermepumpe: '',
+    eAutoPlanung: '',
+    sonderbelegung: '',
+    anzahlModule: 24,
+    anzahlOptimierer: 0,
+    benoetigteKwp: '',
+    speicherGroesse: '',
+    anzahlStockwerke: 2,
+    anzahlDachseiten: 2,
+    glasGlasModule: '',
+    fullBlackModule: '',
+    kabelweg: '',
+  });
+  console.log('form content', formContent);
+
+  useEffect(() => {
+    if (clientData) {
+      console.log(formContent);
+      console.log(clientData);
+      setFormContent({ ...formContent, ...clientData });
+    }
+  }, [clientData]);
+
+  const [dataChanges, setDataChanges] = useState(false);
+  console.log('data changes', dataChanges);
+
+  useEffect(() => {
+    if (!objectsAreEqual(formContent, clientData)) {
+      setDataChanges(true);
+    } else {
+      setDataChanges(false);
+    }
+  }, [clientData, formContent]);
 
   // check if formContent is an empty object or if all of the values are empty strings
   const isFormFilled =
@@ -233,4 +307,4 @@ const NewClient = () => {
   );
 };
 
-export { NewClient, saveNewClient };
+export { Client, saveNewClient, getRecordData, clientActions };

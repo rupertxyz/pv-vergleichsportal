@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useActionData, useFetcher } from 'react-router-dom';
+import { useActionData, useFetcher, useParams } from 'react-router-dom';
 import SignatureModal from '../SignatureModal';
 import DatePicker from '../FormComponents/DatePicker';
-import { FormContext } from '../../NewClient';
+import { FormContext } from '../../Client';
 import AnimationStep from '../KVA/AnimationStep';
 import { useOutletContext } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ export const asyncTimeout = (ms) => {
 };
 
 const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
+  const params = useParams();
   const { formContent, setFormContent } = useContext(FormContext);
   const { userColor, userObject } = useOutletContext();
 
@@ -68,16 +69,16 @@ const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
     setAnimationFiveCheck(true);
     setShowCalculatorAnimation(false);
     setShowSuccess(true);
-    // setTimeout(() => {
-    //   fetcher.submit(
-    //     { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
-    //     {
-    //       method: 'post',
-    //       action: '/new-client',
-    //     }
-    //   );
-    //   setShowCalculatorAnimation(false);
-    // }, 500);
+    setTimeout(() => {
+      fetcher.submit(
+        { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
+        {
+          method: 'post',
+          action: `/clients/${params.id}`,
+        }
+      );
+      setShowCalculatorAnimation(false);
+    }, 500);
   };
 
   return (

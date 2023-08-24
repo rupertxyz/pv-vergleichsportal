@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { FormContext } from '../../NewClient';
+import { FormContext } from '../../Client';
 
 const Checkbox = ({ label, identifier, smWidth = 'w-full' }) => {
   const { formContent, setFormContent } = useContext(FormContext);
