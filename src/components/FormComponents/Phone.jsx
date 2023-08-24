@@ -8,27 +8,6 @@ export default function Phone({ label, placeholder, identifier }) {
   const value = formContent[identifier] || '';
   const data = useActionData();
   const [errorMessage, setErrorMessage] = useState();
-  // const [error, setError] = useState('');
-
-  // useEffect(() => {
-  //   function validatePhoneNumber(phoneNumber) {
-  //     // Only display an error if the input doesn't start with "+49"
-  //     // or if something other than a space is typed after "+49 " and it's not a number greater than zero.
-  //     if (value !== '' && !value.startsWith('+49') && value.length > 3) {
-  //       setError('Bitte Nummer mit +49 eingeben');
-  //       return;
-  //     }
-  //     // If the input starts with "+49" and is followed by a 0 or a space and a 0, give error
-  //     if (value.startsWith('+49 0') || value.startsWith('+490')) {
-  //       setError('Bitte Nummer mit +49 eingeben');
-  //       return;
-  //     }
-  //     setError('');
-  //     return;
-  //   }
-
-  //   validatePhoneNumber(value);
-  // }, [value]);
 
   useEffect(() => {
     if (value) {

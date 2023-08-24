@@ -6,7 +6,6 @@ import { FormContext } from '../../Client';
 
 const Number = ({
   label,
-  defaultValue = null,
   step,
   identifier,
   placeholder = '',
@@ -25,14 +24,6 @@ const Number = ({
       : '';
   const data = useActionData();
   const [errorMessage, setErrorMessage] = useState();
-
-  useEffect(() => {
-    if (value === '' && defaultValue != null) {
-      setFormContent((prevFormContent) => {
-        return { ...prevFormContent, [identifier]: defaultValue };
-      });
-    }
-  }, []);
 
   useEffect(() => {
     if (value) {

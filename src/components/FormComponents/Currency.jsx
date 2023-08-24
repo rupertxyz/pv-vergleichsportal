@@ -1,19 +1,11 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 import { FormContext } from '../../NewClient';
 
-const Currency = ({ label, defaultValue, identifier }) => {
+const Currency = ({ label, identifier }) => {
   const { formContent, setFormContent } = useContext(FormContext);
 
   const value = formContent[identifier] || '';
-
-  useEffect(() => {
-    if (value === '') {
-      setFormContent((prevFormContent) => {
-        return { ...prevFormContent, [identifier]: defaultValue };
-      });
-    }
-  }, []);
 
   return (
     <div className="w-full sm:w-1/2 p-2">

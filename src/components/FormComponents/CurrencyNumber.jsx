@@ -4,38 +4,10 @@ import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
 import { FormContext } from '../../Client';
 
-const CurrencyNumber = ({
-  label,
-  defaultValue,
-  step,
-  identifier,
-  smWidth = 'full',
-}) => {
+const CurrencyNumber = ({ label, step, identifier, smWidth = 'full' }) => {
   const { formContent, setFormContent } = useContext(FormContext);
   const value = formContent[identifier] || '';
   const data = useActionData();
-
-  const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    if (value) {
-      setErrorMessage('');
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (data) {
-      setErrorMessage(data.messages[identifier] || '');
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (value === '') {
-      setFormContent((prevFormContent) => {
-        return { ...prevFormContent, [identifier]: defaultValue };
-      });
-    }
-  }, []);
 
   function formatNumber(num) {
     // format number with Intl.NumberFormat in € and german locale
@@ -80,7 +52,6 @@ const CurrencyNumber = ({
           }}
         />
       </div>
-      {errorMessage && <FormErrorMsg />}
     </div>
   );
 };

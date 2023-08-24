@@ -21,7 +21,7 @@ const ClientListItem = ({ customer }) => {
             </div>
           </div>
           <div className="lg:order-3 flex gap-2">
-            <div className="flex flex-1 gap-4 items-center justify-end">
+            <div className="flex flex-1 gap-1 items-center justify-end">
               {customer?.pdf ? (
                 <button
                   onClick={(e) => {
@@ -43,7 +43,7 @@ const ClientListItem = ({ customer }) => {
                 onClick={async (e) => {
                   e.preventDefault();
                   const confirm = window.confirm(
-                    'Are you sure you want to delete this client?'
+                    'Sind Sie sicher, dass Sie diesen Kunden löschen möchten?'
                   );
                   if (confirm) {
                     fetcher.submit(

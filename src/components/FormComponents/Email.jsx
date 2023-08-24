@@ -11,7 +11,7 @@ export default function Input({ label, placeholder, identifier }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    function validateEmail(email) {
+    function validateEmail() {
       // display error if email is not empty and does not contain @
       if (value !== '' && !value.includes('@')) {
         setError('Bitte gültige E-Mail-Adresse eingeben');

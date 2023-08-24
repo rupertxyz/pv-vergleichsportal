@@ -12,7 +12,6 @@ const DatePicker = ({ label, identifier }) => {
   });
 
   const data = useActionData();
-  const [errorMessage, setErrorMessage] = useState();
 
   const handleValueChange = (newValue) => {
     setValue(newValue);
@@ -21,24 +20,6 @@ const DatePicker = ({ label, identifier }) => {
       [identifier]: newValue.startDate || '',
     });
   };
-
-  // useEffect(() => {
-  //   let startDate;
-  //   let endDate;
-
-  //   if (formContent[identifier]) {
-  //     startDate = new Date(formContent[identifier]);
-  //     endDate = new Date(formContent[identifier]);
-  //   } else {
-  //     startDate = new Date();
-  //     endDate = new Date();
-  //   }
-
-  //   setValue({
-  //     startDate,
-  //     endDate,
-  //   });
-  // }, [formContent[identifier]]);
 
   useEffect(() => {
     if (formContent[identifier]) {
@@ -51,18 +32,6 @@ const DatePicker = ({ label, identifier }) => {
       });
     }
   }, [formContent[identifier]]);
-
-  useEffect(() => {
-    if (value) {
-      setErrorMessage('');
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (data) {
-      setErrorMessage(data.messages[identifier] || '');
-    }
-  }, [data]);
 
   return (
     <div className="w-full sm:w-1/2 p-2">
@@ -86,7 +55,6 @@ const DatePicker = ({ label, identifier }) => {
           inputName={identifier}
         />
       </div>
-      {errorMessage && <FormErrorMsg />}
     </div>
   );
 };

@@ -54,14 +54,12 @@ export default function Elektro() {
         />
         <Number
           label="Länge Kabelweg von HAK zu ZS"
-          defaultValue={5}
           step={1}
           identifier="laengeKabelwegHakZs"
           unitName="Meter"
         />
         <DecimalNumber
           label="OTP-Wert"
-          defaultValue={0.25}
           step={0.25}
           identifier="otpWert"
           max={1.5}

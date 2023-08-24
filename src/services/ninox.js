@@ -1,5 +1,4 @@
 export async function saveToNinox(data, recordId) {
-  console.log('data', data);
   // update client record in Ninox
   const clientUpdateResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,

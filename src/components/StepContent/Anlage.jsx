@@ -28,7 +28,6 @@ export default function Anlage() {
         />
         <Number
           label="Anzahl Module"
-          defaultValue={24}
           step={1}
           identifier="anzahlModule"
           smWidth="1/2"
@@ -57,14 +56,12 @@ export default function Anlage() {
         />
         <Number
           label="Anzahl Stockwerke"
-          defaultValue={2}
           step={1}
           identifier="anzahlStockwerke"
           unitName="Stockwerk(e)"
         />
         <Number
           label="Anzahl Dachseiten"
-          defaultValue={2}
           step={1}
           identifier="anzahlDachseiten"
           unitName="Seite(n)"

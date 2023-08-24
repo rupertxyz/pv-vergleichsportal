@@ -75,7 +75,6 @@ export default function Kunde() {
       <div className="flex flex-wrap -m-2">
         <Number
           label="Hausstromverbrauch"
-          defaultValue={5000}
           step={500}
           identifier="hausstromverbrauch"
           unitName="kWh"
@@ -96,14 +95,12 @@ export default function Kunde() {
         />
         <CurrencyNumber
           label="Arbeitspreis ct/kWh"
-          defaultValue={0.4}
           step={0.05}
           identifier="arbeitspreis"
           smWidth="1/2"
         />
         <CurrencyNumber
           label="Grundgebühr pro Jahr"
-          defaultValue={120}
           step={5}
           identifier="grundgebuehr"
           smWidth="1/2"

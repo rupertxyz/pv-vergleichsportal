@@ -140,7 +140,6 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
 
 const Client = () => {
   const clientData = useLoaderData();
-  console.log('client data', clientData);
   const steps = [
     'Kunde',
     'Anlage',
@@ -166,11 +165,11 @@ const Client = () => {
     adresse: '',
     telefon: '',
     email: '',
-    hausstromverbrauch: null,
+    hausstromverbrauch: 5000,
     nutzstromverbrauch: null,
     eAutoVerbrauch: null,
-    arbeitspreis: null,
-    grundgebuehr: 50,
+    arbeitspreis: 0.4,
+    grundgebuehr: 120,
     leadSource: '',
     besuchstermin: '',
     abschlussTermin: '',
@@ -186,13 +185,28 @@ const Client = () => {
     glasGlasModule: '',
     fullBlackModule: '',
     kabelweg: '',
+    ziegeldeckmassLaenge: 0.42,
+    ziegeldeckmassBreite: 0.3,
+    sparrenmassAbstand: 0.6,
+    sparrenmassBreite: 0.1,
+    sparrenmassHoehe: 0.12,
+    aufsparrendaemmungStaerke: 0,
+    laengeKabelwegHakZs: 5,
+    otpWert: 0.25,
   });
-
-  console.log('form content', formContent);
 
   useEffect(() => {
     if (clientData) {
-      setFormContent({ ...formContent, ...clientData });
+      // Filter out properties with empty values
+      const filteredClientData = Object.keys(clientData).reduce((acc, key) => {
+        if (clientData[key]) {
+          // or if (clientData[key] !== "") for more strict check
+          acc[key] = clientData[key];
+        }
+        return acc;
+      }, {});
+
+      setFormContent({ ...formContent, ...filteredClientData });
     }
   }, [clientData]);
 
@@ -212,7 +226,6 @@ const Client = () => {
       const hasChanges = !Object.keys(clientData).every(
         (key) => clientData[key] === formContent[key]
       );
-      console.log('has changes', hasChanges);
       setShouldPrompt(hasChanges);
     }
   }, [formContent]);
@@ -236,7 +249,11 @@ const Client = () => {
         autoComplete="off"
       >
         <div className="p-6 flex-grow h-full">
-          <StepContent key={currentStep} currentStep={currentStep} />
+          <StepContent
+            key={currentStep}
+            currentStep={currentStep}
+            setShouldPrompt={setShouldPrompt}
+          />
         </div>
         <div className="sticky bottom-0">
           <NewClientNav

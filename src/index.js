@@ -14,6 +14,7 @@ import {
 import { ClerkProvider } from '@clerk/clerk-react';
 import { deDe } from '@clerk/localizations';
 import { createClient } from './services/ninox';
+import Loading from './Loading';
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw 'Missing Publishable Key';
@@ -48,7 +49,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ClerkProvider publishableKey={clerkPubKey} localization={deDe}>
     <React.StrictMode>
-      <RouterProvider router={router} fallbackElement={<p>Loading</p>} />
+      <RouterProvider router={router} fallbackElement={<Loading />} />
     </React.StrictMode>
   </ClerkProvider>
 );

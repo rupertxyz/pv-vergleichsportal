@@ -8,7 +8,6 @@ const WATT_PRO_MODULE = 425;
 
 export default function DecimalNumber({
   label,
-  defaultValue = null,
   step,
   identifier,
   placeholder = '',
@@ -25,28 +24,6 @@ export default function DecimalNumber({
     formContent[identifier] >= 0
       ? formContent[identifier]
       : '';
-  const data = useActionData();
-  const [errorMessage, setErrorMessage] = useState();
-
-  useEffect(() => {
-    if (value === '' && defaultValue != null) {
-      setFormContent((prevFormContent) => {
-        return { ...prevFormContent, [identifier]: defaultValue };
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (value) {
-      setErrorMessage('');
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (data) {
-      setErrorMessage(data.messages[identifier] || '');
-    }
-  }, [data]);
 
   useEffect(() => {
     const newBenoetigteKwp =
@@ -111,7 +88,6 @@ export default function DecimalNumber({
           }}
         />
       </div>
-      {errorMessage && <FormErrorMsg />}
     </div>
   );
 }

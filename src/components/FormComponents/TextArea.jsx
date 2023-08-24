@@ -12,20 +12,6 @@ export default function TextArea({
   const { formContent, setFormContent } = useContext(FormContext);
 
   const value = formContent[identifier] || '';
-  const data = useActionData();
-  const [errorMessage, setErrorMessage] = useState();
-
-  useEffect(() => {
-    if (value) {
-      setErrorMessage('');
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (data) {
-      setErrorMessage(data.messages[identifier] || '');
-    }
-  }, [data]);
 
   return (
     <div className={`w-full sm:${smWidth} p-2`}>
@@ -43,7 +29,6 @@ export default function TextArea({
           placeholder={placeholder}
         />
       </div>
-      {errorMessage && <FormErrorMsg />}
     </div>
   );
 }

@@ -12,14 +12,12 @@ export default function Dach() {
       <div className="flex flex-wrap -m-2">
         <DecimalNumber
           label="Ziegeldeckmaß Länge"
-          defaultValue={0.42}
           step={0.01}
           identifier="ziegeldeckmassLaenge"
           unitName="Meter"
         />
         <DecimalNumber
           label="Ziegeldeckmaß Breite"
-          defaultValue={0.3}
           step={0.1}
           identifier="ziegeldeckmassBreite"
           unitName="Meter"
@@ -33,28 +31,24 @@ export default function Dach() {
         />
         <DecimalNumber
           label="Sparrenmaße Abstand"
-          defaultValue={0.6}
           step={0.1}
           identifier="sparrenmassAbstand"
           unitName="cm"
         />
         <DecimalNumber
           label="Sparrenmaße Breite"
-          defaultValue={0.1}
           step={0.01}
           identifier="sparrenmassBreite"
           unitName="cm"
         />
         <DecimalNumber
           label="Sparrenmaße Höhe"
-          defaultValue={0.12}
           step={0.01}
           identifier="sparrenmassHoehe"
           unitName="cm"
         />
         <DecimalNumber
           label="Aufsparrendämmung Stärke"
-          defaultValue={0}
           step={0.01}
           identifier="aufsparrendaemmungStaerke"
           unitName="mm"

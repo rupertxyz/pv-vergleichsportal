@@ -19,7 +19,7 @@ export const asyncTimeout = (ms) => {
   });
 };
 
-const Kostenvoranschlag = () => {
+const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const params = useParams();
   const { formContent, setFormContent } = useContext(FormContext);
   const { userColor, userObject, customers } = useOutletContext();
@@ -207,17 +207,6 @@ const Kostenvoranschlag = () => {
             identifier="abschlussTermin"
             smWidth="w-1/2"
           />
-
-          {/* {Object.entries(errorMessages).length > 0 && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-              <ul>
-                {errorMessages &&
-                  Object.values(errorMessages).map((message, index) => (
-                    <li key={index}>{message}</li>
-                  ))}
-              </ul>
-            </div>
-          )} */}
 
           <div
             onClick={() => setShowModal(true)}

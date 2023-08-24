@@ -6,7 +6,7 @@ import Dach from './StepContent/Dach';
 import Elektro from './StepContent/Elektro';
 import Wirtschaftlichkeit from './StepContent/Wirtschaftlichkeit';
 
-const StepContent = ({ currentStep }) => {
+const StepContent = ({ currentStep, setShouldPrompt }) => {
   return (
     <>
       <div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
@@ -30,7 +30,7 @@ const StepContent = ({ currentStep }) => {
           display: currentStep === 5 ? 'block' : 'none',
         }}
       >
-        <Kostenvoranschlag />
+        <Kostenvoranschlag setShouldPrompt={setShouldPrompt} />
       </div>
     </>
   );
