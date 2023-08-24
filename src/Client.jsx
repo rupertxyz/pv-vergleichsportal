@@ -1,22 +1,17 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  createContext,
-  useMemo,
-} from 'react';
+import React, { useEffect, useState, useCallback, createContext } from 'react';
 import {
   Form,
   unstable_useBlocker as useBlocker,
   useBeforeUnload,
   redirect,
-  NavLink,
+  useLoaderData,
 } from 'react-router-dom';
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
-import { saveToNinox } from './services/ninox';
+import { saveToNinox, getNinoxRecord } from './services/ninox';
 import { storage } from './config/firebase';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { deleteClient } from './services/ninox';
 
 export const FormContext = createContext();
 
@@ -40,7 +35,6 @@ async function uploadFile(type, data) {
 }
 
 async function writePdf(data) {
-  console.log('logo', data.logo);
   try {
     const res = await fetch('https://api.docsautomator.co/api/createDocument', {
       method: 'post',
@@ -71,47 +65,52 @@ async function writePdf(data) {
   }
 }
 
-async function saveNewClient({ request }) {
-  const data = Object.fromEntries(await request.formData());
-  console.log('data', data);
-  let errorMsg = {};
-  // check if any of the values are empty strings and if so, add them as a key value pair with the value being: Form field "[INSERT NAME]" is empty.
-  Object.entries(data).forEach(([key, value]) => {
-    if (value === '' || value === '+49 ') {
-      if (key !== 'titel') {
-        errorMsg[key] = `Feld ${key} ist leer.`;
+async function getRecordData({ params }) {
+  return await getNinoxRecord(params.id);
+}
+
+async function clientActions({ request, params }) {
+  if (request.method === 'PUT') {
+    const data = Object.fromEntries(await request.formData());
+
+    // convert data to Boolean if string is true or false
+    Object.keys(data).forEach((key) => {
+      if (data[key] === 'true') {
+        data[key] = true;
       }
+      if (data[key] === 'false') {
+        data[key] = false;
+      }
+    });
+
+    if (data.signature) {
+      const signatureDownloadUrl = await uploadFile('signature', data);
+      data.signature = signatureDownloadUrl;
     }
-  });
+    if (data.chart) {
+      const chartDownloadUrl = await uploadFile('chart', data);
+      data.chart = chartDownloadUrl;
+    }
 
-  // return if there are any empty fields
-  // if (Object.keys(errorMsg).length > 0) return { messages: errorMsg };
+    // save to Ninox
+    if (data.saveOnly) {
+      await saveToNinox(data, params.id);
+      return redirect(`/`);
+    }
 
-  // if (data.signature) {
-  //   const signatureDownloadUrl = await uploadFile('signature', data);
-  //   console.log('signatureDownloadUrl', signatureDownloadUrl);
-  //   data.signature = signatureDownloadUrl;
-  // }
-  // if (data.chart) {
-  //   const chartDownloadUrl = await uploadFile('chart', data);
-  //   console.log('chartDownloadUrl', chartDownloadUrl);
-  //   data.chart = chartDownloadUrl;
-  // }
+    const writePdfResult = await writePdf(data);
 
-  // console.log('data', data);
+    if (writePdfResult?.pdfUrl) {
+      data.pdf = writePdfResult.pdfUrl;
+    }
 
-  // const writePdfResult = await writePdf(data);
-  // console.log('writePdfResult', writePdfResult);
-
-  // if (writePdfResult?.pdfUrl) {
-  //   window.open(writePdfResult.pdfUrl, '_blank');
-  // }
-
-  // save to Ninox
-  // await saveToNinox(data);
-
-  return redirect('/clients');
-  // return {};
+    await saveToNinox(data, params.id);
+    return data;
+  }
+  if (request.method === 'DELETE') {
+    await deleteClient(params.id);
+    return redirect('/');
+  }
 }
 
 function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
@@ -139,7 +138,9 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
   );
 }
 
-const NewClient = () => {
+const Client = () => {
+  const clientData = useLoaderData();
+  console.log('client data', clientData);
   const steps = [
     'Kunde',
     'Anlage',
@@ -156,8 +157,44 @@ const NewClient = () => {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
-  const [formContent, setFormContent] = useState({});
-  console.log(formContent);
+  const [formContent, setFormContent] = useState({
+    anrede: '',
+    titel: '',
+    vorname: '',
+    nachname: '',
+    firma: '',
+    adresse: '',
+    telefon: '',
+    email: '',
+    hausstromverbrauch: null,
+    nutzstromverbrauch: null,
+    eAutoVerbrauch: null,
+    arbeitspreis: null,
+    grundgebuehr: 50,
+    leadSource: '',
+    besuchstermin: '',
+    abschlussTermin: '',
+    waermepumpe: '',
+    eAutoPlanung: '',
+    sonderbelegung: '',
+    anzahlModule: 24,
+    anzahlOptimierer: 0,
+    benoetigteKwp: '',
+    speicherGroesse: '',
+    anzahlStockwerke: 2,
+    anzahlDachseiten: 2,
+    glasGlasModule: '',
+    fullBlackModule: '',
+    kabelweg: '',
+  });
+
+  console.log('form content', formContent);
+
+  useEffect(() => {
+    if (clientData) {
+      setFormContent({ ...formContent, ...clientData });
+    }
+  }, [clientData]);
 
   // check if formContent is an empty object or if all of the values are empty strings
   const isFormFilled =
@@ -168,6 +205,18 @@ const NewClient = () => {
 
   const [shouldPrompt, setShouldPrompt] = useState(true);
 
+  // detect changes in key and values between formContent and clientData
+  // if there are changes, set shouldPrompt to true
+  useEffect(() => {
+    if (clientData) {
+      const hasChanges = !Object.keys(clientData).every(
+        (key) => clientData[key] === formContent[key]
+      );
+      console.log('has changes', hasChanges);
+      setShouldPrompt(hasChanges);
+    }
+  }, [formContent]);
+
   usePrompt(
     'Das Formular ist noch nicht gespeichert. Zum Verlassen bitte bestätigen. Alle bisher eingegebenen Daten werden gelöscht.',
     shouldPrompt,
@@ -176,61 +225,29 @@ const NewClient = () => {
     }
   );
 
-  const [showSuccess, setShowSuccess] = useState(false);
-
   return (
     <FormContext.Provider value={{ formContent, setFormContent }}>
       <Form
-        method="post"
-        action="/new-client"
         className="flex flex-col"
-        style={{ minHeight: 'calc(100vh - 7rem)', width: '100%' }}
+        style={{
+          minHeight: 'calc(100vh - 7rem)',
+          width: '100%',
+        }}
         autoComplete="off"
       >
-        {showSuccess ? (
-          <div className="flex min-h-full items-center justify-center">
-            <div className="flex flex-wrap -m-2">
-              <div className="w-1/2 md:w-1/2 p-2">
-                <a
-                  href="#"
-                  className="flex flex-col justify-center items-center p-4 border-2 rounded h-full"
-                >
-                  OPEN PDF
-                </a>
-              </div>
-              <div className="w-1/2 md:w-1/2 p-2">
-                {' '}
-                <NavLink
-                  to="/clients"
-                  className="flex flex-col justify-center items-center p-4 border-2 rounded h-full"
-                >
-                  SUCCESS
-                </NavLink>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="p-6 flex-grow">
-              <StepContent
-                key={currentStep}
-                currentStep={currentStep}
-                setShouldPrompt={setShouldPrompt}
-                setShowSuccess={setShowSuccess}
-              />
-            </div>
-            <div className="sticky bottom-0">
-              <NewClientNav
-                steps={steps}
-                currentStep={currentStep}
-                setCurrentStep={setCurrentStep}
-              />
-            </div>
-          </>
-        )}
+        <div className="p-6 flex-grow h-full">
+          <StepContent key={currentStep} currentStep={currentStep} />
+        </div>
+        <div className="sticky bottom-0">
+          <NewClientNav
+            steps={steps}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+          />
+        </div>
       </Form>
     </FormContext.Provider>
   );
 };
 
-export { NewClient, saveNewClient };
+export { Client, getRecordData, clientActions };

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import NumericInput from 'react-numeric-input';
 import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
-import { FormContext } from '../../NewClient';
+import { FormContext } from '../../Client';
 
 const Number = ({
   label,

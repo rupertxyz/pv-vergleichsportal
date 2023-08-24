@@ -1,24 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useActionData } from 'react-router-dom';
-import FormErrorMsg from '../FormErrorMsg';
-import { FormContext } from '../../NewClient';
+import React, { useContext } from 'react';
+import { FormContext } from '../../Client';
 
 export default function Select({ label, options, identifier }) {
   const { formContent, setFormContent } = useContext(FormContext);
   const value = formContent[identifier] || '';
-  const data = useActionData();
-  const [errorMessage, setErrorMessage] = useState();
-  useEffect(() => {
-    if (value) {
-      setErrorMessage('');
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (data) {
-      setErrorMessage(data.messages[identifier] || '');
-    }
-  }, [data]);
 
   return (
     <div className="w-full sm:w-1/2 p-2">
@@ -48,7 +33,6 @@ export default function Select({ label, options, identifier }) {
             ))}
         </select>
       </div>
-      {errorMessage && <FormErrorMsg />}
     </div>
   );
 }

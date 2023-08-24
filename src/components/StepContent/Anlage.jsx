@@ -39,7 +39,6 @@ export default function Anlage() {
           step={1}
           identifier="anzahlOptimierer"
           smWidth="1/2"
-          defaultValue={0}
         />
         <DecimalNumber
           label="Benötigte kWp (ergibt sich aus Anzahl Module)"

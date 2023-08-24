@@ -6,9 +6,9 @@ import Dach from './StepContent/Dach';
 import Elektro from './StepContent/Elektro';
 import Wirtschaftlichkeit from './StepContent/Wirtschaftlichkeit';
 
-const StepContent = ({ currentStep, setShouldPrompt, setShowSuccess }) => {
+const StepContent = ({ currentStep }) => {
   return (
-    <div>
+    <>
       <div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
         <Kunde />
       </div>
@@ -24,13 +24,15 @@ const StepContent = ({ currentStep, setShouldPrompt, setShowSuccess }) => {
       <div style={{ display: currentStep === 4 ? 'block' : 'none' }}>
         <Wirtschaftlichkeit />
       </div>
-      <div style={{ display: currentStep === 5 ? 'block' : 'none' }}>
-        <Kostenvoranschlag
-          setShouldPrompt={setShouldPrompt}
-          setShowSuccess={setShowSuccess}
-        />
+      <div
+        className="h-full"
+        style={{
+          display: currentStep === 5 ? 'block' : 'none',
+        }}
+      >
+        <Kostenvoranschlag />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useActionData } from 'react-router-dom';
 import FormErrorMsg from '../FormErrorMsg';
-import { FormContext } from '../../NewClient';
+import { FormContext } from '../../Client';
 
 export default function Input({ label, placeholder, identifier }) {
   const { formContent, setFormContent } = useContext(FormContext);

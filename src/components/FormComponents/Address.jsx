@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import './Address.css';
 import { useActionData } from 'react-router-dom';
-import { FormContext } from '../../NewClient';
+import { FormContext } from '../../Client';
 
 export default function Address({ label, placeholder, identifier }) {
   const { formContent, setFormContent } = useContext(FormContext);

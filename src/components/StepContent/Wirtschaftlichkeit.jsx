@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { FormContext } from '../../NewClient';
+import { FormContext } from '../../Client';
 import { useOutletContext } from 'react-router-dom';
 import calculateKaufpreis from '../../util/kaufpreis';
 import CashflowGraph from '../Chart/Chart';
