@@ -11,7 +11,7 @@ const Clients = () => {
     >
       <div className="flex items-center gap-2">
         <div className="flex flex-1">
-          <h2 className="text-xl md:text-2xl font-bold">Alle Kunden</h2>
+          <h2 className="text-lg md:text-2xl font-bold">Alle Kunden</h2>
         </div>
         <Form method="post" className="flex justify-end flex-1">
           <button

@@ -11,7 +11,7 @@ const ClientListItem = ({ customer }) => {
       <div className="flex flex-col grow items-center justify-center p-4 gap-4">
         <div className="flex flex-row lg:items-center w-full gap-2">
           <div className="flex flex-col gap-1 flex-1 justify-start lg:order-1">
-            <h5 className="font-bold text-sm lg:text-xl">
+            <h5 className="font-bold text-md lg:text-xl">
               {`${customer.titel || ''} ${customer.vorname || 'Neuer Kunde'} ${
                 customer.nachname || ''
               }`}
