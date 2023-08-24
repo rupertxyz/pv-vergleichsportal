@@ -6,7 +6,7 @@ import { loadNinoxData } from './services/ninox';
 
 async function clientLoader() {
   const data = loadNinoxData();
-  return defer({ customers: await data });
+  return { customers: await data };
 }
 
 const Root = () => {

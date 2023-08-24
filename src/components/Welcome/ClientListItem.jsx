@@ -22,14 +22,18 @@ const ClientListItem = ({ customer }) => {
           </div>
           <div className="lg:order-3 flex gap-2">
             <div className="flex flex-1 gap-4 items-center justify-end">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-                className="inline-flex items-center text-center space-x-1 bg-blue-100 hover:bg-blue-200 text-xs font-medium px-3 py-2 rounded"
-              >
-                <p>PDF</p>
-              </button>
+              {customer?.pdf ? (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open(customer.pdf, '_blank');
+                  }}
+                  className="inline-flex items-center text-center space-x-1 bg-blue-100 hover:bg-blue-200 text-xs font-medium px-3 py-2 rounded"
+                >
+                  <p>PDF</p>
+                </button>
+              ) : null}
+
               <div className="text-xl hidden lg:block">
                 <i className="fa-light fa-chevron-right"></i>
               </div>
@@ -46,7 +50,7 @@ const ClientListItem = ({ customer }) => {
                       {},
                       {
                         method: 'delete',
-                        action: `/clients/${customer.id}`,
+                        action: `/clients/${customer.id}/?index`,
                       }
                     );
                   }

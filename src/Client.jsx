@@ -1,18 +1,10 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  createContext,
-  useMemo,
-} from 'react';
+import React, { useEffect, useState, useCallback, createContext } from 'react';
 import {
   Form,
   unstable_useBlocker as useBlocker,
   useBeforeUnload,
   redirect,
-  NavLink,
   useLoaderData,
-  useActionData,
 } from 'react-router-dom';
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
@@ -73,32 +65,6 @@ async function writePdf(data) {
   }
 }
 
-async function saveNewClient({ request }) {
-  const data = Object.fromEntries(await request.formData());
-  let errorMsg = {};
-  // check if any of the values are empty strings and if so, add them as a key value pair with the value being: Form field "[INSERT NAME]" is empty.
-  Object.entries(data).forEach(([key, value]) => {
-    if (value === '' || value === '+49 ') {
-      if (key !== 'titel') {
-        errorMsg[key] = `Feld ${key} ist leer.`;
-      }
-    }
-  });
-
-  // return if there are any empty fields
-  // if (Object.keys(errorMsg).length > 0) return { messages: errorMsg };
-
-  // const writePdfResult = await writePdf(data);
-  // console.log('writePdfResult', writePdfResult);
-
-  // if (writePdfResult?.pdfUrl) {
-  //   window.open(writePdfResult.pdfUrl, '_blank');
-  // }
-
-  return redirect('/clients');
-  // return {};
-}
-
 async function getRecordData({ params }) {
   return await getNinoxRecord(params.id);
 }
@@ -106,6 +72,16 @@ async function getRecordData({ params }) {
 async function clientActions({ request, params }) {
   if (request.method === 'PUT') {
     const data = Object.fromEntries(await request.formData());
+
+    // convert data to Boolean if string is true or false
+    Object.keys(data).forEach((key) => {
+      if (data[key] === 'true') {
+        data[key] = true;
+      }
+      if (data[key] === 'false') {
+        data[key] = false;
+      }
+    });
 
     if (data.signature) {
       const signatureDownloadUrl = await uploadFile('signature', data);
@@ -117,12 +93,19 @@ async function clientActions({ request, params }) {
     }
 
     // save to Ninox
-    await saveToNinox(data, params.id);
-    if (data.saveOnly === 'true') {
-      return redirect('/');
-    } else {
-      return { data: 'data' };
+    if (data.saveOnly) {
+      await saveToNinox(data, params.id);
+      return redirect(`/`);
     }
+
+    const writePdfResult = await writePdf(data);
+
+    if (writePdfResult?.pdfUrl) {
+      data.pdf = writePdfResult.pdfUrl;
+    }
+
+    await saveToNinox(data, params.id);
+    return data;
   }
   if (request.method === 'DELETE') {
     await deleteClient(params.id);
@@ -155,29 +138,8 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
   );
 }
 
-function objectsAreEqual(obj1, obj2) {
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  // Ensure they have the same number of keys
-  if (keys1.length !== keys2.length) return false;
-
-  // Check if all keys and values match
-  for (let key of keys1) {
-    if (obj1[key] !== obj2[key]) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 const Client = () => {
   const clientData = useLoaderData();
-
-  const data = useActionData();
-  console.log('data here???', data);
-
   const steps = [
     'Kunde',
     'Anlage',
@@ -203,6 +165,11 @@ const Client = () => {
     adresse: '',
     telefon: '',
     email: '',
+    hausstromverbrauch: null,
+    nutzstromverbrauch: null,
+    eAutoVerbrauch: null,
+    arbeitspreis: null,
+    grundgebuehr: 50,
     leadSource: '',
     besuchstermin: '',
     abschlussTermin: '',
@@ -222,23 +189,13 @@ const Client = () => {
     kabelweg: '',
   });
 
-  console.log('form content', formContent);
+  console.log(formContent);
 
   useEffect(() => {
     if (clientData) {
       setFormContent({ ...formContent, ...clientData });
     }
   }, [clientData]);
-
-  const [dataChanges, setDataChanges] = useState(false);
-
-  useEffect(() => {
-    if (!objectsAreEqual(formContent, clientData)) {
-      setDataChanges(true);
-    } else {
-      setDataChanges(false);
-    }
-  }, [clientData, formContent]);
 
   // check if formContent is an empty object or if all of the values are empty strings
   const isFormFilled =
@@ -260,8 +217,6 @@ const Client = () => {
   return (
     <FormContext.Provider value={{ formContent, setFormContent }}>
       <Form
-        method="post"
-        action="/new-client"
         className="flex flex-col"
         style={{
           minHeight: 'calc(100vh - 7rem)',
@@ -288,4 +243,4 @@ const Client = () => {
   );
 };
 
-export { Client, saveNewClient, getRecordData, clientActions };
+export { Client, getRecordData, clientActions };

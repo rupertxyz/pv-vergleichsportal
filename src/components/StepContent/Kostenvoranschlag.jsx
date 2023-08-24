@@ -22,7 +22,11 @@ export const asyncTimeout = (ms) => {
 const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const params = useParams();
   const { formContent, setFormContent } = useContext(FormContext);
-  const { userColor, userObject } = useOutletContext();
+  const { userColor, userObject, customers } = useOutletContext();
+
+  const customer = customers.find(
+    (customer) => customer.id === parseInt(params.id)
+  );
 
   const fetcher = useFetcher();
 
@@ -41,13 +45,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const [animationFourCheck, setAnimationFourCheck] = useState(false);
   const [animationFiveCheck, setAnimationFiveCheck] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log('triggered?');
-  //     // setErrorMessages(data.messages);
-  //   }
-  // }, [data]);
+  const [pdfUrl, setPdfUrl] = useState('');
 
   // load saved signature from formContent if it exists
   useEffect(() => {
@@ -78,12 +76,18 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
         { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
         {
           method: 'put',
-          action: `/clients/${params.id}`,
+          action: `/clients/${params.id}/?index`,
         }
       );
-      setShowSuccess(true);
     }, 500);
   };
+
+  useEffect(() => {
+    if (fetcher.data?.pdf) {
+      setPdfUrl(fetcher.data.pdf);
+      setShowSuccess(true);
+    }
+  }, [fetcher.data]);
 
   const handleSaveOnly = async () => {
     fetcher.submit(
@@ -94,7 +98,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
       },
       {
         method: 'put',
-        action: `/clients/${params.id}`,
+        action: `/clients/${params.id}/?index`,
       }
     );
   };
@@ -138,11 +142,12 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
                 <div className="flex flex-wrap -m-2">
                   <div className="w-1/2 md:w-1/2 p-2">
                     <a
-                      href="#"
+                      href={pdfUrl}
+                      target="_blank"
                       className="flex flex-col justify-center text-center items-center p-4 border-2 rounded h-full"
                       style={{ borderColor: userColor }}
                     >
-                      Angebot öffnen
+                      <span>Angebot öffnen</span>
                     </a>
                   </div>
                   <div className="w-1/2 md:w-1/2 p-2">
@@ -266,7 +271,11 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
                 setShouldPrompt(false);
               }}
             >
-              Angebot erstellen
+              {customer?.pdf ? (
+                <span>Neues Angebot erstellen</span>
+              ) : (
+                <span>Angebot erstellen</span>
+              )}
             </button>
             <button
               className="text-black font-bold py-2 px-4 rounded bg-blue-100 hover:bg-blue-200"

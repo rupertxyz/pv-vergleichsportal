@@ -32,8 +32,13 @@ const router = createBrowserRouter(
           return redirect(`/clients/${newClientId}`);
         }}
       />
-      <Route path="clients/:id" action={clientActions}>
-        <Route index element={<Client />} loader={getRecordData} />
+      <Route path="clients/:id">
+        <Route
+          index
+          element={<Client />}
+          loader={getRecordData}
+          action={clientActions}
+        />
       </Route>
     </Route>
   )

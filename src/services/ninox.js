@@ -1,6 +1,6 @@
 export async function saveToNinox(data, recordId) {
-  // update a single record in Ninox
-  const response = await fetch(
+  // update client record in Ninox
+  const clientUpdateResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,
     {
       method: 'PUT',
@@ -18,77 +18,59 @@ export async function saveToNinox(data, recordId) {
           Adresse: data.adresse,
           Telefon: data.telefon,
           Email: data.email,
+          Hausstromverbrauch: data.hausstromverbrauch,
+          Nutzstromverbrauch: data.nutzstromverbrauch,
+          'E-Auto Stromverbrauch': data.eAutoVerbrauch,
+          'Arbeitspreis ct/kWh': data.arbeitspreis,
+          'Grundgebühr pro Jahr': data.grundgebuehr,
+          Notizen: data.bemerkungen,
+          Leadquelle: data.leadSource,
+          Besuchstermin: data.besuchstermin
+            ? data.besuchstermin.split('.').reverse().join('-')
+            : '',
         },
       }),
     }
   );
-  await response.json();
-  return true;
+  const clientData = await clientUpdateResponse.json();
+  // update project record in Ninox
+  const projectUpdateResponse = await fetch(
+    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records/${clientData.fields.Projekte[0]}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
+      },
+      body: JSON.stringify({
+        fields: {
+          Wärmepumpe: data.waermepumpe ? true : false,
+          'E-Auto in Planung': data.eAutoPlanung ? true : false,
+          Sonderbelegung: data.sonderbelegung ? true : false,
+          'Anzahl Module': data.anzahlModule,
+          'Anzahl Optimierer': data.anzahlOptimierer,
+          'Benötigte kWp': data.benoetigteKwp,
+          Speichergröße: data.speicherGroesse,
+          'Anzahl Stockwerke': data.anzahlStockwerke,
+          'Anzahl Dachseiten': data.anzahlDachseiten,
+          'Glas-Glas-Module': data.glasGlasModule ? true : false,
+          'Full-Black-Module': data.fullBlackModule ? true : false,
+          Kabelweg: data.kabelweg,
+          'Angebot PDF': data.pdf,
+        },
+      }),
+    }
+  );
+  const projectData = await projectUpdateResponse.json();
+  if (clientUpdateResponse.ok && projectUpdateResponse.ok) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-// const customerResponse = await fetch(
-//   `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,
-//   {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
-//     },
-//     body: JSON.stringify([
-//       {
-//         fields: {
-//           Vorname: data.vorname,
-//           Nachname: data.nachname,
-//           Anrede: data.anrede,
-//           Titel: data.titel,
-//           Firma: data.firma,
-//           Adresse: data.adresse,
-//           Telefon: data.telefon,
-//           Email: data.email,
-//         },
-//       },
-//     ]),
-//   }
-// );
-// const customerResponseData = await customerResponse.json();
-// console.log('customerResponseData', customerResponseData);
-// return true;
-// const projectResponse = await fetch(
-//   `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records`,
-//   {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
-//     },
-//     body: JSON.stringify([
-//       {
-//         fields: {
-//           'Lead-Quelle': data.leadSource,
-//           Besuchstermin: data.besuchstermin
-//             ? data.besuchstermin.split('.').reverse().join('-')
-//             : '',
-//           Hausstromverbrauch: data.hausstromverbrauch,
-//           Nutzstromverbrauch: data.nutzstromverbrauch,
-//           'E-Auto Stromverbrauch': data.eAutoVerbrauch,
-//           Arbeitspreis: data.arbeitspreis,
-//           'Grundgebühr pro Jahr': data.grundgebuehr,
-//           Kunde: customerResponseData[0].id,
-//           Wärmepumpe: data.waermepumpe ? true : false,
-//           'E-Auto in Planung': data.eAutoPlanung ? true : false,
-//         },
-//       },
-//     ]),
-//   }
-// );
-// if (projectResponse.ok && customerResponse.ok) {
-//   return true;
-// } else {
-//   return false;
-// }
-
 export async function loadNinoxData() {
-  const response = await fetch(
+  const customerResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records`,
     {
       method: 'GET',
@@ -98,24 +80,44 @@ export async function loadNinoxData() {
       },
     }
   );
-  const data = await response.json();
-  return data.map((record) => {
+  const customerData = await customerResponse.json();
+
+  // load project records
+  const projectResponse = await fetch(
+    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
+      },
+    }
+  );
+
+  // find project record for each customer and add it to the customer object as a field
+  const projectData = await projectResponse.json();
+  customerData.map((customer) => {
+    const project = projectData.find(
+      (project) => project.id === customer.fields.Projekte[0]
+    );
+    customer.fields.Projekte.pdf = project.fields['Angebot PDF'];
+    return customer;
+  });
+  return customerData.map((customer) => {
     return {
-      id: record.id,
-      vorname: record.fields.Vorname,
-      nachname: record.fields.Nachname,
-      anrede: record.fields.Anrede,
-      titel: record.fields.Titel,
-      firma: record.fields.Firma,
-      adresse: record.fields.Adresse,
-      telefon: record.fields.Telefon,
-      email: record.fields.Email,
+      id: customer.id,
+      vorname: customer.fields.Vorname,
+      nachname: customer.fields.Nachname,
+      anrede: customer.fields.Anrede,
+      titel: customer.fields.Titel,
+      firma: customer.fields.Firma,
+      pdf: customer.fields.Projekte.pdf,
     };
   });
 }
 
 export async function createClient() {
-  const response = await fetch(
+  const customerResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records`,
     {
       method: 'POST',
@@ -130,12 +132,31 @@ export async function createClient() {
       ]),
     }
   );
-  const data = await response.json();
+  const data = await customerResponse.json();
+
+  // create project record in Ninox
+  const projectResponse = await fetch(
+    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
+      },
+      body: JSON.stringify([
+        {
+          fields: {
+            Kunde: data[0].id,
+          },
+        },
+      ]),
+    }
+  );
   return data[0].id;
 }
 
 export async function getNinoxRecord(recordId) {
-  const response = await fetch(
+  const customerResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,
     {
       method: 'GET',
@@ -145,17 +166,54 @@ export async function getNinoxRecord(recordId) {
       },
     }
   );
-  const data = await response.json();
+  const customerData = await customerResponse.json();
+
+  // get project record in Ninox
+  const projectResponse = await fetch(
+    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records/${customerData.fields.Projekte[0]}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
+      },
+    }
+  );
+
+  const projectData = await projectResponse.json();
+
+  const data = { ...customerData.fields, ...projectData.fields };
+
   return {
     id: data.id || '',
-    vorname: data.fields.Vorname || '',
-    nachname: data.fields.Nachname || '',
-    anrede: data.fields.Anrede || '',
-    titel: data.fields.Titel || '',
-    firma: data.fields.Firma || '',
-    adresse: data.fields.Adresse || '',
-    telefon: data.fields.Telefon || '',
-    email: data.fields.Email || '',
+    vorname: data.Vorname || '',
+    nachname: data.Nachname || '',
+    anrede: data.Anrede || '',
+    titel: data.Titel || '',
+    firma: data.Firma || '',
+    adresse: data.Adresse || '',
+    telefon: data.Telefon || '',
+    email: data.Email || '',
+    hausstromverbrauch: data.Hausstromverbrauch || '',
+    nutzstromverbrauch: data.Nutzstromverbrauch || '',
+    eAutoVerbrauch: data['E-Auto Stromverbrauch'] || '',
+    arbeitspreis: data['Arbeitspreis ct/kWh'] || '',
+    grundgebuehr: data['Grundgebühr pro Jahr'] || '',
+    bemerkungen: data.Notizen || '',
+    leadSource: data.Leadquelle || '',
+    besuchstermin: data.Besuchstermin || '',
+    waermepumpe: data.Wärmepumpe || false,
+    eAutoPlanung: data['E-Auto in Planung'] || false,
+    sonderbelegung: data['Sonderbelegung'] || false,
+    anzahlModule: data['Anzahl Module'] || '',
+    anzahlOptimierer: data['Anzahl Optimierer'] || '',
+    benoetigteKwp: data['Benötigte kWp'] || '',
+    speicherGroesse: data['Speichergröße'] || '',
+    anzahlStockwerke: data['Anzahl Stockwerke'] || '',
+    anzahlDachseiten: data['Anzahl Dachseiten'] || '',
+    glasGlasModule: data['Glas-Glas-Module'] || false,
+    fullBlackModule: data['Full-Black-Module'] || false,
+    kabelweg: data['Kabelweg'] || '',
   };
 }
 
