@@ -22,8 +22,7 @@ export async function saveToNinox(data, recordId) {
       }),
     }
   );
-  const responseData = await response.json();
-  console.log('responseData', responseData);
+  await response.json();
   return true;
 }
 
@@ -132,7 +131,6 @@ export async function createClient() {
     }
   );
   const data = await response.json();
-  console.log('data', data);
   return data[0].id;
 }
 
@@ -173,6 +171,5 @@ export async function deleteClient(recordId) {
     }
   );
   const data = await response.json();
-  console.log('data', data);
   return data;
 }

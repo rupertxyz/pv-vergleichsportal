@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useActionData, useFetcher, useParams } from 'react-router-dom';
+import {
+  useActionData,
+  useFetcher,
+  useParams,
+  NavLink,
+} from 'react-router-dom';
 import SignatureModal from '../SignatureModal';
 import DatePicker from '../FormComponents/DatePicker';
 import { FormContext } from '../../Client';
@@ -14,7 +19,7 @@ export const asyncTimeout = (ms) => {
   });
 };
 
-const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
+const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const params = useParams();
   const { formContent, setFormContent } = useContext(FormContext);
   const { userColor, userObject } = useOutletContext();
@@ -22,7 +27,6 @@ const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
   const fetcher = useFetcher();
 
   const [errorMessages, setErrorMessages] = useState({});
-  const data = useActionData();
   const [showModal, setShowModal] = useState(false);
   const [savedSignature, setSavedSignature] = useState(null);
   const [showCalculatorAnimation, setShowCalculatorAnimation] = useState(false);
@@ -36,12 +40,14 @@ const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
   const [animationThreeCheck, setAnimationThreeCheck] = useState(false);
   const [animationFourCheck, setAnimationFourCheck] = useState(false);
   const [animationFiveCheck, setAnimationFiveCheck] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  useEffect(() => {
-    if (data) {
-      setErrorMessages(data.messages);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log('triggered?');
+  //     // setErrorMessages(data.messages);
+  //   }
+  // }, [data]);
 
   // load saved signature from formContent if it exists
   useEffect(() => {
@@ -67,54 +73,121 @@ const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
     await asyncTimeout(ASYNC_TIMEOUT);
     setAnimationColorFive('gray');
     setAnimationFiveCheck(true);
-    setShowCalculatorAnimation(false);
-    setShowSuccess(true);
     setTimeout(() => {
       fetcher.submit(
         { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
         {
-          method: 'post',
+          method: 'put',
           action: `/clients/${params.id}`,
         }
       );
-      setShowCalculatorAnimation(false);
+      setShowSuccess(true);
     }, 500);
+  };
+
+  const handleSaveOnly = async () => {
+    fetcher.submit(
+      {
+        ...formContent,
+        logo: userObject?.user?.publicMetadata?.logo,
+        saveOnly: true,
+      },
+      {
+        method: 'put',
+        action: `/clients/${params.id}`,
+      }
+    );
+  };
+
+  const handleModalClose = () => {
+    setShowCalculatorAnimation(false);
+    setShowSuccess(false);
   };
 
   return (
     <>
       {showCalculatorAnimation && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="w-3/4 h-1/2 md:w-1/2 md:h-1/2 flex justify-center items-center bg-gradient-to-b from-gray-50 to-gray-100 m-2 rounded">
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex flex-col items-start justify-center gap-8 text-xs">
-                <AnimationStep
-                  text="Prüfe Preis- / Leistungsverhältnis"
-                  color={animationColorOne}
-                  check={animationOneCheck}
-                />
-                <AnimationStep
-                  text="Prüfe Produktverfügbarkeit..."
-                  color={animationColorTwo}
-                  check={animationTwoCheck}
-                />
-                <AnimationStep
-                  text="Prüfe Qualitätsstandards..."
-                  color={animationColorThree}
-                  check={animationThreeCheck}
-                />
-                <AnimationStep
-                  text="Prüfe Bestpreisangebot..."
-                  color={animationColorFour}
-                  check={animationFourCheck}
-                />
-                <AnimationStep
-                  text="Prüfe Fertigstellungszeitraum..."
-                  color={animationColorFive}
-                  check={animationFiveCheck}
-                />
+          <div className="relative w-3/4 h-1/2 md:w-1/2 md:h-3/4 flex justify-center items-center bg-gradient-to-b from-gray-50 to-gray-100 m-2 rounded">
+            {showSuccess && (
+              <button
+                onClick={handleModalClose}
+                className="absolute right-5 top-5"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+            {showSuccess ? (
+              <div className="flex flex-col w-full h-full items-center justify-center">
+                <h2 className="text-xl font-bold mb-6">
+                  Angebot wurde erstellt 🎉
+                </h2>
+                <div className="flex flex-wrap -m-2">
+                  <div className="w-1/2 md:w-1/2 p-2">
+                    <a
+                      href="#"
+                      className="flex flex-col justify-center text-center items-center p-4 border-2 rounded h-full"
+                      style={{ borderColor: userColor }}
+                    >
+                      Angebot öffnen
+                    </a>
+                  </div>
+                  <div className="w-1/2 md:w-1/2 p-2">
+                    {' '}
+                    <NavLink
+                      to="/"
+                      className="flex flex-col justify-center text-center items-center p-4 border-2 rounded h-full"
+                      style={{ borderColor: userColor }}
+                    >
+                      Alle Kunden
+                    </NavLink>
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-start justify-center gap-8 text-xs">
+                  <AnimationStep
+                    text="Prüfe Preis- / Leistungsverhältnis"
+                    color={animationColorOne}
+                    check={animationOneCheck}
+                  />
+                  <AnimationStep
+                    text="Prüfe Produktverfügbarkeit..."
+                    color={animationColorTwo}
+                    check={animationTwoCheck}
+                  />
+                  <AnimationStep
+                    text="Prüfe Qualitätsstandards..."
+                    color={animationColorThree}
+                    check={animationThreeCheck}
+                  />
+                  <AnimationStep
+                    text="Prüfe Bestpreisangebot..."
+                    color={animationColorFour}
+                    check={animationFourCheck}
+                  />
+                  <AnimationStep
+                    text="Prüfe Fertigstellungszeitraum..."
+                    color={animationColorFive}
+                    check={animationFiveCheck}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -183,9 +256,9 @@ const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
               setFormContent={setFormContent}
             />
           )}
-          <div className="w-full flex justify-end mt-4 p-2">
+          <div className="w-full flex justify-end mt-4 p-2 gap-4">
             <button
-              className="text-white font-bold py-2 px-4 rounded opacity-80 hover:opacity-100"
+              className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80"
               style={{ backgroundColor: userColor }}
               onClick={(e) => {
                 e.preventDefault();
@@ -193,7 +266,17 @@ const Kostenvoranschlag = ({ setShouldPrompt, setShowSuccess }) => {
                 setShouldPrompt(false);
               }}
             >
-              Abschicken
+              Angebot erstellen
+            </button>
+            <button
+              className="text-black font-bold py-2 px-4 rounded bg-blue-100 hover:bg-blue-200"
+              onClick={(e) => {
+                e.preventDefault();
+                handleSaveOnly();
+                setShouldPrompt(false);
+              }}
+            >
+              Speichern
             </button>
           </div>
         </div>

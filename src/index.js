@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { Root, clientLoader } from './Root';
-import { Client, saveNewClient, getRecordData, clientActions } from './Client';
+import { Client, getRecordData, clientActions } from './Client';
 import Clients from './Clients';
 import {
   createBrowserRouter,
@@ -14,7 +14,6 @@ import {
 import { ClerkProvider } from '@clerk/clerk-react';
 import { deDe } from '@clerk/localizations';
 import { createClient } from './services/ninox';
-import { saveToNinox } from './services/ninox';
 
 if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
   throw 'Missing Publishable Key';
@@ -33,23 +32,8 @@ const router = createBrowserRouter(
           return redirect(`/clients/${newClientId}`);
         }}
       />
-      <Route
-        path="clients/:id"
-        action={async ({ request, params }) => {
-          console.log('params', params);
-          const data = Object.fromEntries(await request.formData());
-          console.log('data', data);
-          // save to Ninox
-          await saveToNinox(data, params.id);
-          return {};
-        }}
-      >
-        <Route
-          index
-          element={<Client />}
-          loader={getRecordData}
-          action={clientActions}
-        />
+      <Route path="clients/:id" action={clientActions}>
+        <Route index element={<Client />} loader={getRecordData} />
       </Route>
     </Route>
   )

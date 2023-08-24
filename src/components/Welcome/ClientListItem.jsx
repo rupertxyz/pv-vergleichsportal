@@ -46,7 +46,7 @@ const ClientListItem = ({ customer }) => {
                       {},
                       {
                         method: 'delete',
-                        action: `/clients/${customer.id}/?index`,
+                        action: `/clients/${customer.id}`,
                       }
                     );
                   }
