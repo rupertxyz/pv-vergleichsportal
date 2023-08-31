@@ -11,7 +11,7 @@ import { FormContext } from '../../Client';
 import AnimationStep from '../KVA/AnimationStep';
 import { useOutletContext } from 'react-router-dom';
 
-const ASYNC_TIMEOUT = 500;
+const ASYNC_TIMEOUT = 2000;
 
 export const asyncTimeout = (ms) => {
   return new Promise((resolve) => {
@@ -30,9 +30,11 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
 
   const fetcher = useFetcher();
 
-  const [errorMessages, setErrorMessages] = useState({});
+  console.log(fetcher);
+
   const [showModal, setShowModal] = useState(false);
   const [savedSignature, setSavedSignature] = useState(null);
+  console.log('savedSignature', savedSignature);
   const [showCalculatorAnimation, setShowCalculatorAnimation] = useState(false);
   const [animationColorOne, setAnimationColorOne] = useState('black');
   const [animationColorTwo, setAnimationColorTwo] = useState('black');
@@ -45,6 +47,8 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const [animationFourCheck, setAnimationFourCheck] = useState(false);
   const [animationFiveCheck, setAnimationFiveCheck] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
 
   // load saved signature from formContent if it exists
@@ -55,6 +59,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   }, []);
 
   const handleSubmit = async () => {
+    setShowAnimation(true);
     setShowCalculatorAnimation(true);
     setShouldPrompt(false);
     await asyncTimeout(ASYNC_TIMEOUT);
@@ -72,6 +77,8 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
     await asyncTimeout(ASYNC_TIMEOUT);
     setAnimationColorFive('gray');
     setAnimationFiveCheck(true);
+    setShowAnimation(false);
+    setShowLoader(true);
     setTimeout(() => {
       fetcher.submit(
         { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
@@ -86,6 +93,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   useEffect(() => {
     if (fetcher.data?.pdf) {
       setPdfUrl(fetcher.data.pdf);
+      setShowLoader(false);
       setShowSuccess(true);
     }
   }, [fetcher.data]);
@@ -135,7 +143,17 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
                 </svg>
               </button>
             )}
-            {showSuccess ? (
+
+            {showLoader && (
+              <div className="flex flex-col items-center justify-center">
+                <h2 className="text-xl font-bold mb-6">
+                  Angebot wird erstellt
+                </h2>
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            )}
+
+            {showSuccess && (
               <div className="flex flex-col w-full h-full items-center justify-center">
                 <h2 className="text-xl font-bold mb-6">
                   Angebot wurde erstellt 🎉
@@ -163,7 +181,8 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
                   </div>
                 </div>
               </div>
-            ) : (
+            )}
+            {showAnimation && (
               <div className="flex flex-col items-center justify-center">
                 <div className="flex flex-col items-start justify-center gap-8 text-xs">
                   <AnimationStep

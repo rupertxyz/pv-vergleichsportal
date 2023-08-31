@@ -231,7 +231,10 @@ const Client = () => {
   useEffect(() => {
     if (formContent) {
       const hasChanges = !Object.keys(formContent).every(
-        (key) => key === 'benoetigteKwp' || formContent[key] === clientData[key]
+        (key) =>
+          key === 'benoetigteKwp' ||
+          key === 'chart' ||
+          formContent[key] === clientData[key]
       );
       setShouldPrompt(hasChanges);
     }

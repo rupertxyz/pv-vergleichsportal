@@ -89,7 +89,7 @@ export async function saveToNinox(data, recordId) {
             ? data.abschlussTermin.split('.').reverse().join('-')
             : '',
           Chart: data.chart,
-          Signature: data.signature,
+          Signatur: data.signature,
         },
       }),
     }
@@ -276,7 +276,7 @@ export async function getNinoxRecord(recordId) {
       data['Internetanschluss (LAN) am Wechselrichterplatz vorhanden'] || false,
     abschlussTermin: data['Abschlusstermin'] || '',
     chart: data['Chart'] || '',
-    signature: data['Signature'] || '',
+    signature: data['Signatur'] || '',
   };
 }
 
