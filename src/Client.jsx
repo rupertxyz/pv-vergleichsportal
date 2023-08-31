@@ -56,6 +56,58 @@ async function writePdf(data) {
         adresse: data.adresse || '',
         telefon: data.telefon || '',
         email: data.email || '',
+        hausstromv: data.hausstromverbrauch || '',
+        nutzstromv: data.nutzstromverbrauch || '',
+        e: data.eAutoPlanung ? 'X' : '',
+        w: data.waermepumpe ? 'X' : '',
+        anlagengroesse: data.benoetigteKwp || '',
+        g_g_m: data.glasGlasModule ? 'X' : '',
+        arbeitspreis: data.arbeitspreis || '',
+        speichergroesse: data.speicherGroesse || '',
+        f_b_m: data.fullBlackModule ? 'X' : '',
+        grundgebuehr: data.grundgebuehr || '',
+        k: data.kabelweg ? 'X' : '',
+        leerrohr: data.kabelweg ? 'X' : '',
+        l_r_a: data.kabelweg ? 'X' : '',
+        laenge: data.ziegeldeckmassLaenge || '',
+        breite: data.ziegeldeckmassBreite || '',
+        dachneigung: data.dachneigung || '',
+        s_abstand: data.sparrenmassAbstand || '',
+        s_breite: data.sparrenmassBreite || '',
+        s_hoehe: data.sparrenmassHoehe || '',
+        aufsparrendaemmung: data.aufsparrendaemmungStaerke || '',
+        trapez_staerke: data.trapezblechStaerke,
+        s_platten: data.sandwichblech ? 'X' : '',
+        ziegel_gekl: data.ziegelgeklammert ? 'X' : '',
+        ziegel_gem: data.ziegelgemoertelt ? 'X' : '',
+        ziegel_sanierung: data.ziegelsanierung ? 'X' : '',
+        zt: data.zaehlerschrankTauschen ? 'X' : '',
+        azf: data.anzahlZaehlerFelder || '',
+        zzl: data.zaehlerzusammenlegung ? 'X' : '',
+        kk: data.kaskade ? 'X' : '',
+        uz: data.unterverteiler ? 'X' : '',
+        zd: data.standortZaehlerschrank === 'Dach' ? 'X' : '',
+        eg: data.standortZaehlerschrank === 'EG' ? 'X' : '',
+        kel: data.standortZaehlerschrank === 'Keller' ? 'X' : '',
+        hd: data.standortHak === 'Dach' ? 'X' : '',
+        heg: data.standortHak === 'EG' ? 'X' : '',
+        hkel: data.standortHak === 'Keller' ? 'X' : '',
+        zmet: data.laengeKabelwegHakZs || '',
+        nvor: data.internetanschlussVorhanden ? 'X' : '',
+        otp: data.otpWert || '',
+        notes: data.bemerkungen || '',
+        image_unterschrift_50: data.signature || '',
+        image_chart_600: data.chart || '',
+        line_items: [
+          {
+            line_items_id: '1',
+            line_items_beschreibung:
+              'Hochleistungs-Photovoltaikmodule von Tear 1 Herstellern\n- Mindestens 25 Jahre Leistungs- und 30 Jahre Produktgarantie\n- Hoche Witterungsbeständigkeit gegen Wind- und Schneelasten',
+            line_items_menge: '23',
+            line_items_einzelpreis: '1.000,00',
+            line_items_gesamtpreis: '23.000,00',
+          },
+        ],
       }),
     });
     const result = await res.json();
@@ -156,57 +208,11 @@ const Client = () => {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
-  const [formContent, setFormContent] = useState({
-    anrede: '',
-    titel: '',
-    vorname: '',
-    nachname: '',
-    firma: '',
-    adresse: '',
-    telefon: '',
-    email: '',
-    hausstromverbrauch: 5000,
-    nutzstromverbrauch: null,
-    eAutoVerbrauch: null,
-    arbeitspreis: 0.4,
-    grundgebuehr: 120,
-    leadSource: '',
-    besuchstermin: '',
-    abschlussTermin: '',
-    waermepumpe: '',
-    eAutoPlanung: '',
-    sonderbelegung: '',
-    anzahlModule: 24,
-    anzahlOptimierer: 0,
-    benoetigteKwp: '',
-    speicherGroesse: '',
-    anzahlStockwerke: 2,
-    anzahlDachseiten: 2,
-    glasGlasModule: '',
-    fullBlackModule: '',
-    kabelweg: '',
-    ziegeldeckmassLaenge: 0.42,
-    ziegeldeckmassBreite: 0.3,
-    sparrenmassAbstand: 0.6,
-    sparrenmassBreite: 0.1,
-    sparrenmassHoehe: 0.12,
-    aufsparrendaemmungStaerke: 0,
-    laengeKabelwegHakZs: 5,
-    otpWert: 0.25,
-  });
+  const [formContent, setFormContent] = useState({});
 
   useEffect(() => {
     if (clientData) {
-      // Filter out properties with empty values
-      const filteredClientData = Object.keys(clientData).reduce((acc, key) => {
-        if (clientData[key]) {
-          // or if (clientData[key] !== "") for more strict check
-          acc[key] = clientData[key];
-        }
-        return acc;
-      }, {});
-
-      setFormContent({ ...formContent, ...filteredClientData });
+      setFormContent({ ...formContent, ...clientData });
     }
   }, [clientData]);
 
@@ -217,14 +223,15 @@ const Client = () => {
       (value) => value !== '' && value !== '+49 ' && value !== '+49'
     );
 
-  const [shouldPrompt, setShouldPrompt] = useState(true);
+  const [shouldPrompt, setShouldPrompt] = useState(false);
+  console.log('shouldPrompt', shouldPrompt);
 
   // detect changes in key and values between formContent and clientData
   // if there are changes, set shouldPrompt to true
   useEffect(() => {
-    if (clientData) {
-      const hasChanges = !Object.keys(clientData).every(
-        (key) => clientData[key] === formContent[key]
+    if (formContent) {
+      const hasChanges = !Object.keys(formContent).every(
+        (key) => key === 'benoetigteKwp' || formContent[key] === clientData[key]
       );
       setShouldPrompt(hasChanges);
     }

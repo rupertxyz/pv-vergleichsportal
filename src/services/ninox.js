@@ -33,6 +33,7 @@ export async function saveToNinox(data, recordId) {
     }
   );
   const clientData = await clientUpdateResponse.json();
+
   // update project record in Ninox
   const projectUpdateResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records/${clientData.fields.Projekte[0]}`,
@@ -75,8 +76,8 @@ export async function saveToNinox(data, recordId) {
           'Priv. Unterzähler': data.privUnterzaehler ? true : false,
           Unterverteiler: data.unterverteiler ? true : false,
           'Zählerschrank tauschen': data.zaehlerschrankTauschen ? true : false,
-          'Anzahl Zählerfelder': data.anzahlZaehlerFelder,
-          'Standort Zählersch rank': data.standortZaehlerschrank,
+          'Anzahl Zählerfelder': data.anzahlZaehlerFelder || '',
+          'Standort Zählerschrank': data.standortZaehlerschrank,
           'Standort HAK': data.standortHak,
           'Länge Kabelweg von HAK zu ZS': data.laengeKabelwegHakZs,
           'OTP-Wert': data.otpWert,
@@ -87,6 +88,8 @@ export async function saveToNinox(data, recordId) {
           Abschlusstermin: data.abschlussTermin
             ? data.abschlussTermin.split('.').reverse().join('-')
             : '',
+          Chart: data.chart,
+          Signature: data.signature,
         },
       }),
     }
@@ -224,32 +227,32 @@ export async function getNinoxRecord(recordId) {
     adresse: data.Adresse || '',
     telefon: data.Telefon || '',
     email: data.Email || '',
-    hausstromverbrauch: data.Hausstromverbrauch || '',
+    hausstromverbrauch: data.Hausstromverbrauch || 5000,
     nutzstromverbrauch: data.Nutzstromverbrauch || '',
     eAutoVerbrauch: data['E-Auto Stromverbrauch'] || '',
-    arbeitspreis: data['Arbeitspreis ct/kWh'] || '',
-    grundgebuehr: data['Grundgebühr pro Jahr'] || '',
+    arbeitspreis: data['Arbeitspreis ct/kWh'] || 0.4,
+    grundgebuehr: data['Grundgebühr pro Jahr'] || 120,
     bemerkungen: data.Notizen || '',
     leadSource: data.Leadquelle || '',
     besuchstermin: data.Besuchstermin || '',
-    waermepumpe: data.Wärmepumpe || false,
-    eAutoPlanung: data['E-Auto in Planung'] || false,
+    waermepumpe: data.Wärmepumpe || '',
+    eAutoPlanung: data['E-Auto in Planung'] || '',
     sonderbelegung: data['Sonderbelegung'] || false,
-    anzahlModule: data['Anzahl Module'] || '',
+    anzahlModule: data['Anzahl Module'] || 24,
     anzahlOptimierer: data['Anzahl Optimierer'] || '',
     benoetigteKwp: data['Benötigte kWp'] || '',
     speicherGroesse: data['Speichergröße'] || '',
-    anzahlStockwerke: data['Anzahl Stockwerke'] || '',
-    anzahlDachseiten: data['Anzahl Dachseiten'] || '',
+    anzahlStockwerke: data['Anzahl Stockwerke'] || 2,
+    anzahlDachseiten: data['Anzahl Dachseiten'] || 2,
     glasGlasModule: data['Glas-Glas-Module'] || false,
     fullBlackModule: data['Full-Black-Module'] || false,
     kabelweg: data['Kabelweg'] || '',
-    ziegeldeckmassLaenge: data['Ziegeldeckmaß Länge'] || '',
-    ziegeldeckmassBreite: data['Ziegeldeckmaß Breite'] || '',
+    ziegeldeckmassLaenge: data['Ziegeldeckmaß Länge'] || 0.42,
+    ziegeldeckmassBreite: data['Ziegeldeckmaß Breite'] || 0.3,
     dachneigung: data['Dachneigung in Grad'] || '',
-    sparrenmassAbstand: data['Sparrenmaße Abstand'] || '',
-    sparrenmassHoehe: data['Sparrenmaße Höhe'] || '',
-    sparrenmassBreite: data['Sparrenmaße Breite'] || '',
+    sparrenmassAbstand: data['Sparrenmaße Abstand'] || 0.6,
+    sparrenmassHoehe: data['Sparrenmaße Höhe'] || 0.12,
+    sparrenmassBreite: data['Sparrenmaße Breite'] || 0.1,
     aufsparrendaemmungStaerke: data['Aufsparrendämmung Stärke'] || '',
     trapezblechStaerke: data['Trapezblech Stärke'] || '',
     sandwichblech: data['Sandwichblech'] || false,
@@ -266,12 +269,14 @@ export async function getNinoxRecord(recordId) {
     anzahlZaehlerfelder: data['Anzahl Zählerfelder'] || '',
     standortZaehlerschrank: data['Standort Zählerschrank'] || '',
     standortHak: data['Standort HAK'] || '',
-    laengeKabelwegHakZs: data['Länge Kabelweg von HAK zu ZS'] || '',
-    otpWert: data['OTP-Wert'] || '',
+    laengeKabelwegHakZs: data['Länge Kabelweg von HAK zu ZS'] || 5,
+    otpWert: data['OTP-Wert'] || 0.25,
     notstromPlanen: data['Notstrom planen'] || false,
     internetanschlussVorhanden:
-      data['Internetanschluss (LAN) am Wechselrichterplatz vorhanden'] || '',
+      data['Internetanschluss (LAN) am Wechselrichterplatz vorhanden'] || false,
     abschlussTermin: data['Abschlusstermin'] || '',
+    chart: data['Chart'] || '',
+    signature: data['Signature'] || '',
   };
 }
 

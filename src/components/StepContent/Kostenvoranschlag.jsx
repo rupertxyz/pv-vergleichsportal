@@ -56,6 +56,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
 
   const handleSubmit = async () => {
     setShowCalculatorAnimation(true);
+    setShouldPrompt(false);
     await asyncTimeout(ASYNC_TIMEOUT);
     setAnimationColorOne('gray');
     setAnimationOneCheck(true);
