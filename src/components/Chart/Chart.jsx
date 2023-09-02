@@ -96,7 +96,16 @@ function CashflowGraph({
       }
     }
     getChartImage();
-  }, [formContent]);
+  }, [
+    formContent,
+    purchasePrice,
+    einspeiseVerguetung,
+    pvs,
+    inflation,
+    lossPercent,
+    costPerKwh,
+    setFormContent,
+  ]);
 
   return (
     <ResponsiveContainer width="100%" height={isMobile ? 300 : 500}>

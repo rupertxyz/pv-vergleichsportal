@@ -156,7 +156,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
             )}
 
             {showSuccess && (
-              <div className="flex flex-col w-full h-full items-center justify-center">
+              <div className="flex flex-col w-full h-full items-center justify-center p-4">
                 <h2 className="text-xl font-bold mb-6">
                   Angebot wurde erstellt 🎉
                 </h2>
