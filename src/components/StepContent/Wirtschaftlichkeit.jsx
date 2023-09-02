@@ -69,8 +69,11 @@ function calculateSavings(
 // calculation EEG €: EEG-S * EEG-Umlage? * Jahre EEG (20)
 
 const Wirtschaftlichkeit = () => {
-  const { formContent, setFormContent } = useContext(FormContext);
+  const { formContent, setFormContent, calculationData, setCalculationData } =
+    useContext(FormContext);
   const { userColor } = useOutletContext();
+
+  console.log('calculationData', calculationData);
 
   const [pvLeistung, setPvLeistung] = useState(0);
   const [verbrauch, setVerbrauch] = useState(0);
@@ -110,7 +113,9 @@ const Wirtschaftlichkeit = () => {
     setkWp((prevkWp) =>
       formContent.benoetigteKwp ? formContent.benoetigteKwp : 0
     );
-    setKaufPreis(calculateKaufpreis(formContent));
+    setKaufPreis(
+      calculateKaufpreis(formContent, calculationData, setCalculationData)
+    );
   }, [formContent]);
 
   useEffect(() => {
@@ -171,6 +176,31 @@ const Wirtschaftlichkeit = () => {
       setKapitalrendite(kapitalRenditeReformat);
     }
   }, [eegCash, einsparung, kaufPreis]);
+
+  useEffect(() => {
+    setCalculationData((prevCalculationData) => {
+      return {
+        ...prevCalculationData,
+        autarkie: (autarkie * 100).toFixed(0) + '%',
+        eigenverbrauch: (eigenverbrauch * 100).toFixed(0) + '%',
+        cashflow,
+        kapitalrendite,
+        verbrauch: verbrauch.toFixed(0) + ' kWh',
+        strompreis: new Intl.NumberFormat('de', {
+          currency: 'EUR',
+          style: 'currency',
+        }).format(formContent.arbeitspreis),
+        grundpreis: new Intl.NumberFormat('de', {
+          currency: 'EUR',
+          style: 'currency',
+        }).format(formContent.grundgebuehr),
+        kaufPreis: new Intl.NumberFormat('de', {
+          currency: 'EUR',
+          style: 'currency',
+        }).format(kaufPreis),
+      };
+    });
+  }, [kaufPreis, autarkie, eigenverbrauch, cashflow, kapitalrendite]);
 
   return (
     <>

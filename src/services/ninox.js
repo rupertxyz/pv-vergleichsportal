@@ -266,7 +266,7 @@ export async function getNinoxRecord(recordId) {
     privUnterzaehler: data['Priv. Unterzähler'] || false,
     unterverteiler: data['Unterverteiler'] || false,
     zaehlerschrankTauschen: data['Zählerschrank tauschen'] || false,
-    anzahlZaehlerfelder: data['Anzahl Zählerfelder'] || '',
+    anzahlZaehlerFelder: data['Anzahl Zählerfelder'] || '',
     standortZaehlerschrank: data['Standort Zählerschrank'] || '',
     standortHak: data['Standort HAK'] || '',
     laengeKabelwegHakZs: data['Länge Kabelweg von HAK zu ZS'] || 5,

@@ -3,16 +3,16 @@ const PRICES = {
   UK: 130,
   OPTIMIZER: 50,
   WECHSELRICHTER: [
-    { size: 3.825, price: 919, amount: 1 },
-    { size: 5.1, price: 961, amount: 1 },
-    { size: 5.95, price: 1012, amount: 1 },
-    { size: 7.9, price: 1133, amount: 1 },
-    { size: 10.3, price: 1340, amount: 1 },
-    { size: 12, price: 1507, amount: 1 },
-    { size: 16, price: 2266, amount: 2 },
-    { size: 20.5, price: 2680, amount: 2 },
-    { size: 26, price: 3014, amount: 2 },
-    { size: 30, price: 4020, amount: 3 },
+    { size: 3.825, price: 919, amount: 1, name: '3KTL' },
+    { size: 5.1, price: 961, amount: 1, name: '4KTL' },
+    { size: 5.95, price: 1012, amount: 1, name: '5KTL' },
+    { size: 7.9, price: 1133, amount: 1, name: '6KTL' },
+    { size: 10.3, price: 1340, amount: 1, name: '8KTL' },
+    { size: 12, price: 1507, amount: 1, name: '10KTL' },
+    { size: 16, price: 2266, amount: 2, name: '2x6KTL' },
+    { size: 20.5, price: 2680, amount: 2, name: '2x8KTL' },
+    { size: 26, price: 3014, amount: 2, name: '2x10KTL' },
+    { size: 30, price: 4020, amount: 3, name: '3x8KTL' },
   ],
   BATTERY: [
     { size: 5000, price: 3163 },
@@ -31,18 +31,22 @@ const PRICES = {
     {
       anzahlFelder: 1,
       price: 2400,
+      name: '1 Feld Zählerschrank (1 Zählerfelder + APZ + Sicherungsfeld)',
     },
     {
       anzahlFelder: 2,
       price: 2660,
+      name: '2 Feld Zählerschrank (2 Zählerfelder + APZ + Sicherungsfeld)',
     },
     {
       anzahlFelder: 3,
       price: 3050,
+      name: '3 Feld Zählerschrank (3 Zählerfelder + APZ + Sicherungsfeld)',
     },
     {
       anzahlFelder: 4,
       price: 3830,
+      name: '4 Feld Zählerschrank (4 Zählerfelder + APZ + Sicherungsfeld)',
     },
   ],
   VERKABELUNG: [
@@ -78,7 +82,7 @@ function optimiererPreis(amount) {
   return amount * PRICES.OPTIMIZER;
 }
 
-function wechselRichterPreis(kWp) {
+function wechselRichterPreis(kWp, calculationData, setCalculationData) {
   let price = 0;
   for (let item of PRICES.WECHSELRICHTER) {
     if (kWp <= item.size) {
@@ -86,6 +90,15 @@ function wechselRichterPreis(kWp) {
       break;
     }
   }
+
+  // find price in PRICES.WECHSELRICHTER and get the object
+  const wechselrichter = PRICES.WECHSELRICHTER.find(
+    (item) => item.price * item.amount === price
+  );
+  setCalculationData({
+    ...calculationData,
+    wechselrichter,
+  });
   return price;
 }
 
@@ -121,7 +134,12 @@ function frachtKosten() {
   return PRICES.FREIGHT_COST;
 }
 
-function zaehlerSchrank(zaehlerschrankTauschen, anzahlZaehlerFelder) {
+function zaehlerSchrank(
+  zaehlerschrankTauschen,
+  anzahlZaehlerFelder,
+  calculationData,
+  setCalculationData
+) {
   if (!zaehlerschrankTauschen || !anzahlZaehlerFelder) return 0;
   let price = 0;
   for (let item of PRICES.ZAEHLERSCHRANK) {
@@ -130,6 +148,11 @@ function zaehlerSchrank(zaehlerschrankTauschen, anzahlZaehlerFelder) {
       break;
     }
   }
+  // find price in PRICES.WECHSELRICHTER and get the object
+  const zaehlerschrank = PRICES.ZAEHLERSCHRANK.find(
+    (item) => item.price === price
+  );
+  setCalculationData({ ...calculationData, zaehlerschrank });
   return price;
 }
 
@@ -185,12 +208,20 @@ function elektroZusatzKomponenten(
   );
 }
 
-export default function calculateKaufpreis(formContent) {
+export default function calculateKaufpreis(
+  formContent,
+  calculationData,
+  setCalculationData
+) {
   return (
     modulPreis(formContent.anzahlModule) +
     ukPreis(formContent.benoetigteKwp) +
     optimiererPreis(formContent.anzahlOptimierer) +
-    wechselRichterPreis(formContent.benoetigteKwp) +
+    wechselRichterPreis(
+      formContent.benoetigteKwp,
+      calculationData,
+      setCalculationData
+    ) +
     batterieSpeicherPreis(formContent.speicherGroesse) +
     montagePreis(formContent.anzahlModule) +
     spsPreis() +
@@ -198,7 +229,9 @@ export default function calculateKaufpreis(formContent) {
     gerüstBisMesswandler(formContent.nostromPlanen) +
     zaehlerSchrank(
       formContent.zaehlerschrankTauschen,
-      formContent.anzahlZaehlerFelder
+      formContent.anzahlZaehlerFelder,
+      calculationData,
+      setCalculationData
     ) +
     verkabelung(formContent.laengeKabelwegHakZs) +
     vertrieb(formContent.otpWert, formContent.benoetigteKwp) +

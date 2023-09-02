@@ -52,6 +52,7 @@ export default function Dach() {
           step={0.01}
           identifier="aufsparrendaemmungStaerke"
           unitName="mm"
+          placeholder="0 mm"
         />
         <Number
           label="Trapezblech Stärke"

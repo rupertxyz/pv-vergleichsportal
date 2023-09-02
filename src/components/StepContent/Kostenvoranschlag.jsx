@@ -11,7 +11,7 @@ import { FormContext } from '../../Client';
 import AnimationStep from '../KVA/AnimationStep';
 import { useOutletContext } from 'react-router-dom';
 
-const ASYNC_TIMEOUT = 2000;
+const ASYNC_TIMEOUT = 100;
 
 export const asyncTimeout = (ms) => {
   return new Promise((resolve) => {
@@ -21,7 +21,9 @@ export const asyncTimeout = (ms) => {
 
 const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const params = useParams();
-  const { formContent, setFormContent } = useContext(FormContext);
+  const { formContent, setFormContent, calculationData, setCalculationData } =
+    useContext(FormContext);
+
   const { userColor, userObject, customers } = useOutletContext();
 
   const customer = customers.find(
@@ -30,11 +32,8 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
 
   const fetcher = useFetcher();
 
-  console.log(fetcher);
-
   const [showModal, setShowModal] = useState(false);
   const [savedSignature, setSavedSignature] = useState(null);
-  console.log('savedSignature', savedSignature);
   const [showCalculatorAnimation, setShowCalculatorAnimation] = useState(false);
   const [animationColorOne, setAnimationColorOne] = useState('black');
   const [animationColorTwo, setAnimationColorTwo] = useState('black');
@@ -80,8 +79,14 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
     setShowAnimation(false);
     setShowLoader(true);
     setTimeout(() => {
+      const stringifiedCalculationData = JSON.stringify(calculationData);
+      console.log('stringifiedCalculationData', stringifiedCalculationData);
       fetcher.submit(
-        { ...formContent, logo: userObject?.user?.publicMetadata?.logo },
+        {
+          ...formContent,
+          calculationData: stringifiedCalculationData,
+          logo: userObject?.user?.publicMetadata?.logo,
+        },
         {
           method: 'put',
           action: `/clients/${params.id}/?index`,
