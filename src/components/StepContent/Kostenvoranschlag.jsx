@@ -11,7 +11,7 @@ import { FormContext } from '../../Client';
 import AnimationStep from '../KVA/AnimationStep';
 import { useOutletContext } from 'react-router-dom';
 
-const ASYNC_TIMEOUT = 100;
+const ASYNC_TIMEOUT = 5000;
 
 export const asyncTimeout = (ms) => {
   return new Promise((resolve) => {
@@ -60,6 +60,18 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const handleSubmit = async () => {
     setShowAnimation(true);
     setShowCalculatorAnimation(true);
+    const stringifiedCalculationData = JSON.stringify(calculationData);
+    fetcher.submit(
+      {
+        ...formContent,
+        calculationData: stringifiedCalculationData,
+        logo: userObject?.user?.publicMetadata?.logo,
+      },
+      {
+        method: 'put',
+        action: `/clients/${params.id}/?index`,
+      }
+    );
     setShouldPrompt(false);
     await asyncTimeout(ASYNC_TIMEOUT);
     setAnimationColorOne('gray');
@@ -78,20 +90,6 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
     setAnimationFiveCheck(true);
     setShowAnimation(false);
     setShowLoader(true);
-    setTimeout(() => {
-      const stringifiedCalculationData = JSON.stringify(calculationData);
-      fetcher.submit(
-        {
-          ...formContent,
-          calculationData: stringifiedCalculationData,
-          logo: userObject?.user?.publicMetadata?.logo,
-        },
-        {
-          method: 'put',
-          action: `/clients/${params.id}/?index`,
-        }
-      );
-    }, 500);
   };
 
   useEffect(() => {
@@ -151,7 +149,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
             {showLoader && (
               <div className="flex flex-col items-center justify-center">
                 <h2 className="text-xl font-bold mb-6">
-                  Angebot wird erstellt
+                  Angebot wird erstellt...
                 </h2>
                 <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
               </div>

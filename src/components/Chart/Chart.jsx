@@ -86,6 +86,7 @@ function CashflowGraph({
     async function getChartImage() {
       if (ref.current) {
         const png = await getPng();
+        console.log('png', png);
         if (png && formContent.chart !== png) {
           setFormContent((currentFormContent) => ({
             ...currentFormContent,

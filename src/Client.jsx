@@ -36,11 +36,13 @@ async function clientActions({ request, params }) {
       }
     });
 
-    if (data.signature) {
+    console.log('data here', data);
+
+    if (data.signature && !data.signature.includes('https://firebasestorage')) {
       const signatureDownloadUrl = await uploadFile('signature', data);
       data.signature = signatureDownloadUrl;
     }
-    if (data.chart) {
+    if (data.chart && !data.chart.includes('https://firebasestorage')) {
       const chartDownloadUrl = await uploadFile('chart', data);
       data.chart = chartDownloadUrl;
     }
@@ -110,6 +112,7 @@ const Client = () => {
   }, [currentStep]);
 
   const [formContent, setFormContent] = useState({});
+  console.log(formContent);
   const [calculationData, setCalculationData] = useState({});
 
   useEffect(() => {
