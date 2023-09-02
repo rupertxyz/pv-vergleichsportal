@@ -73,8 +73,6 @@ const Wirtschaftlichkeit = () => {
     useContext(FormContext);
   const { userColor } = useOutletContext();
 
-  console.log('calculationData', calculationData);
-
   const [pvLeistung, setPvLeistung] = useState(0);
   const [verbrauch, setVerbrauch] = useState(0);
   const [speicher, setSpeicher] = useState(0);

@@ -1,15 +1,11 @@
 export async function writePdf(data) {
-  console.log('data', data);
   const calculationData = JSON.parse(data.calculationData);
-  console.log('calculationData', calculationData);
 
   const today = new Intl.DateTimeFormat('de-DE', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
   }).format(new Date());
-
-  console.log(data.chart);
 
   // build line items array
   const lineItems = [

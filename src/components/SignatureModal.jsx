@@ -9,8 +9,6 @@ const SignatureModal = ({
 }) => {
   const sigPad = useRef(null);
 
-  console.log('sigpad', sigPad);
-
   const saveSignature = (e) => {
     e.preventDefault();
     if (sigPad && sigPad.current) {

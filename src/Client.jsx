@@ -26,8 +26,6 @@ async function clientActions({ request, params }) {
   if (request.method === 'PUT') {
     const data = Object.fromEntries(await request.formData());
 
-    console.log('data', data);
-
     // convert data to Boolean if string is true or false
     Object.keys(data).forEach((key) => {
       if (data[key] === 'true') {
@@ -112,9 +110,7 @@ const Client = () => {
   }, [currentStep]);
 
   const [formContent, setFormContent] = useState({});
-  console.log('form content', formContent);
   const [calculationData, setCalculationData] = useState({});
-  console.log('calculation data', calculationData);
 
   useEffect(() => {
     if (clientData) {

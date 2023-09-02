@@ -80,7 +80,6 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
     setShowLoader(true);
     setTimeout(() => {
       const stringifiedCalculationData = JSON.stringify(calculationData);
-      console.log('stringifiedCalculationData', stringifiedCalculationData);
       fetcher.submit(
         {
           ...formContent,

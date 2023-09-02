@@ -95,9 +95,8 @@ function wechselRichterPreis(kWp, calculationData, setCalculationData) {
   const wechselrichter = PRICES.WECHSELRICHTER.find(
     (item) => item.price * item.amount === price
   );
-  setCalculationData({
-    ...calculationData,
-    wechselrichter,
+  setCalculationData((prevCalculationData) => {
+    return { ...prevCalculationData, wechselrichter };
   });
   return price;
 }
@@ -152,7 +151,9 @@ function zaehlerSchrank(
   const zaehlerschrank = PRICES.ZAEHLERSCHRANK.find(
     (item) => item.price === price
   );
-  setCalculationData({ ...calculationData, zaehlerschrank });
+  setCalculationData((prevCalculationData) => {
+    return { ...prevCalculationData, zaehlerschrank };
+  });
   return price;
 }
 
