@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useOutletContext, Form } from 'react-router-dom';
 import ClientListItem from './components/Welcome/ClientListItem';
 
 const Clients = () => {
   const { userColor, customers } = useOutletContext();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Filter customers based on the search term
+  const filteredCustomers = customers.filter((customer) => {
+    return (
+      customer.vorname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.nachname.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <div
       style={{ minHeight: 'calc(100vh - 7rem)', width: '100%' }}
@@ -20,11 +30,18 @@ const Clients = () => {
             style={{ backgroundColor: userColor }}
           >
             <i className="fa-light fa-plus"></i>
-            <span>Neuer Kunde</span>
+            <span>Neues Projekt</span>
           </button>
         </Form>
       </div>
-      {customers.map((customer, i) => (
+      <input
+        type="text"
+        placeholder="Suche nach Vorname oder Nachname"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} // 2. Update the search term when the input value changes
+        className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+      />
+      {filteredCustomers.map((customer, i) => (
         <ClientListItem key={i} customer={customer} userColor={userColor} />
       ))}
     </div>

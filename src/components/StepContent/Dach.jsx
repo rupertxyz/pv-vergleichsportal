@@ -15,12 +15,14 @@ export default function Dach() {
           step={0.01}
           identifier="ziegeldeckmassLaenge"
           unitName="Meter"
+          placeholder="0,42 Meter"
         />
         <DecimalNumber
           label="Ziegeldeckmaß Breite"
           step={0.1}
           identifier="ziegeldeckmassBreite"
           unitName="Meter"
+          placeholder="0,3 Meter"
         />
         <Number
           label="Dachneigung in Grad"
@@ -34,18 +36,21 @@ export default function Dach() {
           step={0.1}
           identifier="sparrenmassAbstand"
           unitName="cm"
+          placeholder="0,6cm"
         />
         <DecimalNumber
           label="Sparrenmaße Breite"
           step={0.01}
           identifier="sparrenmassBreite"
           unitName="cm"
+          placeholder="0,1cm"
         />
         <DecimalNumber
           label="Sparrenmaße Höhe"
           step={0.01}
           identifier="sparrenmassHoehe"
           unitName="cm"
+          placeholder="0,12cm"
         />
         <DecimalNumber
           label="Aufsparrendämmung Stärke"

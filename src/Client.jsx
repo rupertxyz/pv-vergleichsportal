@@ -36,8 +36,6 @@ async function clientActions({ request, params }) {
       }
     });
 
-    console.log('data here', data);
-
     if (data.signature && !data.signature.includes('https://firebasestorage')) {
       const signatureDownloadUrl = await uploadFile('signature', data);
       data.signature = signatureDownloadUrl;
@@ -112,7 +110,6 @@ const Client = () => {
   }, [currentStep]);
 
   const [formContent, setFormContent] = useState({});
-  console.log(formContent);
   const [calculationData, setCalculationData] = useState({});
 
   useEffect(() => {

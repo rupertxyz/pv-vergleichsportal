@@ -57,6 +57,7 @@ export default function Elektro() {
           step={1}
           identifier="laengeKabelwegHakZs"
           unitName="Meter"
+          placeholder="5 Meter"
         />
         <DecimalNumber
           label="OTP-Wert"

@@ -13,6 +13,26 @@ const Checkbox = ({ label, identifier, smWidth = 'w-full' }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (formContent.zaehlerschrankTauschen) {
+      setFormContent((prevFormContent) => {
+        return {
+          ...prevFormContent,
+          anzahlZaehlerFelder: 1,
+          laengeKabelwegHakZs: 5,
+        };
+      });
+    } else {
+      setFormContent((prevFormContent) => {
+        return {
+          ...prevFormContent,
+          anzahlZaehlerFelder: '',
+          laengeKabelwegHakZs: '',
+        };
+      });
+    }
+  }, [formContent.zaehlerschrankTauschen]);
+
   return (
     <div className={`${smWidth} p-2`}>
       <label className="block text-sm font-medium leading-6 text-gray-900 truncate">

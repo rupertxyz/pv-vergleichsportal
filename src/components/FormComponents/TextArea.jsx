@@ -1,6 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useActionData } from 'react-router-dom';
-import FormErrorMsg from '../FormErrorMsg';
+import React, { useContext } from 'react';
 import { FormContext } from '../../Client';
 
 export default function TextArea({
@@ -27,6 +25,7 @@ export default function TextArea({
           }
           className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
           placeholder={placeholder}
+          autoComplete="off"
         />
       </div>
     </div>

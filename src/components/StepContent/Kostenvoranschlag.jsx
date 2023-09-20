@@ -270,6 +270,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
               setSavedSignature={setSavedSignature}
               setShowModal={setShowModal}
               setFormContent={setFormContent}
+              formContent={formContent}
             />
           )}
           <div className="w-full flex justify-end mt-4 p-2 gap-4">

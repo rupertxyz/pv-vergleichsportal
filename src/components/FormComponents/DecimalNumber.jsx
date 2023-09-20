@@ -84,6 +84,7 @@ export default function DecimalNumber({
               borderRadius: '0.25rem',
             },
           }}
+          autoComplete="off"
         />
       </div>
     </div>

@@ -6,8 +6,33 @@ const SignatureModal = ({
   setSavedSignature,
   setShowModal,
   setFormContent,
+  formContent,
 }) => {
   const sigPad = useRef(null);
+
+  const prefillSignature = async () => {
+    if (sigPad && sigPad.current) {
+      const canvas = sigPad.current.getCanvas();
+      const ctx = canvas.getContext('2d');
+      const signatureText = `${formContent.vorname} ${formContent.nachname}`;
+
+      // Ensure the Pacifico font is loaded
+      await document.fonts.load('40px Dancing Script');
+
+      ctx.font = '50px Dancing Script'; // Use a handwritten-like font
+      ctx.webkitFontSmoothing = 'antialiased'; // Add font smoothing
+      ctx.globalAlpha = 0.9; // Adjust global alpha
+      const textWidth = ctx.measureText(signatureText).width;
+
+      // Calculate center coordinates
+      const centerX = (canvas.width - textWidth) / 2;
+      const centerY = canvas.height / 2;
+
+      if (formContent.vorname && formContent.nachname) {
+        ctx.fillText(signatureText, centerX, centerY);
+      }
+    }
+  };
 
   const saveSignature = (e) => {
     e.preventDefault();
@@ -26,6 +51,8 @@ const SignatureModal = ({
   useEffect(() => {
     if (savedSignature) {
       sigPad.current.fromDataURL(savedSignature);
+    } else {
+      prefillSignature(); // Prefill the signature when the modal is opened
     }
   }, [savedSignature]);
 

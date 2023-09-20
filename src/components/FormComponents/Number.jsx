@@ -80,6 +80,7 @@ const Number = ({
               borderRadius: '0.25rem',
             },
           }}
+          autoComplete="off"
         />
       </div>
       {errorMessage && <FormErrorMsg />}

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import './Address.css';
-import { useActionData } from 'react-router-dom';
 import { FormContext } from '../../Client';
 
 export default function Address({ label, placeholder, identifier }) {
@@ -9,20 +8,6 @@ export default function Address({ label, placeholder, identifier }) {
   const value = formContent[identifier] || '';
   const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false);
   const [autocomplete, setAutocomplete] = useState(null);
-  const data = useActionData();
-  const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    if (value) {
-      setErrorMessage('');
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (data) {
-      setErrorMessage(data.messages[identifier] || '');
-    }
-  }, [data]);
 
   useEffect(() => {
     // Only load the script if it's not already loaded
@@ -86,11 +71,9 @@ export default function Address({ label, placeholder, identifier }) {
           ref={autocompleteInputRef}
           className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
           placeholder={placeholder}
+          autoComplete="off"
         />
       </div>
-      {errorMessage && (
-        <p className="text-red-500 pt-2">Bitte Wert eintragen</p>
-      )}
     </div>
   );
 }

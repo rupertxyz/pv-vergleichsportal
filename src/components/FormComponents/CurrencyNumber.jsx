@@ -50,6 +50,7 @@ const CurrencyNumber = ({ label, step, identifier, smWidth = 'full' }) => {
               borderRadius: '0.25rem',
             },
           }}
+          autoComplete="off"
         />
       </div>
     </div>
