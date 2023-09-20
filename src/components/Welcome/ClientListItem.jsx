@@ -24,7 +24,7 @@ const ClientListItem = ({ customer }) => {
               </p>
             </div>
           </div>
-          <div className="lg:order-3 flex gap-2">
+          <div className="lg:order-3 flex flex-col lg:flex-row gap-2">
             <div className="flex flex-1 gap-1 items-center justify-end">
               {customer?.pdf ? (
                 <button
@@ -32,7 +32,7 @@ const ClientListItem = ({ customer }) => {
                     e.preventDefault();
                     window.open(customer.pdf, '_blank');
                   }}
-                  className="inline-flex items-center text-center space-x-1 bg-blue-100 hover:bg-blue-200 text-xs font-medium px-3 py-2 rounded"
+                  className="w-20 text-center bg-blue-100 hover:bg-blue-200 text-xs font-medium px-4 py-2 rounded"
                 >
                   <p>PDF</p>
                 </button>
@@ -59,7 +59,7 @@ const ClientListItem = ({ customer }) => {
                     );
                   }
                 }}
-                className="inline-flex items-center space-x-1 bg-rose-100 hover:bg-rose-200 text-xs font-medium px-3 py-2 rounded"
+                className="w-20 text-center space-x-1 bg-rose-100 hover:bg-rose-200 text-xs font-medium px-3 py-2 rounded"
               >
                 <p>Löschen</p>
               </button>
