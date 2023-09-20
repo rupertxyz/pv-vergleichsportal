@@ -6,10 +6,10 @@ const ClientListItem = ({ customer }) => {
   return (
     <NavLink
       to={`/clients/${customer.id}`}
-      className="min-h-[90px] max-h-[110px] bg-white hover:bg-gray-100 shadow-sm hover:shadow-md border border-slate-100 flex flex-col grow rounded transition-all duration-200"
+      className="bg-white hover:bg-gray-100 shadow-sm hover:shadow-md border border-slate-100 flex flex-col rounded transition-all duration-200"
     >
-      <div className="flex flex-col grow items-center justify-center p-4 gap-4">
-        <div className="flex flex-row lg:items-center w-full gap-2">
+      <div className="flex flex-col items-center justify-center p-4">
+        <div className="flex lg:items-center w-full gap-2">
           <div className="flex flex-col gap-1 flex-1 justify-start lg:order-1">
             <h5 className="font-bold text-lg lg:text-xl">
               {`${customer.titel || ''} ${customer.vorname || 'Neuer Kunde'} ${
@@ -18,9 +18,9 @@ const ClientListItem = ({ customer }) => {
             </h5>
             <div className="text-sm flex items-center gap-2">
               <p>
-                Firma: {customer.firma || 'Keine Firma angegeben'}
+                {customer.firma || 'Keine Firma angegeben'}
                 <br />
-                Adresse: {customer.adresse || 'Keine Adresse angegeben'}
+                {customer.adresse || 'Keine Adresse angegeben'}
               </p>
             </div>
           </div>
