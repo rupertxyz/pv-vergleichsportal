@@ -10,8 +10,6 @@ export default function Input({ label, placeholder, identifier }) {
   const value = formContent[identifier] || '';
   const containerRef = useRef(null);
 
-  console.log('customers', customers);
-
   useEffect(() => {
     if ((label === 'Vorname' || label === 'Nachname') && value) {
       const filtered = customers.filter((customer) =>

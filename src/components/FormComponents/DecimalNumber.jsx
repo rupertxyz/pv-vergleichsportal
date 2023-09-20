@@ -24,8 +24,10 @@ export default function DecimalNumber({
       : '';
 
   useEffect(() => {
-    const newBenoetigteKwp =
-      formContent.anzahlModule * (WATT_PRO_MODULE / 1000);
+    const newBenoetigteKwp = (
+      formContent.anzahlModule *
+      (WATT_PRO_MODULE / 1000)
+    ).toFixed(2);
     if (
       formContent.anzahlModule != null &&
       formContent.benoetigteKwp !== newBenoetigteKwp
