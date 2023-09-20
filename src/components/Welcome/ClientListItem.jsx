@@ -16,8 +16,8 @@ const ClientListItem = ({ customer }) => {
                 customer.nachname || ''
               }`}
             </h5>
-            <div className="text-sm flex items-center gap-2">
-              <p>
+            <div className="w-60 text-sm flex items-center gap-2">
+              <p className="truncate">
                 {customer.firma || 'Keine Firma angegeben'}
                 <br />
                 {customer.adresse || 'Keine Adresse angegeben'}
@@ -32,7 +32,7 @@ const ClientListItem = ({ customer }) => {
                     e.preventDefault();
                     window.open(customer.pdf, '_blank');
                   }}
-                  className="w-20 text-center bg-blue-100 hover:bg-blue-200 text-xs font-medium px-4 py-2 rounded"
+                  className="w-20 text-center bg-blue-100 hover:bg-blue-200 text-xs font-medium py-2 rounded"
                 >
                   <p>PDF</p>
                 </button>
@@ -59,7 +59,7 @@ const ClientListItem = ({ customer }) => {
                     );
                   }
                 }}
-                className="w-20 text-center space-x-1 bg-rose-100 hover:bg-rose-200 text-xs font-medium px-3 py-2 rounded"
+                className="w-20 text-center bg-rose-100 hover:bg-rose-200 text-xs font-medium py-2 rounded"
               >
                 <p>Löschen</p>
               </button>
