@@ -27,7 +27,7 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
   const [showScrollLeft, setShowScrollLeft] = useState(false);
   const [showScrollRight, setShowScrollRight] = useState(false);
   const timeoutRef = useRef(null);
-  const { userColor } = useOutletContext();
+  const { userObject } = useOutletContext();
 
   const checkScroll = () => {
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainer.current;
@@ -91,7 +91,11 @@ const NewClientNav = ({ steps, currentStep, setCurrentStep }) => {
             className={`flex-auto text-center text-sm p-4 cursor-pointer ${
               index === currentStep ? ' text-white' : 'bg-gray-50 text-black'
             }`}
-            style={index === currentStep ? { backgroundColor: userColor } : {}}
+            style={
+              index === currentStep
+                ? { backgroundColor: userObject?.color }
+                : {}
+            }
             onClick={() => setCurrentStep(index)}
           >
             {step}

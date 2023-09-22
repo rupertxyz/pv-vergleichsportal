@@ -24,7 +24,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
   const { formContent, setFormContent, calculationData, setCalculationData } =
     useContext(FormContext);
 
-  const { userColor, userObject, customers } = useOutletContext();
+  const { userObject, customers } = useOutletContext();
 
   const customer = customers.find(
     (customer) => customer.id === parseInt(params.id)
@@ -166,7 +166,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
                       href={pdfUrl}
                       target="_blank"
                       className="flex flex-col justify-center text-center items-center p-4 border-2 rounded h-full"
-                      style={{ borderColor: userColor }}
+                      style={{ borderColor: userObject?.color }}
                     >
                       <span>Angebot öffnen</span>
                     </a>
@@ -176,7 +176,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
                     <NavLink
                       to="/"
                       className="flex flex-col justify-center text-center items-center p-4 border-2 rounded h-full"
-                      style={{ borderColor: userColor }}
+                      style={{ borderColor: userObject?.color }}
                     >
                       Alle Kunden
                     </NavLink>
@@ -276,7 +276,7 @@ const Kostenvoranschlag = ({ setShouldPrompt }) => {
           <div className="w-full flex justify-end mt-4 p-2 gap-4">
             <button
               className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80"
-              style={{ backgroundColor: userColor }}
+              style={{ backgroundColor: userObject?.color }}
               onClick={(e) => {
                 e.preventDefault();
                 handleSubmit();

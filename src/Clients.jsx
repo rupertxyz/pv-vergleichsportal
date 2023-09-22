@@ -3,7 +3,7 @@ import { useOutletContext, Form } from 'react-router-dom';
 import ClientListItem from './components/Welcome/ClientListItem';
 
 const Clients = () => {
-  const { userColor, customers } = useOutletContext();
+  const { userObject, customers } = useOutletContext();
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter customers based on the search term
@@ -27,7 +27,7 @@ const Clients = () => {
           <button
             type="submit"
             className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80"
-            style={{ backgroundColor: userColor }}
+            style={{ backgroundColor: userObject?.color }}
           >
             <i className="fa-light fa-plus"></i>
             <span>Neues Projekt</span>
@@ -42,7 +42,11 @@ const Clients = () => {
         className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
       />
       {filteredCustomers.map((customer, i) => (
-        <ClientListItem key={i} customer={customer} userColor={userColor} />
+        <ClientListItem
+          key={i}
+          customer={customer}
+          userColor={userObject?.color}
+        />
       ))}
     </div>
   );

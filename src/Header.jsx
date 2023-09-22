@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useClerk } from '@clerk/clerk-react';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 
-const Header = ({ userObject }) => {
+const Header = ({ userObject, userSignOut }) => {
   const [logo, setLogo] = useState('');
   const [subline, setSubline] = useState('');
-  const { signOut } = useClerk();
+  const [color, setColor] = useState('');
   const location = useLocation();
   const [backHover, setBackHover] = useState(false);
 
   useEffect(() => {
-    if (userObject.isLoaded && userObject.isSignedIn) {
-      setLogo(userObject?.user?.publicMetadata?.logo);
-      setSubline(userObject?.user?.publicMetadata?.subline);
-    }
+    setLogo(userObject?.logo);
+    setSubline(userObject?.subline);
+    setColor(userObject?.color);
   }, [userObject]);
 
   useEffect(() => {
@@ -26,7 +24,7 @@ const Header = ({ userObject }) => {
     <div>
       {location.pathname === '/' && (
         <div className="absolute top-1 right-1 flex justify-end gap-1">
-          <button onClick={() => signOut()}>Sign out</button>
+          <button onClick={userSignOut}>Sign out</button>
           <ArrowTopRightOnSquareIcon className="w-4" />
         </div>
       )}
@@ -36,11 +34,7 @@ const Header = ({ userObject }) => {
           className="absolute top-2 left-2 flex justify-start gap-1"
           onMouseEnter={() => setBackHover(true)}
           onMouseLeave={() => setBackHover(false)}
-          style={
-            (backHover &&
-              userObject && { color: userObject.user.publicMetadata.color }) ||
-            {}
-          }
+          style={(backHover && userObject && { color }) || {}}
         >
           <ArrowLeftIcon className="w-4" />
           <span>Zurück</span>

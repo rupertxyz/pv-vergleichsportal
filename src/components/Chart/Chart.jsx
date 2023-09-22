@@ -23,7 +23,7 @@ function CashflowGraph({
   formContent,
   setFormContent,
 }) {
-  const { userColor } = useOutletContext();
+  const { userObject } = useOutletContext();
   const [activeIndex, setActiveIndex] = useState(null);
   const [getPng, { ref, isLoading }] = useCurrentPng();
 
@@ -140,7 +140,7 @@ function CashflowGraph({
           {data.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={index === activeIndex ? userColor : '#000'}
+              fill={index === activeIndex ? userObject?.color : '#000'}
             />
           ))}
         </Bar>{' '}

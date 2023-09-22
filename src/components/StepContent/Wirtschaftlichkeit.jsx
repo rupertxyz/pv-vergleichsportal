@@ -71,7 +71,7 @@ function calculateSavings(
 const Wirtschaftlichkeit = () => {
   const { formContent, setFormContent, calculationData, setCalculationData } =
     useContext(FormContext);
-  const { userColor } = useOutletContext();
+  const { userObject } = useOutletContext();
 
   const [pvLeistung, setPvLeistung] = useState(0);
   const [verbrauch, setVerbrauch] = useState(0);
@@ -209,7 +209,7 @@ const Wirtschaftlichkeit = () => {
         <div className="w-1/2 md:w-1/2 p-2">
           <div
             className="flex flex-col justify-between p-4 border-2 rounded h-full"
-            style={{ borderColor: userColor }}
+            style={{ borderColor: userObject?.color }}
           >
             <h2 className="font-bold mb-2">Autarkie</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
@@ -221,7 +221,7 @@ const Wirtschaftlichkeit = () => {
         <div className="w-1/2 md:w-1/2 p-2">
           <div
             className="flex flex-col justify-between p-4 border-2 rounded h-full"
-            style={{ borderColor: userColor }}
+            style={{ borderColor: userObject?.color }}
           >
             <h2 className="font-bold mb-2">Anlagennutzung</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
@@ -233,7 +233,7 @@ const Wirtschaftlichkeit = () => {
         <div className="w-1/2 md:w-1/2 p-2">
           <div
             className="flex flex-col justify-between p-4 border-2 rounded h-full"
-            style={{ borderColor: userColor }}
+            style={{ borderColor: userObject?.color }}
           >
             <h2 className="font-bold mb-2">Gesamt-Cashflow</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">
@@ -245,7 +245,7 @@ const Wirtschaftlichkeit = () => {
         <div className="w-1/2 md:w-1/2 p-2">
           <div
             className="flex flex-col justify-between p-4 border-2 rounded h-full"
-            style={{ borderColor: userColor }}
+            style={{ borderColor: userObject?.color }}
           >
             <h2 className="font-bold mb-2">Kapitalrendite p.a.</h2>
             <p className="text-2xl font-bold md:text-5xl md:font-normal">

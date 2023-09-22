@@ -47,9 +47,9 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ClerkProvider publishableKey={clerkPubKey} localization={deDe}>
-    <React.StrictMode>
-      <RouterProvider router={router} fallbackElement={<Loading />} />
-    </React.StrictMode>
-  </ClerkProvider>
+  // <ClerkProvider publishableKey={clerkPubKey} localization={deDe}>
+  <React.StrictMode>
+    <RouterProvider router={router} fallbackElement={<Loading />} />
+  </React.StrictMode>
+  // </ClerkProvider>
 );
