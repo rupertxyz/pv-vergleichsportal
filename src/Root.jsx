@@ -6,6 +6,7 @@ import SignIn from './components/Auth/SignIn';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from './config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import Loading from './Loading';
 
 async function clientLoader() {
   const data = loadNinoxData();
@@ -15,6 +16,7 @@ async function clientLoader() {
 const Root = () => {
   const [authUser, setAuthUser] = useState(null);
   const [userObject, setUserObject] = useState(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
   const { customers } = useLoaderData();
 
   useEffect(() => {
@@ -24,6 +26,7 @@ const Root = () => {
       } else {
         setAuthUser(null);
       }
+      setLoadingAuth(false);
     });
 
     return () => listen();
@@ -54,6 +57,10 @@ const Root = () => {
       fetchUserDocument();
     }
   }, [authUser]);
+
+  if (loadingAuth) {
+    return <Loading />;
+  }
 
   return (
     <>
