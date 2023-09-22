@@ -56,6 +56,10 @@ const Root = () => {
     if (authUser) {
       fetchUserDocument();
     }
+
+    return () => {
+      setUserObject(null);
+    };
   }, [authUser]);
 
   if (loadingAuth) {
