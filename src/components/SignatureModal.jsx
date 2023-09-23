@@ -13,20 +13,25 @@ const SignatureModal = ({
   const prefillSignature = async () => {
     if (sigPad && sigPad.current) {
       const canvas = sigPad.current.getCanvas();
+
       const ctx = canvas.getContext('2d');
       const signatureText = `${formContent.vorname} ${formContent.nachname}`;
 
-      // Ensure the Pacifico font is loaded
-      await document.fonts.load('40px Dancing Script');
+      // // Ensure the Pacifico font is loaded
+      // await document.fonts.load('40px Dancing Script');
 
-      ctx.font = '50px Dancing Script'; // Use a handwritten-like font
+      const fontSize = 40;
+      const approximateTextHeight = fontSize * 0.7;
+
+      ctx.font = `${fontSize}px Dancing Script`;
+
       ctx.webkitFontSmoothing = 'antialiased'; // Add font smoothing
       ctx.globalAlpha = 0.9; // Adjust global alpha
       const textWidth = ctx.measureText(signatureText).width;
 
       // Calculate center coordinates
       const centerX = (canvas.width - textWidth) / 2;
-      const centerY = canvas.height / 2;
+      const centerY = (canvas.height + approximateTextHeight) / 2;
 
       if (formContent.vorname && formContent.nachname) {
         ctx.fillText(signatureText, centerX, centerY);
@@ -62,7 +67,8 @@ const SignatureModal = ({
         <SignatureCanvas
           penColor="black"
           canvasProps={{
-            className: 'w-full h-48',
+            width: 400,
+            height: 200,
           }}
           ref={sigPad}
         />
