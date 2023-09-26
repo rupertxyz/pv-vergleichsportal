@@ -56,7 +56,7 @@ function updateClientInNinox(data, recordId) {
   });
 }
 
-exports.logDocumentUpdate = functions.firestore
+exports.updateNinox = functions.firestore
   .document('clients/{clientId}')
   .onUpdate((change, context) => {
     const id = context.params.clientId;

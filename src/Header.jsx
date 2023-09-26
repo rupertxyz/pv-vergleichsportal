@@ -24,21 +24,6 @@ const Header = ({ userObject, userSignOut, authUser }) => {
     setBackHover(false);
   }, [location]);
 
-  const updateSublineInFirebase = async () => {
-    if (userObject) {
-      const userDocRef = doc(db, 'users', authUser.uid); // Reference to the user document
-
-      try {
-        await updateDoc(userDocRef, {
-          subline: subline,
-        });
-        console.log('Subline updated successfully');
-      } catch (error) {
-        console.error('Error updating subline:', error);
-      }
-    }
-  };
-
   return (
     <div>
       {location.pathname === '/' && (
@@ -65,15 +50,6 @@ const Header = ({ userObject, userSignOut, authUser }) => {
       <div className="flex justify-center text-sm text-center px-8">
         {subline}
       </div>
-      <input
-        value={subline}
-        onChange={(e) => setSubline(e.target.value)}
-        name="subline"
-        type="text"
-        placeholder="Suche"
-        className="w-full"
-      />
-      <button onClick={updateSublineInFirebase}>Update Subline</button>
     </div>
   );
 };
