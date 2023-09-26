@@ -25,9 +25,7 @@ const router = createBrowserRouter(
         element={<Clients />}
         action={async () => {
           const { customerId, projectId } = await createClient();
-
           await createClientInFirebase(customerId, projectId);
-
           return redirect(`/clients/${customerId}`);
         }}
       />

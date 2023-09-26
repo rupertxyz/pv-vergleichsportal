@@ -14,7 +14,10 @@ import { deleteClient } from './services/ninox';
 import { writePdf } from './services/docsautomator';
 import { uploadFile } from './services/firebase';
 
-import { updateClientAndProjectInFirebase } from './services/firebase';
+import {
+  updateClientAndProjectInFirebase,
+  deleteClientFromFirebase,
+} from './services/firebase';
 
 export const FormContext = createContext();
 
@@ -64,7 +67,8 @@ async function clientActions({ request, params }) {
     return data;
   }
   if (request.method === 'DELETE') {
-    await deleteClient(params.id);
+    // await deleteClient(params.id);
+    await deleteClientFromFirebase(params.id);
     return redirect('/');
   }
 }
