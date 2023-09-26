@@ -18,7 +18,7 @@ const SignatureModal = ({
       const signatureText = `${formContent.vorname} ${formContent.nachname}`;
 
       // // Ensure font is loaded
-      const fontSize = 25;
+      const fontSize = 30;
       await document.fonts.load(`${fontSize}px Dancing Script`);
       const approximateTextHeight = fontSize * 0.7;
 
