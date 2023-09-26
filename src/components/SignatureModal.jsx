@@ -17,10 +17,9 @@ const SignatureModal = ({
       const ctx = canvas.getContext('2d');
       const signatureText = `${formContent.vorname} ${formContent.nachname}`;
 
-      // // Ensure the Pacifico font is loaded
-      // await document.fonts.load('40px Dancing Script');
-
-      const fontSize = 40;
+      // // Ensure font is loaded
+      const fontSize = 25;
+      await document.fonts.load(`${fontSize}px Dancing Script`);
       const approximateTextHeight = fontSize * 0.7;
 
       ctx.font = `${fontSize}px Dancing Script`;
@@ -34,8 +33,10 @@ const SignatureModal = ({
       const centerY = (canvas.height + approximateTextHeight) / 2;
 
       if (formContent.vorname && formContent.nachname) {
-        ctx.fillText(signatureText, centerX, centerY);
+        ctx.fillText(signatureText, 20, 150);
       }
+
+      sigPad.current.fromDataURL(canvas.toDataURL());
     }
   };
 
@@ -63,14 +64,13 @@ const SignatureModal = ({
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-4 rounded">
+      <div className="bg-white p-4 rounded w-3/4 lg:w-1/2">
         <SignatureCanvas
           penColor="black"
           canvasProps={{
-            width: 400,
-            height: 200,
+            className: 'w-full h-64',
           }}
-          ref={sigPad}
+          ref={(ref) => (sigPad.current = ref)}
         />
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
