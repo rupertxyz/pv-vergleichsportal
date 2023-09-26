@@ -15,10 +15,7 @@ const Clients = () => {
   });
 
   return (
-    <div
-      style={{ minHeight: 'calc(100vh - 7rem)', width: '100%' }}
-      className="w-full flex flex-col gap-4 py-8 px-4 lg:p-8"
-    >
+    <div className="min-h-screen w-full flex flex-col gap-4 py-8 px-4 lg:p-8">
       <div className="flex items-center gap-2">
         <div className="flex flex-1">
           <h2 className="text-lg md:text-2xl font-bold">Alle Kunden</h2>

@@ -96,7 +96,7 @@ export async function saveToNinox(data, recordId) {
       }),
     }
   );
-  const projectData = await projectUpdateResponse.json();
+  await projectUpdateResponse.json();
   if (clientUpdateResponse.ok && projectUpdateResponse.ok) {
     return true;
   } else {
@@ -105,59 +105,64 @@ export async function saveToNinox(data, recordId) {
 }
 
 export async function loadNinoxData() {
-  const customerResponse = await fetch(
-    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
-      },
-    }
-  );
-  const customerData = await customerResponse.json();
-
-  // load project records
-  const projectResponse = await fetch(
-    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
-      },
-    }
-  );
-
-  // find project record for each customer and add it to the customer object as a field
-  const projectData = await projectResponse.json();
-  customerData.map((customer) => {
-    const project = projectData.find(
-      (project) => project.id === customer.fields.Projekte[0]
+  try {
+    const customerResponse = await fetch(
+      `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
+        },
+      }
     );
-    customer.fields.Projekte.pdf = project.fields['Angebot PDF'];
-    return customer;
-  });
-  return customerData.map((customer) => {
-    return {
-      id: customer.id,
-      vorname: customer.fields.Vorname || '',
-      nachname: customer.fields.Nachname || '',
-      anrede: customer.fields.Anrede || '',
-      titel: customer.fields.Titel || '',
-      firma: customer.fields.Firma || '',
-      pdf: customer.fields.Projekte.pdf || '',
-      adresse: customer.fields.Adresse || '',
-      telefon: customer.fields.Telefon || '',
-      email: customer.fields.Email || '',
-      hausstromverbrauch: customer.fields.Hausstromverbrauch || '',
-      nutzstromverbrauch: customer.fields.Nutzstromverbrauch || '',
-      eAutoVerbrauch: customer.fields['E-Auto Stromverbrauch'] || '',
-      arbeitspreis: customer.fields['Arbeitspreis ct/kWh'] || '',
-      grundgebuehr: customer.fields['Grundgebühr pro Jahr'] || '',
-      bemerkungen: customer.fields.Notizen || '',
-    };
-  });
+    const customerData = await customerResponse.json();
+
+    // load project records
+    const projectResponse = await fetch(
+      `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
+        },
+      }
+    );
+
+    // find project record for each customer and add it to the customer object as a field
+    const projectData = await projectResponse.json();
+    customerData.map((customer) => {
+      const project = projectData.find(
+        (project) => project.id === customer.fields.Projekte[0]
+      );
+      customer.fields.Projekte.pdf = project.fields['Angebot PDF'];
+      return customer;
+    });
+    return customerData.map((customer) => {
+      return {
+        id: customer.id,
+        vorname: customer.fields.Vorname || '',
+        nachname: customer.fields.Nachname || '',
+        anrede: customer.fields.Anrede || '',
+        titel: customer.fields.Titel || '',
+        firma: customer.fields.Firma || '',
+        pdf: customer.fields.Projekte.pdf || '',
+        adresse: customer.fields.Adresse || '',
+        telefon: customer.fields.Telefon || '',
+        email: customer.fields.Email || '',
+        hausstromverbrauch: customer.fields.Hausstromverbrauch || '',
+        nutzstromverbrauch: customer.fields.Nutzstromverbrauch || '',
+        eAutoVerbrauch: customer.fields['E-Auto Stromverbrauch'] || '',
+        arbeitspreis: customer.fields['Arbeitspreis ct/kWh'] || '',
+        grundgebuehr: customer.fields['Grundgebühr pro Jahr'] || '',
+        bemerkungen: customer.fields.Notizen || '',
+      };
+    });
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }
 
 export async function createClient() {
@@ -196,7 +201,9 @@ export async function createClient() {
       ]),
     }
   );
-  return data[0].id;
+
+  const projectData = await projectResponse.json();
+  return { customerId: data[0].id, projectId: projectData[0].id };
 }
 
 export async function getNinoxRecord(recordId) {

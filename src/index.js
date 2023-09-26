@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom';
 import { createClient } from './services/ninox';
 import Loading from './Loading';
+import { createClientInFirebase } from './services/firebase';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,8 +23,11 @@ const router = createBrowserRouter(
         exact
         element={<Clients />}
         action={async () => {
-          const newClientId = await createClient();
-          return redirect(`/clients/${newClientId}`);
+          const { customerId, projectId } = await createClient();
+
+          await createClientInFirebase(customerId, projectId);
+
+          return redirect(`/clients/${customerId}`);
         }}
       />
       <Route path="clients/:id">

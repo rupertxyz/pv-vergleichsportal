@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 
 const SignatureModal = ({
@@ -9,36 +9,6 @@ const SignatureModal = ({
   formContent,
 }) => {
   const sigPad = useRef(null);
-
-  const prefillSignature = async () => {
-    if (sigPad && sigPad.current) {
-      const canvas = sigPad.current.getCanvas();
-
-      const ctx = canvas.getContext('2d');
-      const signatureText = `${formContent.vorname} ${formContent.nachname}`;
-
-      // // Ensure font is loaded
-      const fontSize = 30;
-      await document.fonts.load(`${fontSize}px Dancing Script`);
-      const approximateTextHeight = fontSize * 0.7;
-
-      ctx.font = `${fontSize}px Dancing Script`;
-
-      ctx.webkitFontSmoothing = 'antialiased'; // Add font smoothing
-      ctx.globalAlpha = 0.9; // Adjust global alpha
-      const textWidth = ctx.measureText(signatureText).width;
-
-      // Calculate center coordinates
-      const centerX = (canvas.width - textWidth) / 2;
-      const centerY = (canvas.height + approximateTextHeight) / 2;
-
-      if (formContent.vorname && formContent.nachname) {
-        ctx.fillText(signatureText, 20, 150);
-      }
-
-      sigPad.current.fromDataURL(canvas.toDataURL());
-    }
-  };
 
   const saveSignature = (e) => {
     e.preventDefault();
@@ -55,15 +25,45 @@ const SignatureModal = ({
   };
 
   useEffect(() => {
+    const prefillSignature = async () => {
+      if (sigPad && sigPad.current) {
+        const canvas = sigPad.current.getCanvas();
+
+        const ctx = canvas.getContext('2d');
+        const signatureText = `${formContent.vorname} ${formContent.nachname}`;
+
+        // // Ensure font is loaded
+        const fontSize = 30;
+        await document.fonts.load(`${fontSize}px Dancing Script`);
+        // const approximateTextHeight = fontSize * 0.7;
+
+        ctx.font = `${fontSize}px Dancing Script`;
+
+        ctx.webkitFontSmoothing = 'antialiased'; // Add font smoothing
+        ctx.globalAlpha = 0.9; // Adjust global alpha
+        // const textWidth = ctx.measureText(signatureText).width;
+
+        // Calculate center coordinates
+        // const centerX = (canvas.width - textWidth) / 2;
+        // const centerY = (canvas.height + approximateTextHeight) / 2;
+
+        if (formContent.vorname && formContent.nachname) {
+          ctx.fillText(signatureText, 20, 150);
+        }
+
+        sigPad.current.fromDataURL(canvas.toDataURL());
+      }
+    };
+
     if (savedSignature) {
       sigPad.current.fromDataURL(savedSignature);
     } else {
       prefillSignature(); // Prefill the signature when the modal is opened
     }
-  }, [savedSignature]);
+  }, [savedSignature, formContent.vorname, formContent.nachname]);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
       <div className="bg-white p-4 rounded w-3/4 lg:w-1/2">
         <SignatureCanvas
           penColor="black"

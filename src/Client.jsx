@@ -14,6 +14,8 @@ import { deleteClient } from './services/ninox';
 import { writePdf } from './services/docsautomator';
 import { uploadFile } from './services/firebase';
 
+import { updateClientAndProjectInFirebase } from './services/firebase';
+
 export const FormContext = createContext();
 
 // LOADER
@@ -47,7 +49,8 @@ async function clientActions({ request, params }) {
 
     // save to Ninox
     if (data.saveOnly) {
-      await saveToNinox(data, params.id);
+      // await saveToNinox(data, params.id);
+      await updateClientAndProjectInFirebase(data, params.id);
       return redirect(`/`);
     }
 
@@ -110,11 +113,12 @@ const Client = () => {
   }, [currentStep]);
 
   const [formContent, setFormContent] = useState({});
+  console.log(formContent);
   const [calculationData, setCalculationData] = useState({});
 
   useEffect(() => {
     if (clientData) {
-      setFormContent({ ...formContent, ...clientData });
+      setFormContent((formContent) => ({ ...formContent, ...clientData }));
     }
   }, [clientData]);
 
@@ -139,7 +143,7 @@ const Client = () => {
       );
       setShouldPrompt(hasChanges);
     }
-  }, [formContent]);
+  }, [formContent, clientData]);
 
   usePrompt(
     'Das Formular ist noch nicht gespeichert. Zum Verlassen bitte bestätigen. Alle bisher eingegebenen Daten werden gelöscht.',

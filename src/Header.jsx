@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from './config/firebase';
 
-const Header = ({ userObject, userSignOut }) => {
+const Header = ({ userObject, userSignOut, authUser }) => {
   const [logo, setLogo] = useState('');
   const [subline, setSubline] = useState('');
   const [color, setColor] = useState('');
@@ -11,14 +13,31 @@ const Header = ({ userObject, userSignOut }) => {
   const [backHover, setBackHover] = useState(false);
 
   useEffect(() => {
-    setLogo(userObject?.logo);
-    setSubline(userObject?.subline);
-    setColor(userObject?.color);
+    if (userObject) {
+      setLogo(userObject?.logo);
+      setSubline(userObject?.subline);
+      setColor(userObject?.color);
+    }
   }, [userObject]);
 
   useEffect(() => {
     setBackHover(false);
   }, [location]);
+
+  const updateSublineInFirebase = async () => {
+    if (userObject) {
+      const userDocRef = doc(db, 'users', authUser.uid); // Reference to the user document
+
+      try {
+        await updateDoc(userDocRef, {
+          subline: subline,
+        });
+        console.log('Subline updated successfully');
+      } catch (error) {
+        console.error('Error updating subline:', error);
+      }
+    }
+  };
 
   return (
     <div>
@@ -41,11 +60,20 @@ const Header = ({ userObject, userSignOut }) => {
         </NavLink>
       )}
       <NavLink to="/" className="flex justify-center pt-4">
-        <img src={logo} className="w-60" />
+        <img src={logo} alt="Logo" className="w-60" />
       </NavLink>
       <div className="flex justify-center text-sm text-center px-8">
         {subline}
       </div>
+      <input
+        value={subline}
+        onChange={(e) => setSubline(e.target.value)}
+        name="subline"
+        type="text"
+        placeholder="Suche"
+        className="w-full"
+      />
+      <button onClick={updateSublineInFirebase}>Update Subline</button>
     </div>
   );
 };

@@ -154,7 +154,7 @@ const Wirtschaftlichkeit = () => {
         calculateSavings(pvSolar, COST_PER_KWH, LOSS_PERCENT, INFLATION_PERCENT)
       );
     }
-  }, [pvSolar]);
+  }, [pvSolar, kWp]);
 
   useEffect(() => {
     if (eegCash && einsparung && kaufPreis) {
@@ -198,7 +198,17 @@ const Wirtschaftlichkeit = () => {
         }).format(kaufPreis),
       };
     });
-  }, [kaufPreis, autarkie, eigenverbrauch, cashflow, kapitalrendite]);
+  }, [
+    kaufPreis,
+    autarkie,
+    eigenverbrauch,
+    cashflow,
+    kapitalrendite,
+    formContent.arbeitspreis,
+    formContent.grundgebuehr,
+    verbrauch,
+    setCalculationData,
+  ]);
 
   return (
     <>

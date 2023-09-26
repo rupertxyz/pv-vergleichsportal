@@ -53,7 +53,7 @@ export default function Address({ label, placeholder, identifier }) {
 
       setAutocomplete(newAutocomplete);
     }
-  }, [googleMapsLoaded, formContent, identifier]); // Add googleMapsLoaded dependency
+  }, [googleMapsLoaded, formContent, identifier]);
 
   return (
     <div className="w-full sm:w-1/2 p-2">

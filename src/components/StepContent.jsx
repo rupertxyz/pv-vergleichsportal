@@ -24,12 +24,7 @@ const StepContent = ({ currentStep, setShouldPrompt }) => {
       <div style={{ display: currentStep === 4 ? 'block' : 'none' }}>
         <Wirtschaftlichkeit />
       </div>
-      <div
-        className="h-full"
-        style={{
-          display: currentStep === 5 ? 'block' : 'none',
-        }}
-      >
+      <div style={{ display: currentStep === 5 ? 'block' : 'none' }}>
         <Kostenvoranschlag setShouldPrompt={setShouldPrompt} />
       </div>
     </>

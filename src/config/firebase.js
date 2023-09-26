@@ -1,7 +1,11 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import {
+  getFirestore,
+  enableIndexedDbPersistence,
+  connectFirestoreEmulator,
+} from 'firebase/firestore';
 
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -17,5 +21,20 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+if (process.env.REACT_APP_NODE_ENV === 'development') {
+  connectFirestoreEmulator(db, 'localhost', 8080);
+}
+
+// Enable offline persistence
+enableIndexedDbPersistence(db).catch((err) => {
+  if (err.code === 'failed-precondition') {
+    // Multiple tabs open, persistence can only be enabled in one tab at a a time.
+    console.log('Persistence can only be enabled in one tab at a time.');
+  } else if (err.code === 'unimplemented') {
+    // The current browser does not support all of the features required to enable persistence.
+    console.log('The current browser does not support offline persistence.');
+  }
+});
 
 export { storage, auth, db, app as default };

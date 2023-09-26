@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, defer, useLoaderData } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import Header from './Header';
 import { loadNinoxData } from './services/ninox';
 import SignIn from './components/Auth/SignIn';
@@ -18,6 +18,7 @@ const Root = () => {
   const [userObject, setUserObject] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
   const { customers } = useLoaderData();
+  const [offline, setOffline] = useState(false);
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -44,17 +45,24 @@ const Root = () => {
 
   useEffect(() => {
     async function fetchUserDocument() {
-      const userDocRef = doc(db, 'users', authUser.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists()) {
-        setUserObject(userDoc.data());
-      } else {
-        console.log('No such document!');
+      try {
+        const userDocRef = doc(db, 'users', authUser.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          setUserObject(userDoc.data());
+        } else {
+          console.log('No such document!');
+        }
+      } catch (err) {
+        console.error(err);
       }
     }
 
     if (authUser) {
       fetchUserDocument();
+      if (!navigator.onLine) {
+        setOffline(true);
+      }
     }
 
     return () => {
@@ -69,9 +77,12 @@ const Root = () => {
   return (
     <>
       {authUser ? (
-        <div className="flex flex-col min-h-screen justify-center items-center bg-gray-50">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
           <div className="relative w-full max-w-4xl mx-auto bg-white rounded-md shadow-2xl">
-            <Header {...{ userObject, userSignOut }} />
+            {offline && (
+              <p className="text-red-500">Keine Internetverbindung</p>
+            )}
+            <Header {...{ userObject, userSignOut, authUser }} />
             <div className="flex flex-col space-y-12">
               <Outlet context={{ userObject, customers }} />
             </div>
