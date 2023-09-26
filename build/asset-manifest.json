@@ -1,13 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.1e58cc0f.css",
-    "main.js": "/static/js/main.25a2f76c.js",
+    "main.css": "/static/css/main.a5942a3d.css",
+    "main.js": "/static/js/main.18edcc08.js",
+    "service-worker.js": "/service-worker.js",
+    "static/media/sonnendach_logo.webp": "/static/media/sonnendach_logo.fabb84e74449fa67c108.webp",
+    "static/media/puff.svg": "/static/media/puff.38a93f6314122cbc328a4e8e98c083f6.svg",
     "index.html": "/index.html",
-    "main.1e58cc0f.css.map": "/static/css/main.1e58cc0f.css.map",
-    "main.25a2f76c.js.map": "/static/js/main.25a2f76c.js.map"
+    "static/media/ovalLoader.svg": "/static/media/ovalLoader.d345381f6a5ded07c8f259c204b73800.svg",
+    "main.a5942a3d.css.map": "/static/css/main.a5942a3d.css.map",
+    "main.18edcc08.js.map": "/static/js/main.18edcc08.js.map"
   },
   "entrypoints": [
-    "static/css/main.1e58cc0f.css",
-    "static/js/main.25a2f76c.js"
+    "static/css/main.a5942a3d.css",
+    "static/js/main.18edcc08.js"
   ]
 }

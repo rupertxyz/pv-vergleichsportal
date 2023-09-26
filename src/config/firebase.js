@@ -22,9 +22,9 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-if (process.env.REACT_APP_NODE_ENV === 'development') {
-  connectFirestoreEmulator(db, 'localhost', 8080);
-}
+// if (process.env.REACT_APP_NODE_ENV === 'development') {
+//   connectFirestoreEmulator(db, 'localhost', 8080);
+// }
 
 // Enable offline persistence
 enableIndexedDbPersistence(db).catch((err) => {

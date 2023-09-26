@@ -14,6 +14,7 @@ import {
 import { createClient } from './services/ninox';
 import Loading from './Loading';
 import { createClientInFirebase } from './services/firebase';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -48,3 +49,5 @@ root.render(
     <RouterProvider router={router} fallbackElement={<Loading />} />
   </React.StrictMode>
 );
+
+serviceWorkerRegistration.register();
