@@ -8,22 +8,22 @@ import {
 } from 'react-router-dom';
 import NewClientNav from './components/NewClientNav';
 import StepContent from './components/StepContent';
-import { saveToNinox, getNinoxRecord } from './services/ninox';
 
-import { deleteClient } from './services/ninox';
 import { writePdf } from './services/docsautomator';
 import { uploadFile } from './services/firebase';
 
 import {
   updateClientAndProjectInFirebase,
   deleteClientFromFirebase,
+  loadSingleClientAndProjectFromFirebase,
 } from './services/firebase';
 
 export const FormContext = createContext();
 
 // LOADER
 async function getRecordData({ params }) {
-  return await getNinoxRecord(params.id);
+  const customerData = await loadSingleClientAndProjectFromFirebase(params.id);
+  return customerData;
 }
 
 // ACTION
@@ -50,9 +50,8 @@ async function clientActions({ request, params }) {
       data.chart = chartDownloadUrl;
     }
 
-    // save to Ninox
+    // save to database
     if (data.saveOnly) {
-      // await saveToNinox(data, params.id);
       await updateClientAndProjectInFirebase(data, params.id);
       return redirect(`/`);
     }
@@ -63,7 +62,6 @@ async function clientActions({ request, params }) {
       data.pdf = writePdfResult.pdfUrl;
     }
 
-    await saveToNinox(data, params.id);
     return data;
   }
   if (request.method === 'DELETE') {
@@ -117,7 +115,6 @@ const Client = () => {
   }, [currentStep]);
 
   const [formContent, setFormContent] = useState({});
-  console.log(formContent);
   const [calculationData, setCalculationData] = useState({});
 
   useEffect(() => {

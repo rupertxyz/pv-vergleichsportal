@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 import Header from './Header';
-import { loadNinoxData } from './services/ninox';
 import SignIn from './components/Auth/SignIn';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from './config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import Loading from './Loading';
+import { loadClientsFromFirebase } from './services/firebase';
 
 async function clientLoader() {
-  const data = loadNinoxData();
-  return { customers: await data };
+  const data = await loadClientsFromFirebase();
+  return { customers: data };
 }
 
 const Root = () => {
