@@ -52,7 +52,7 @@ async function clientActions({ request, params }) {
 
     // save to database
     if (data.saveOnly) {
-      updateClientAndProjectInFirebase(data, params.id);
+      await updateClientAndProjectInFirebase(data, params.id);
       return redirect(`/`);
     }
 
