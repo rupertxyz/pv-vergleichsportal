@@ -21,9 +21,7 @@ const app = initializeApp(firebaseConfig);
 
 const storage = getStorage(app);
 const auth = getAuth(app);
-const db = getFirestore(app, {
-  cacheSizeBytes: CACHE_SIZE_UNLIMITED,
-});
+const db = getFirestore(app);
 
 // if (process.env.REACT_APP_NODE_ENV === 'development') {
 //   connectFirestoreEmulator(db, 'localhost', 8080);
