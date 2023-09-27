@@ -28,6 +28,11 @@ const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }) => {
+    // If this is a Firebase request, skip.
+    if (isFirebaseRequest(url)) {
+      return false;
+    }
+
     // If this isn't a navigation, skip.
     if (request.mode !== 'navigate') {
       return false;
@@ -50,8 +55,13 @@ registerRoute(
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
-  ({ url }) =>
-    url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+  ({ url }) => {
+    // If this is a Firebase request, skip.
+    if (isFirebaseRequest(url)) {
+      return false;
+    }
+    return url.origin === self.location.origin && url.pathname.endsWith('.png'); // Customize this strategy as needed, e.g., by changing to CacheFirst.
+  },
   new StaleWhileRevalidate({
     cacheName: 'images',
     plugins: [
@@ -71,3 +81,11 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+function isFirebaseRequest(url) {
+  return (
+    url.pathname.startsWith('/__/firebase') ||
+    url.pathname.startsWith('/.well-known') ||
+    url.host.includes('firestore.googleapis.com') ||
+    url.host.includes('firebaseio.com')
+  );
+}

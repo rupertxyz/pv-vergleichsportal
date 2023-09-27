@@ -53,6 +53,8 @@ async function clientActions({ request, params }) {
     // save to database
     if (data.saveOnly) {
       await updateClientAndProjectInFirebase(data, params.id);
+      console.log('update data', data);
+
       return redirect(`/`);
     }
 
@@ -63,6 +65,7 @@ async function clientActions({ request, params }) {
     }
 
     await updateClientAndProjectInFirebase(data, params.id);
+    console.log('update data', data);
     return data;
   }
   if (request.method === 'DELETE') {
