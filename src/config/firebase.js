@@ -26,15 +26,17 @@ if (process.env.REACT_APP_NODE_ENV === 'development') {
   connectFirestoreEmulator(db, 'localhost', 8080);
 }
 
-// // Enable offline persistence
-// enableIndexedDbPersistence(db).catch((err) => {
-//   if (err.code === 'failed-precondition') {
-//     // Multiple tabs open, persistence can only be enabled in one tab at a a time.
-//     console.log('Persistence can only be enabled in one tab at a time.');
-//   } else if (err.code === 'unimplemented') {
-//     // The current browser does not support all of the features required to enable persistence.
-//     console.log('The current browser does not support offline persistence.');
-//   }
-// });
+if (!process.env.REACT_APP_NODE_ENV === 'development') {
+  // Enable offline persistence
+  enableIndexedDbPersistence(db).catch((err) => {
+    if (err.code === 'failed-precondition') {
+      // Multiple tabs open, persistence can only be enabled in one tab at a a time.
+      console.log('Persistence can only be enabled in one tab at a time.');
+    } else if (err.code === 'unimplemented') {
+      // The current browser does not support all of the features required to enable persistence.
+      console.log('The current browser does not support offline persistence.');
+    }
+  });
+}
 
 export { storage, auth, db, app as default };
