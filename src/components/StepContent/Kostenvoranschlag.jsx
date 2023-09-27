@@ -6,7 +6,7 @@ import { FormContext } from '../../Client';
 import AnimationStep from '../KVA/AnimationStep';
 import { useOutletContext } from 'react-router-dom';
 
-const ASYNC_TIMEOUT = 5000;
+const ASYNC_TIMEOUT = 1000;
 
 export const asyncTimeout = (ms) => {
   return new Promise((resolve) => {

@@ -62,6 +62,7 @@ async function clientActions({ request, params }) {
       data.pdf = writePdfResult.pdfUrl;
     }
 
+    await updateClientAndProjectInFirebase(data, params.id);
     return data;
   }
   if (request.method === 'DELETE') {

@@ -179,7 +179,7 @@ export async function loadClientsFromFirebase() {
     for (const client of clients) {
       const projectDocRef = doc(db, 'projects', String(client.projectId));
       const projectDoc = await getDoc(projectDocRef);
-      client.pdf = projectDoc.data().pdf || '';
+      client.pdf = projectDoc.data()['Angebot PDF'] || '';
     }
     return clients;
   } catch (error) {
