@@ -1,6 +1,7 @@
 {
   "name": "pv-vergleichsportal",
   "version": "0.1.0",
+  "homepage": "https://pv-vergleichsportal.onrender.com",
   "private": true,
   "dependencies": {
     "@clerk/clerk-react": "^4.22.0",
