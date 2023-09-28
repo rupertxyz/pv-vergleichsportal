@@ -41,21 +41,32 @@ async function clientActions({ request, params }) {
       }
     });
 
-    if (data.signature && !data.signature.includes('https://firebasestorage')) {
-      const signatureDownloadUrl = await uploadFile('signature', data);
-      data.signature = signatureDownloadUrl;
-    }
-    if (data.chart && !data.chart.includes('https://firebasestorage')) {
-      const chartDownloadUrl = await uploadFile('chart', data);
-      data.chart = chartDownloadUrl;
-    }
+    // if offline, skip these uploads
+
+    // if (data.signature && !data.signature.includes('https://firebasestorage')) {
+    //   if (navigator.onLine) {
+    //     const signatureDownloadUrl = await uploadFile('signature', data);
+    //     data.signature = signatureDownloadUrl;
+    //   }
+    // }
+    // if (data.chart && !data.chart.includes('https://firebasestorage')) {
+    //   if (navigator.onLine) {
+    //     const chartDownloadUrl = await uploadFile('chart', data);
+    //     data.chart = chartDownloadUrl;
+    //   }
+    // }
 
     // save to database
     if (data.saveOnly) {
-      await updateClientAndProjectInFirebase(data, params.id);
-      console.log('update data', data);
-
-      return redirect(`/`);
+      console.log('here?');
+      try {
+        console.log('here??');
+        updateClientAndProjectInFirebase(data, params.id);
+        console.log('here???');
+        return redirect(`/`);
+      } catch (err) {
+        return redirect(`/`);
+      }
     }
 
     const writePdfResult = await writePdf(data);

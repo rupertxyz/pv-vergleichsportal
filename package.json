@@ -27,6 +27,7 @@
     "react-tailwindcss-datepicker": "^1.6.3",
     "recharts": "^2.7.2",
     "recharts-to-png": "^2.2.1",
+    "source-map-explorer": "^2.5.3",
     "workbox-background-sync": "^6.6.0",
     "workbox-broadcast-update": "^6.6.0",
     "workbox-cacheable-response": "^6.6.0",
@@ -41,6 +42,7 @@
     "workbox-streams": "^6.6.0"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "dev": "BROWSER=brave react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

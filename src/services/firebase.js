@@ -11,6 +11,13 @@ import {
   collection,
 } from 'firebase/firestore';
 
+function getSourceOption() {
+  // console.log('navigator.onLine', navigator.onLine);
+  // return !navigator.onLine ? { source: 'cache' } : {};
+  console.log('cache source');
+  return { source: 'cache' };
+}
+
 export async function uploadFile(type, data) {
   try {
     // create reference
@@ -52,7 +59,7 @@ export async function createClientInFirebase(ninoxCustomerId, ninoxProjectId) {
 export async function updateClientAndProjectInFirebase(data, ninoxCustomerId) {
   const customerDocRef = doc(db, 'clients', String(ninoxCustomerId));
   // get project id from customer doc
-  const customerDoc = await getDoc(customerDocRef);
+  const customerDoc = await getDoc(customerDocRef, getSourceOption());
   const ninoxProjectId = customerDoc.data().projectId;
   const projectDocRef = doc(db, 'projects', String(ninoxProjectId));
 
@@ -133,7 +140,7 @@ export async function deleteClientFromFirebase(ninoxCustomerId) {
   try {
     const customerDocRef = doc(db, 'clients', String(ninoxCustomerId));
     // get project id from customer doc
-    const customerDoc = await getDoc(customerDocRef);
+    const customerDoc = await getDoc(customerDocRef, getSourceOption());
     const ninoxProjectId = customerDoc.data().projectId;
     const projectDocRef = doc(db, 'projects', String(ninoxProjectId));
 
@@ -152,7 +159,10 @@ export async function deleteClientFromFirebase(ninoxCustomerId) {
 // Load all clients from Firestore
 export async function loadClientsFromFirebase() {
   try {
-    const querySnapshot = await getDocs(collection(db, 'clients'));
+    const querySnapshot = await getDocs(
+      collection(db, 'clients'),
+      getSourceOption()
+    );
     const clients = [];
     querySnapshot.forEach((doc) => {
       const client = doc.data();
@@ -178,7 +188,7 @@ export async function loadClientsFromFirebase() {
     // add pdf from related project
     for (const client of clients) {
       const projectDocRef = doc(db, 'projects', String(client.projectId));
-      const projectDoc = await getDoc(projectDocRef);
+      const projectDoc = await getDoc(projectDocRef, getSourceOption());
       client.pdf = projectDoc.data()['Angebot PDF'] || '';
     }
     return clients;
@@ -191,10 +201,10 @@ export async function loadClientsFromFirebase() {
 export async function loadSingleClientAndProjectFromFirebase(customerId) {
   try {
     const customerDocRef = doc(db, 'clients', String(customerId));
-    const customerDoc = await getDoc(customerDocRef);
+    const customerDoc = await getDoc(customerDocRef, getSourceOption());
     const client = customerDoc.data();
     const projectDocRef = doc(db, 'projects', String(client.projectId));
-    const projectDoc = await getDoc(projectDocRef);
+    const projectDoc = await getDoc(projectDocRef, getSourceOption());
     const project = projectDoc.data();
     const data = { ...client, ...project };
     return {
