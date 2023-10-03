@@ -12,17 +12,13 @@ import StepContent from './components/StepContent';
 import { writePdf } from './services/docsautomator';
 import { uploadFile } from './services/firebase';
 
-import { getNinoxRecord, saveToNinox, deleteClient } from './services/ninox';
-
 import indexDb from './config/dexie';
 
 export const FormContext = createContext();
 
 // LOADER
 async function getRecordData({ params }) {
-  // const customerData = await getNinoxRecord(params.id);
   const customerData = await indexDb.data.get(Number(params.id));
-  console.log('customer data', customerData);
   return customerData;
 }
 
@@ -58,11 +54,10 @@ async function clientActions({ request, params }) {
     data.ziegeldeckmassBreite = Number(data.ziegeldeckmassBreite) || '';
     data.ziegeldeckmassLaenge = Number(data.ziegeldeckmassLaenge) || '';
 
-    data.besuchstermin = new Date(data.besuchstermin)
-      .toISOString()
-      .split('T')[0];
+    data.besuchstermin = data.besuchstermin
+      ? new Date(data.besuchstermin).toISOString().split('T')[0]
+      : '';
 
-    console.log('data', data);
     // convert data to Boolean if string is true or false
     Object.keys(data).forEach((key) => {
       if (data[key] === 'true') {
@@ -145,6 +140,9 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
 
 const Client = () => {
   const clientData = useLoaderData();
+
+  console.log('clientData', clientData);
+
   const steps = [
     'Kunde',
     'Anlage',

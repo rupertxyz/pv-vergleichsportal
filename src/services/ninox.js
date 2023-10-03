@@ -1,4 +1,5 @@
 export async function saveToNinox(data, recordId) {
+  console.log('data here', data);
   // update client record in Ninox
   const clientUpdateResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,
@@ -25,9 +26,7 @@ export async function saveToNinox(data, recordId) {
           'Grundgebühr pro Jahr': data.grundgebuehr,
           Notizen: data.bemerkungen,
           Leadquelle: data.leadSource,
-          Besuchstermin: data.besuchstermin
-            ? data.besuchstermin.split('.').reverse().join('-')
-            : '',
+          Besuchstermin: data.besuchstermin ? data.besuchstermin : '',
         },
       }),
     }
@@ -139,10 +138,8 @@ export async function loadNinoxData() {
 
       const data = { ...customer.fields, ...projectData.fields };
 
-      console.log('data here', data);
-
       return {
-        id: data.indexId || '',
+        id: data.Kunde || '',
         vorname: data.Vorname || '',
         nachname: data.Nachname || '',
         anrede: data.Anrede || '',
@@ -222,9 +219,7 @@ export async function createClient(recordId) {
       },
       body: JSON.stringify([
         {
-          fields: {
-            indexId: recordId,
-          },
+          fields: {},
         },
       ]),
     }
@@ -254,12 +249,8 @@ export async function createClient(recordId) {
   return { customerId: data[0].id, projectId: projectData[0].id };
 }
 
-export async function getNinoxRecord(recordId) {
-  const data = await fetchRecordFromNinox(recordId);
-  return data;
-}
-
-async function fetchRecordFromNinox(recordId) {
+export async function deleteClient(recordId) {
+  // get project id first
   const customerResponse = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,
     {
@@ -271,87 +262,7 @@ async function fetchRecordFromNinox(recordId) {
     }
   );
   const customerData = await customerResponse.json();
-
-  // get project record in Ninox
-  const projectResponse = await fetch(
-    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records/${customerData.fields.Projekte[0]}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
-      },
-    }
-  );
-
-  const projectData = await projectResponse.json();
-
-  const data = { ...customerData.fields, ...projectData.fields };
-
-  return {
-    id: data.id || '',
-    vorname: data.Vorname || '',
-    nachname: data.Nachname || '',
-    anrede: data.Anrede || '',
-    titel: data.Titel || '',
-    firma: data.Firma || '',
-    adresse: data.Adresse || '',
-    telefon: data.Telefon || '',
-    email: data.Email || '',
-    hausstromverbrauch: data.Hausstromverbrauch || 5000,
-    nutzstromverbrauch: data.Nutzstromverbrauch || '',
-    eAutoVerbrauch: data['E-Auto Stromverbrauch'] || '',
-    arbeitspreis: data['Arbeitspreis ct/kWh'] || 0.4,
-    grundgebuehr: data['Grundgebühr pro Jahr'] || 120,
-    bemerkungen: data.Notizen || '',
-    leadSource: data.Leadquelle || '',
-    besuchstermin: data.Besuchstermin || new Date(),
-    waermepumpe: data.Wärmepumpe || '',
-    eAutoPlanung: data['E-Auto in Planung'] || '',
-    sonderbelegung: data['Sonderbelegung'] || false,
-    anzahlModule: data['Anzahl Module'] || 24,
-    anzahlOptimierer: data['Anzahl Optimierer'] || '',
-    benoetigteKwp: data['Benötigte kWp'] || '',
-    speicherGroesse: data['Speichergröße'] || 10,
-    anzahlStockwerke: data['Anzahl Stockwerke'] || 2,
-    anzahlDachseiten: data['Anzahl Dachseiten'] || 2,
-    glasGlasModule: data['Glas-Glas-Module'] || true,
-    fullBlackModule: data['Full-Black-Module'] || false,
-    kabelweg: data['Kabelweg'] || '',
-    ziegeldeckmassLaenge: data['Ziegeldeckmaß Länge'] || '',
-    ziegeldeckmassBreite: data['Ziegeldeckmaß Breite'] || '',
-    dachneigung: data['Dachneigung in Grad'] || '',
-    sparrenmassAbstand: data['Sparrenmaße Abstand'] || '',
-    sparrenmassHoehe: data['Sparrenmaße Höhe'] || '',
-    sparrenmassBreite: data['Sparrenmaße Breite'] || '',
-    aufsparrendaemmungStaerke: data['Aufsparrendämmung Stärke'] || '',
-    trapezblechStaerke: data['Trapezblech Stärke'] || '',
-    sandwichblech: data['Sandwichblech'] || false,
-    ziegelgeklammert: data['Ziegel geklammert'] || false,
-    ziegelgemoertelt: data['Ziegel gemörtelt'] || false,
-    ziegelsanierung: data['Ziegelsanierung anbieten'] || false,
-    potSchiene: data['POT Schiene'] || false,
-    staberder: data['Staberder'] || false,
-    kaskade: data['Kaskade'] || false,
-    zaehlerzusammenlegung: data['Zählerzusammenlegung'] || false,
-    privUnterzaehler: data['Priv. Unterzähler'] || false,
-    unterverteiler: data['Unterverteiler'] || false,
-    zaehlerschrankTauschen: data['Zählerschrank tauschen'] || false,
-    anzahlZaehlerFelder: data['Anzahl Zählerfelder'] || '',
-    standortZaehlerschrank: data['Standort Zählerschrank'] || '',
-    standortHak: data['Standort HAK'] || '',
-    laengeKabelwegHakZs: data['Länge Kabelweg von HAK zu ZS'] || '',
-    otpWert: data['OTP-Wert'] || 0,
-    notstromPlanen: data['Notstrom planen'] || false,
-    internetanschlussVorhanden:
-      data['Internetanschluss (LAN) am Wechselrichterplatz vorhanden'] || false,
-    abschlussTermin: data['Abschlusstermin'] || '',
-    chart: data['Chart'] || '',
-    signature: data['Signatur'] || '',
-  };
-}
-
-export async function deleteClient(recordId) {
+  const projectId = customerData.fields.Projekte[0];
   const response = await fetch(
     `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/B/records/${recordId}`,
     {
@@ -362,6 +273,17 @@ export async function deleteClient(recordId) {
       },
     }
   );
-  const data = await response.json();
-  return data;
+  await response.json();
+  // delete related project
+  await fetch(
+    `https://api.ninox.com/v1/teams/Q8echuakpXZB3BPyL/databases/iwraqzm2j58a/tables/A/records/${projectId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + process.env.REACT_APP_NINOX_API_KEY,
+      },
+    }
+  );
+  return true;
 }

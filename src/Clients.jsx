@@ -1,31 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useOutletContext, Form } from 'react-router-dom';
 import ClientListItem from './components/Welcome/ClientListItem';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { createClient } from './services/ninox';
 import { redirect } from 'react-router-dom';
 import indexDb from './config/dexie';
 
 async function clientsActions() {
-  // const { customerId } = await createClient();
-  // add new client to indexeddb with dexie
   const id = await indexDb.data.add({
+    id: Math.round(Math.random() * 10000),
     vorname: '',
+    nachname: '',
     anrede: '',
     titel: '',
-    pdf: '',
     firma: '',
-    arbeitspreis: '',
-    bemerkungen: '',
+    adresse: '',
+    telefon: '',
+    email: '',
+    hausstromverbrauch: 5000,
     nutzstromverbrauch: '',
     eAutoVerbrauch: '',
-    projectId: '',
-    hausstromverbrauch: '',
-    telefon: '',
-    grundgebuehr: '',
-    nachname: '',
-    email: '',
-    adresse: '',
+    arbeitspreis: 0.4,
+    grundgebuehr: 120,
+    bemerkungen: '',
+    leadSource: '',
+    besuchstermin: new Date(),
+    waermepumpe: false,
+    eAutoPlanung: false,
+    sonderbelegung: false,
+    anzahlModule: 24,
+    anzahlOptimierer: '',
+    benoetigteKwp: '',
+    speicherGroesse: 10,
+    anzahlStockwerke: 2,
+    anzahlDachseiten: 2,
+    glasGlasModule: false,
+    fullBlackModule: false,
+    kabelweg: '',
+    ziegeldeckmassLaenge: '',
+    ziegeldeckmassBreite: '',
+    dachneigung: '',
+    sparrenmassAbstand: '',
+    sparrenmassHoehe: '',
+    sparrenmassBreite: '',
+    aufsparrendaemmungStaerke: '',
+    trapezblechStaerke: '',
+    sandwichblech: false,
+    ziegelgeklammert: false,
+    ziegelgemoertelt: false,
+    ziegelsanierung: false,
+    potSchiene: false,
+    staberder: false,
+    kaskade: false,
+    zaehlerzusammenlegung: false,
+    privUnterzaehler: false,
+    unterverteiler: false,
+    zaehlerschrankTauschen: false,
+    anzahlZaehlerFelder: '',
+    standortZaehlerschrank: '',
+    standortHak: '',
+    laengeKabelwegHakZs: '',
+    otpWert: 0,
+    notstromPlanen: false,
+    internetanschlussVorhanden: false,
+    abschlussTermin: '',
+    chart: '',
+    signature: '',
   });
   return redirect(`/clients/${id}`);
 }
