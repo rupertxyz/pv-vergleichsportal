@@ -25,12 +25,12 @@ const Header = ({ userObject, userSignOut, authUser }) => {
 
   return (
     <div>
-      {location.pathname === '/' && (
+      {/* {location.pathname === '/' && (
         <div className="absolute top-1 right-1 flex justify-end gap-1">
           <button onClick={userSignOut}>Sign out</button>
           <ArrowTopRightOnSquareIcon className="w-4" />
         </div>
-      )}
+      )} */}
       {location.pathname === '/clients' && (
         <NavLink
           to="/"

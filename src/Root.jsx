@@ -38,6 +38,7 @@ const Root = () => {
   const loaderData = useLoaderData();
   const [offline, setOffline] = useState(false);
   const [isIndexedDbDiff, setIsIndexedDbDiff] = useState(false);
+  const [updatingNinox, setUpdatingNinox] = useState(false);
 
   const customers = useLiveQuery(() => indexDb.data.toArray(), []);
   console.log('client data from ninox', clientDataFromNinox);
@@ -134,6 +135,7 @@ const Root = () => {
   }, [loaderData]);
 
   async function updateNinox() {
+    setUpdatingNinox(true);
     if (!offline) {
       if (clientDataFromNinox.length) {
         // loop over customers in indexedDB and check if they exist in ninox
@@ -161,17 +163,13 @@ const Root = () => {
           }
         }
       }
-      if (areArraysDifferent(customers, clientDataFromNinox)) {
-        setIsIndexedDbDiff(true);
-      } else {
-        setIsIndexedDbDiff(false);
-      }
       // update client data from ninox
       const ninoxData = await loadNinoxData();
       setClientDataFromNinox(ninoxData);
     } else {
       window.alert('Sync nicht möglich, da keine Internetverbindung besteht.');
     }
+    setUpdatingNinox(false);
   }
 
   async function updateFromNinox() {
@@ -193,41 +191,39 @@ const Root = () => {
       {authUser ? (
         <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
           <div className="relative w-full max-w-4xl mx-auto bg-white rounded-md shadow-2xl">
-            <button onClick={updateNinox} className="border-1 bg-slate-200">
-              SYNC
-            </button>
-            <button
-              className="block border-1 bg-slate-200"
-              onClick={() => {
-                let confirm = false;
-                if (areArraysDifferent(customers, clientDataFromNinox)) {
-                  confirm = window.confirm(
-                    'Daten sind noch nicht gesynced und würden durch Ninox überschrieben.'
-                  );
-                } else {
-                  updateFromNinox();
-                }
-                if (confirm) {
-                  updateFromNinox();
-                }
-              }}
-            >
-              Re-sync from Ninox
-            </button>
             {offline && (
-              <p className="text-red-500">Keine Internetverbindung</p>
+              <div
+                className={`transform transition-transform duration-500 ease-in-out ${
+                  offline ? 'scale-y-1' : 'scale-y-0'
+                } origin-top`}
+              >
+                <p className="w-full bg-red-500 text-center text-white">
+                  Keine Internetverbindung
+                </p>
+              </div>
             )}
-            {!offline && (
-              <p className="text-green-500">Internetverbindung vorhanden</p>
-            )}
-            {isIndexedDbDiff ? (
-              <p className="text-red-500">Update notwendig</p>
-            ) : (
-              <p className="text-green-500">In Sync</p>
-            )}
-            <Header {...{ userObject, userSignOut, authUser }} />
+
+            <Header
+              {...{
+                userObject,
+                userSignOut,
+                authUser,
+              }}
+            />
             <div className="flex flex-col space-y-12">
-              <Outlet context={{ userObject, customers }} />
+              <Outlet
+                context={{
+                  userObject,
+                  customers,
+                  offline,
+                  isIndexedDbDiff,
+                  updateNinox,
+                  updatingNinox,
+                  clientDataFromNinox,
+                  areArraysDifferent,
+                  updateFromNinox,
+                }}
+              />
             </div>
           </div>
         </div>
