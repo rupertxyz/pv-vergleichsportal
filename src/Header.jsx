@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
+import sonnenDachLogo from './assets/sonnendach_logo.webp';
 
 const Header = ({ userObject, userSignOut, authUser }) => {
   const [logo, setLogo] = useState('');

@@ -75,6 +75,7 @@ const Wirtschaftlichkeit = () => {
 
   const [pvLeistung, setPvLeistung] = useState(0);
   const [verbrauch, setVerbrauch] = useState(0);
+  console.log('verbrauch', verbrauch);
   const [speicher, setSpeicher] = useState(0);
   const [kWp, setkWp] = useState(0);
 

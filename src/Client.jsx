@@ -12,17 +12,17 @@ import StepContent from './components/StepContent';
 import { writePdf } from './services/docsautomator';
 import { uploadFile } from './services/firebase';
 
-import {
-  updateClientAndProjectInFirebase,
-  deleteClientFromFirebase,
-  loadSingleClientAndProjectFromFirebase,
-} from './services/firebase';
+import { getNinoxRecord, saveToNinox, deleteClient } from './services/ninox';
+
+import indexDb from './config/dexie';
 
 export const FormContext = createContext();
 
 // LOADER
 async function getRecordData({ params }) {
-  const customerData = await loadSingleClientAndProjectFromFirebase(params.id);
+  // const customerData = await getNinoxRecord(params.id);
+  const customerData = await indexDb.data.get(Number(params.id));
+  console.log('customer data', customerData);
   return customerData;
 }
 
@@ -31,6 +31,38 @@ async function clientActions({ request, params }) {
   if (request.method === 'PUT') {
     const data = Object.fromEntries(await request.formData());
 
+    // delete id from data
+    delete data.id;
+
+    data.anzahlDachseiten = Number(data.anzahlDachseiten) || '';
+    data.anzahlModule = Number(data.anzahlModule) || '';
+    data.anzahlOptimierer = Number(data.anzahlOptimierer) || '';
+    data.anzahlStockwerke = Number(data.anzahlStockwerke) || '';
+    data.anzahlZaehlerFelder = Number(data.anzahlZaehlerFelder) || '';
+    data.arbeitspreis = Number(data.arbeitspreis) || '';
+    data.aufsparrendaemmungStaerke =
+      Number(data.aufsparrendaemmungStaerke) || '';
+    data.benoetigteKwp = Number(data.benoetigteKwp) || '';
+    data.dachneigung = Number(data.dachneigung) || '';
+    data.eAutoVerbrauch = Number(data.eAutoVerbrauch) || '';
+    data.grundgebuehr = Number(data.grundgebuehr) || '';
+    data.hausstromverbrauch = Number(data.hausstromverbrauch) || '';
+    data.laengeKabelwegHakZs = Number(data.laengeKabelwegHakZs) || '';
+    data.nutzstromverbrauch = Number(data.nutzstromverbrauch) || '';
+    data.otpWert = Number(data.otpWert) || 0;
+    data.sparrenmassAbstand = Number(data.sparrenmassAbstand) || '';
+    data.sparrenmassBreite = Number(data.sparrenmassBreite) || '';
+    data.sparrenmassHoehe = Number(data.sparrenmassHoehe) || '';
+    data.speicherGroesse = Number(data.speicherGroesse) || '';
+    data.trapezblechStaerke = Number(data.trapezblechStaerke) || '';
+    data.ziegeldeckmassBreite = Number(data.ziegeldeckmassBreite) || '';
+    data.ziegeldeckmassLaenge = Number(data.ziegeldeckmassLaenge) || '';
+
+    data.besuchstermin = new Date(data.besuchstermin)
+      .toISOString()
+      .split('T')[0];
+
+    console.log('data', data);
     // convert data to Boolean if string is true or false
     Object.keys(data).forEach((key) => {
       if (data[key] === 'true') {
@@ -58,15 +90,10 @@ async function clientActions({ request, params }) {
 
     // save to database
     if (data.saveOnly) {
-      console.log('here?');
-      try {
-        console.log('here??');
-        updateClientAndProjectInFirebase(data, params.id);
-        console.log('here???');
-        return redirect(`/`);
-      } catch (err) {
-        return redirect(`/`);
-      }
+      delete data.saveOnly;
+      delete data.logo;
+      await indexDb.data.update(Number(params.id), data);
+      return redirect('/');
     }
 
     const writePdfResult = await writePdf(data);
@@ -75,14 +102,19 @@ async function clientActions({ request, params }) {
       data.pdf = writePdfResult.pdfUrl;
     }
 
-    await updateClientAndProjectInFirebase(data, params.id);
-    console.log('update data', data);
+    delete data.saveOnly;
+    delete data.logo;
+    await indexDb.data.update(Number(params.id), data);
+
     return data;
   }
   if (request.method === 'DELETE') {
-    // await deleteClient(params.id);
-    await deleteClientFromFirebase(params.id);
-    return redirect('/');
+    try {
+      await indexDb.data.delete(Number(params.id));
+      return redirect('/');
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 

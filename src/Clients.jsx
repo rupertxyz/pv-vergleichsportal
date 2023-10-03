@@ -1,9 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useOutletContext, Form } from 'react-router-dom';
 import ClientListItem from './components/Welcome/ClientListItem';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { createClient } from './services/ninox';
+import { redirect } from 'react-router-dom';
+import indexDb from './config/dexie';
+
+async function clientsActions() {
+  // const { customerId } = await createClient();
+  // add new client to indexeddb with dexie
+  const id = await indexDb.data.add({
+    vorname: '',
+    anrede: '',
+    titel: '',
+    pdf: '',
+    firma: '',
+    arbeitspreis: '',
+    bemerkungen: '',
+    nutzstromverbrauch: '',
+    eAutoVerbrauch: '',
+    projectId: '',
+    hausstromverbrauch: '',
+    telefon: '',
+    grundgebuehr: '',
+    nachname: '',
+    email: '',
+    adresse: '',
+  });
+  return redirect(`/clients/${id}`);
+}
 
 const Clients = () => {
-  const { userObject, customers } = useOutletContext();
+  const { userObject, customers = [] } = useOutletContext();
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter customers based on the search term
@@ -23,7 +51,7 @@ const Clients = () => {
         <Form method="post" className="flex justify-end flex-1">
           <button
             type="submit"
-            className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80"
+            className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80 bg-slate-700"
             style={{ backgroundColor: userObject?.color }}
           >
             <i className="fa-light fa-plus"></i>
@@ -50,3 +78,4 @@ const Clients = () => {
 };
 
 export default Clients;
+export { clientsActions };

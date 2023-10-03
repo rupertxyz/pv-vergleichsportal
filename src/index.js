@@ -9,26 +9,15 @@ import {
   RouterProvider,
   Route,
   createRoutesFromElements,
-  redirect,
 } from 'react-router-dom';
-import { createClient } from './services/ninox';
 import Loading from './Loading';
-import { createClientInFirebase } from './services/firebase';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { clientsActions } from './Clients';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />} loader={clientLoader}>
-      <Route
-        index
-        exact
-        element={<Clients />}
-        action={async () => {
-          const { customerId, projectId } = await createClient();
-          await createClientInFirebase(customerId, projectId);
-          return redirect(`/clients/${customerId}`);
-        }}
-      />
+      <Route index exact element={<Clients />} action={clientsActions} />
       <Route path="clients/:id">
         <Route
           index
