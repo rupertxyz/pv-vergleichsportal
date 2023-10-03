@@ -127,10 +127,19 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    if (loaderData) {
+    if (loaderData.length > 0) {
       setClientDataFromNinox(loaderData);
+      localStorage.setItem(
+        'savedClientDataFromNinox',
+        JSON.stringify(loaderData)
+      );
+    } else if (offline) {
+      const localData = localStorage.getItem('savedClientDataFromNinox');
+      if (localData) {
+        setClientDataFromNinox(JSON.parse(localData));
+      }
     }
-  }, [loaderData]);
+  }, [loaderData, offline]);
 
   async function updateNinox() {
     setUpdatingNinox(true);

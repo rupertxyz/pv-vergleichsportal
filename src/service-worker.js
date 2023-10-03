@@ -34,7 +34,6 @@ registerRoute(
   ({ request, url }) => {
     // If this is a Firebase request, skip.
     if (isFirebaseRequest(url)) {
-      console.log('skipping firebase?');
       return false;
     }
 

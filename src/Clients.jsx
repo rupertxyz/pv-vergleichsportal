@@ -96,9 +96,9 @@ const Clients = () => {
         <div className="flex flex-1">
           <h2 className="text-lg md:text-2xl font-bold">Alle Kunden</h2>
         </div>
-        <Form method="post" className="flex justify-end flex-1 gap-2">
+        <Form method="post" className="flex justify-end gap-2">
           <button
-            className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80 bg-slate-700"
+            className="text-white font-bold px-2 lg:px-4 rounded opacity-100 hover:opacity-80 bg-slate-700"
             onClick={(e) => {
               e.preventDefault();
               let confirm = false;
@@ -138,7 +138,7 @@ const Clients = () => {
                 window.alert('Keine Änderungen zum Syncen vorhanden.');
               }
             }}
-            className={`text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80 ${
+            className={`text-white font-bold px-2 lg:px-4 rounded opacity-100 hover:opacity-80 ${
               isIndexedDbDiff ? 'bg-red-600' : 'bg-green-600'
             }`}
             style={!isIndexedDbDiff ? { cursor: 'default' } : {}}
