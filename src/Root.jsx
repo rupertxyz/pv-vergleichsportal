@@ -109,12 +109,23 @@ const Root = () => {
   }, [customers, clientDataFromNinox]);
 
   useEffect(() => {
-    if (!navigator.onLine) {
-      setOffline(true);
-    } else {
-      setOffline(false);
-    }
-  });
+    const updateOnlineStatus = () => {
+      setOffline(!navigator.onLine);
+    };
+
+    // Set initial status
+    updateOnlineStatus();
+
+    // Add event listeners
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // Cleanup event listeners on unmount
+    return () => {
+      window.removeEventListener('online', updateOnlineStatus);
+      window.removeEventListener('offline', updateOnlineStatus);
+    };
+  }, []);
 
   useEffect(() => {
     if (loaderData) {

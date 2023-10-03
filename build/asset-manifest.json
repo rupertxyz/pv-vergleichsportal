@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "http://localhost:3000/static/css/main.cad118af.css",
-    "main.js": "http://localhost:3000/static/js/main.c6ef0358.js",
+    "main.js": "http://localhost:3000/static/js/main.cde6f6e5.js",
     "service-worker.js": "http://localhost:3000/service-worker.js",
     "static/media/sonnendach_logo.webp": "http://localhost:3000/static/media/sonnendach_logo.fabb84e74449fa67c108.webp",
     "static/media/puff.svg": "http://localhost:3000/static/media/puff.38a93f6314122cbc328a4e8e98c083f6.svg",
     "index.html": "http://localhost:3000/index.html",
     "static/media/ovalLoader.svg": "http://localhost:3000/static/media/ovalLoader.d345381f6a5ded07c8f259c204b73800.svg",
     "main.cad118af.css.map": "http://localhost:3000/static/css/main.cad118af.css.map",
-    "main.c6ef0358.js.map": "http://localhost:3000/static/js/main.c6ef0358.js.map"
+    "main.cde6f6e5.js.map": "http://localhost:3000/static/js/main.cde6f6e5.js.map"
   },
   "entrypoints": [
     "static/css/main.cad118af.css",
-    "static/js/main.c6ef0358.js"
+    "static/js/main.cde6f6e5.js"
   ]
 }
