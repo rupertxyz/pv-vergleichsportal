@@ -41,8 +41,6 @@ const Root = () => {
   const [updatingNinox, setUpdatingNinox] = useState(false);
 
   const customers = useLiveQuery(() => indexDb.data.toArray(), []);
-  console.log('client data from ninox', clientDataFromNinox);
-  console.log('customers', customers);
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {

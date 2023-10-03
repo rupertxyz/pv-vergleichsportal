@@ -141,8 +141,6 @@ function usePrompt(message, shouldPrompt, { beforeUnload = false } = {}) {
 const Client = () => {
   const clientData = useLoaderData();
 
-  console.log('clientData', clientData);
-
   const steps = [
     'Kunde',
     'Anlage',
