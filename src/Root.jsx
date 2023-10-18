@@ -33,12 +33,12 @@ function compareArrays(arr1, arr2) {
 const Root = () => {
   const [authUser, setAuthUser] = useState(null);
   const [userObject, setUserObject] = useState(null);
+  console.log(userObject);
   const [loadingAuth, setLoadingAuth] = useState(true);
   const [clientDataFromNinox, setClientDataFromNinox] = useState([]);
   const loaderData = useLoaderData();
   const [offline, setOffline] = useState(false);
   const [dbDiff, setDbDiff] = useState([]);
-  console.log(dbDiff);
 
   const customers = useLiveQuery(() => indexDb.data.toArray(), []) || [];
 
@@ -89,21 +89,12 @@ const Root = () => {
     };
   }, [authUser]);
 
-  // commented this out as it's better that data from ninox is always fetched manually
-  // useEffect(() => {
-  //   // add customers to indexedDB with Dexie
-  //   if (customers && !customers.length && clientDataFromNinox.length) {
-  //     indexDb.data.bulkPut(clientDataFromNinox);
-  //   }
-  // }, [clientDataFromNinox, customers]);
-
   useEffect(() => {
     // check if indexedDB is different from ninox data
-    console.log('client data from ninox', clientDataFromNinox);
-    console.log('customers', customers);
     const compareResult = compareArrays(customers, clientDataFromNinox);
-    setDbDiff(compareResult);
-    console.log('compare result', compareResult);
+    if (compareResult.length > 0) {
+      setDbDiff(compareResult);
+    }
   }, [customers, clientDataFromNinox]);
 
   useEffect(() => {
@@ -144,18 +135,6 @@ const Root = () => {
     if (!offline) {
       const ninoxData = await loadNinoxData();
       indexDb.data.bulkPut(ninoxData);
-
-      console.log('ninox data', ninoxData);
-
-      // // delete indexDb data that is not in ninox
-      // for (const customer of customers) {
-      //   const ninoxId = ninoxData.find(
-      //     (ninoxCustomer) => ninoxCustomer.id === customer.id
-      //   );
-      //   if (!ninoxId) {
-      //     await indexDb.data.delete(customer.id);
-      //   }
-      // }
       setClientDataFromNinox(ninoxData);
     } else {
       window.alert('Sync nicht möglich, da keine Internetverbindung besteht.');

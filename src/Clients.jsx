@@ -80,6 +80,8 @@ const Clients = () => {
   } = useOutletContext();
   const [searchTerm, setSearchTerm] = useState('');
 
+  const userColor = userObject?.color;
+
   // Filter customers based on the search term
   const filteredCustomers = customers.filter((customer) => {
     return (
@@ -138,7 +140,7 @@ const Clients = () => {
           <button
             type="submit"
             className="text-white font-bold py-2 px-4 rounded opacity-100 hover:opacity-80 bg-slate-700"
-            style={{ backgroundColor: userObject?.color }}
+            style={{ backgroundColor: userColor }}
           >
             <i className="fa-light fa-plus"></i>
             <span>Neues Projekt</span>
@@ -164,6 +166,7 @@ const Clients = () => {
                   offline={offline}
                   clientDataFromNinox={clientDataFromNinox}
                   setClientDataFromNinox={setClientDataFromNinox}
+                  userColor={userColor}
                 />
               );
             })}
@@ -172,7 +175,13 @@ const Clients = () => {
         {filteredCustomersWithoutDiff.length > 0 && (
           <>
             {filteredCustomersWithoutDiff.map((customer, i) => {
-              return <ClientListItem key={customer.id} customer={customer} />;
+              return (
+                <ClientListItem
+                  key={customer.id}
+                  customer={customer}
+                  userColor={userColor}
+                />
+              );
             })}
           </>
         )}
