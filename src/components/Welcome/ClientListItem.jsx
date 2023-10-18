@@ -1,13 +1,57 @@
-import React from 'react';
-import { NavLink, useFetcher } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { loadNinoxData, saveToNinox, createClient } from '../../services/ninox';
+import indexDb from '../../config/dexie';
 
 const ClientListItem = ({
   customer,
-  updateNinox,
-  updatingNinox,
   diff = false,
+  offline,
+  clientDataFromNinox,
+  setClientDataFromNinox,
 }) => {
-  const fetcher = useFetcher();
+  const [updatingNinox, setUpdatingNinox] = useState(false);
+
+  async function updateNinox(customer) {
+    setUpdatingNinox(true);
+    if (!offline) {
+      // find customer id in ninox
+      const ninoxId = clientDataFromNinox.find(
+        (ninoxCustomer) => ninoxCustomer.id === customer.id
+      );
+      // if customer does not exist in ninox, create it
+      if (!ninoxId) {
+        const { customerId } = await createClient(customer.id);
+        // update indexedDB with new ninox id
+        await indexDb.data.update(customer.id, { id: customerId });
+        await saveToNinox(customer, customerId);
+      }
+      // if customer exists in ninox, update it
+      else {
+        await saveToNinox(customer, customer.id);
+      }
+
+      // // // delete customers in ninox that are not in indexedDB
+      // for (const ninoxCustomer of clientDataFromNinox) {
+      //   const indexedDbId = customers.find(
+      //     (customer) => customer.id === ninoxCustomer.id
+      //   );
+      //   if (!indexedDbId) {
+      //     await deleteClient(ninoxCustomer.id);
+      //   }
+      // }
+
+      // update client data from ninox
+      const ninoxData = await loadNinoxData();
+      setClientDataFromNinox(ninoxData);
+    } else {
+      window.alert(
+        'Sync nicht möglich, da keine Internetverbindung besteht. Bitte später erneut versuchen.'
+      );
+    }
+    setUpdatingNinox(false);
+  }
+
   return (
     <NavLink
       to={`/clients/${customer.id}`}

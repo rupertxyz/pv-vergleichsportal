@@ -73,9 +73,8 @@ const Clients = () => {
     userObject,
     customers = [],
     offline,
-    updateNinox,
-    updatingNinox,
     clientDataFromNinox,
+    setClientDataFromNinox,
     updateFromNinox,
     dbDiff,
   } = useOutletContext();
@@ -110,13 +109,11 @@ const Clients = () => {
             className="text-white font-bold px-2 lg:px-4 rounded opacity-100 hover:opacity-80 bg-slate-700"
             onClick={(e) => {
               e.preventDefault();
-              let confirm = false;
-              if (dbDiff.length > 0) {
+              let confirm = true;
+              if (customers.length > 0) {
                 confirm = window.confirm(
-                  'Daten sind noch nicht gesynced. Trotzdem durch Ninox überschreiben?'
+                  'Daten durch Ninox überschreiben? Dies führt zu Datenverlust, wenn Projekte noch nicht vollständig gesynced sind.'
                 );
-              } else {
-                window.alert('Daten sind in Sync.');
               }
               if (confirm) {
                 updateFromNinox();
@@ -163,9 +160,10 @@ const Clients = () => {
                 <ClientListItem
                   key={customer.id}
                   customer={customer}
-                  updateNinox={updateNinox}
-                  updatingNinox={updatingNinox}
                   diff={true}
+                  offline={offline}
+                  clientDataFromNinox={clientDataFromNinox}
+                  setClientDataFromNinox={setClientDataFromNinox}
                 />
               );
             })}

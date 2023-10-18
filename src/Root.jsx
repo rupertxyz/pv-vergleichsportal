@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, redirect, useLoaderData } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import Header from './Header';
 import SignIn from './components/Auth/SignIn';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from './config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import Loading from './Loading';
-import {
-  loadNinoxData,
-  saveToNinox,
-  createClient,
-  deleteClient,
-} from './services/ninox';
+import { loadNinoxData } from './services/ninox';
 import { useLiveQuery } from 'dexie-react-hooks';
 import indexDb from './config/dexie';
 import deepEqual from './util/deepEqual';
@@ -43,9 +38,9 @@ const Root = () => {
   const loaderData = useLoaderData();
   const [offline, setOffline] = useState(false);
   const [dbDiff, setDbDiff] = useState([]);
-  const [updatingNinox, setUpdatingNinox] = useState(false);
+  console.log(dbDiff);
 
-  const customers = useLiveQuery(() => indexDb.data.toArray(), []);
+  const customers = useLiveQuery(() => indexDb.data.toArray(), []) || [];
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -104,10 +99,11 @@ const Root = () => {
 
   useEffect(() => {
     // check if indexedDB is different from ninox data
-    if (customers && customers.length) {
-      const compareResult = compareArrays(customers, clientDataFromNinox);
-      setDbDiff(compareResult);
-    }
+    console.log('client data from ninox', clientDataFromNinox);
+    console.log('customers', customers);
+    const compareResult = compareArrays(customers, clientDataFromNinox);
+    setDbDiff(compareResult);
+    console.log('compare result', compareResult);
   }, [customers, clientDataFromNinox]);
 
   useEffect(() => {
@@ -144,57 +140,22 @@ const Root = () => {
     }
   }, [loaderData, offline]);
 
-  async function updateNinox(customer) {
-    setUpdatingNinox(true);
-    if (!offline) {
-      // find customer id in ninox
-      const ninoxId = clientDataFromNinox.find(
-        (ninoxCustomer) => ninoxCustomer.id === customer.id
-      );
-      // if customer does not exist in ninox, create it
-      if (!ninoxId) {
-        const { customerId } = await createClient(customer.id);
-        // update indexedDB with new ninox id
-        await indexDb.data.update(customer.id, { id: customerId });
-        await saveToNinox(customer, customerId);
-      }
-      // if customer exists in ninox, update it
-      else {
-        await saveToNinox(customer, customer.id);
-      }
-
-      // // // delete customers in ninox that are not in indexedDB
-      // for (const ninoxCustomer of clientDataFromNinox) {
-      //   const indexedDbId = customers.find(
-      //     (customer) => customer.id === ninoxCustomer.id
-      //   );
-      //   if (!indexedDbId) {
-      //     await deleteClient(ninoxCustomer.id);
-      //   }
-      // }
-
-      // update client data from ninox
-      const ninoxData = await loadNinoxData();
-      setClientDataFromNinox(ninoxData);
-    } else {
-      window.alert('Sync nicht möglich, da keine Internetverbindung besteht.');
-    }
-    setUpdatingNinox(false);
-  }
-
   async function updateFromNinox() {
     if (!offline) {
       const ninoxData = await loadNinoxData();
       indexDb.data.bulkPut(ninoxData);
-      // delete indexDb data that is not in ninox
-      for (const customer of customers) {
-        const ninoxId = ninoxData.find(
-          (ninoxCustomer) => ninoxCustomer.id === customer.id
-        );
-        if (!ninoxId) {
-          await indexDb.data.delete(customer.id);
-        }
-      }
+
+      console.log('ninox data', ninoxData);
+
+      // // delete indexDb data that is not in ninox
+      // for (const customer of customers) {
+      //   const ninoxId = ninoxData.find(
+      //     (ninoxCustomer) => ninoxCustomer.id === customer.id
+      //   );
+      //   if (!ninoxId) {
+      //     await indexDb.data.delete(customer.id);
+      //   }
+      // }
       setClientDataFromNinox(ninoxData);
     } else {
       window.alert('Sync nicht möglich, da keine Internetverbindung besteht.');
@@ -235,9 +196,8 @@ const Root = () => {
                   userObject,
                   customers,
                   offline,
-                  updateNinox,
-                  updatingNinox,
                   clientDataFromNinox,
+                  setClientDataFromNinox,
                   updateFromNinox,
                   dbDiff,
                 }}
